@@ -1,0 +1,223 @@
+<template>
+  <div class="body">
+    <div class="page-cell">
+      <div
+        style="border-bottom:1px solid #f4f4f4;"
+        v-for="(type,index) in typeList"
+        v-if="order === true"
+        :key="index"
+      >
+        <div class="mint-cell router-link">
+          <div class="mint-cell-wrapper">
+            <div class="mint-cell-title" @click="goInvoice('order',type.name)">
+              <!---->
+              <span class="mint-cell-text">{{type.name}}</span>
+            </div>
+            <i class="mint-cell-allow-right"></i>
+          </div>
+        </div>
+      </div>
+      <div class="inovice-record" style="margin-top:10px;">
+        <a @click="goInvoiceRecord" class="mint-cell">
+          <div class="mint-cell-wrapper">
+            <div class="mint-cell-title">
+              <!---->
+              <span class="mint-cell-text">开票记录</span>
+            </div>
+            <i class="mint-cell-allow-right"></i>
+          </div>
+        </a>
+        <a href="/rule" class="mint-cell">
+          <div class="mint-cell-wrapper">
+            <div class="mint-cell-title">
+              <!---->
+              <span class="mint-cell-text">开票规则</span>
+            </div>
+            <i class="mint-cell-allow-right"></i>
+          </div>
+        </a>
+        <a href="javascript:void(0);" @click="goAddressManage" class="mint-cell">
+          <div class="mint-cell-wrapper">
+            <div class="mint-cell-title">
+              <!---->
+              <span class="mint-cell-text">抬头管理</span>
+            </div>
+            <i class="mint-cell-allow-right"></i>
+          </div>
+        </a>
+      </div>
+      <div class="mint-btn" v-if="make===true">
+        <div class="mint-cell-title" @click="goInvoice('product','')">
+          <!---->
+          <span class="mint-cell-text">我要开票</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { Indicator } from "mint-ui";
+import { Toast } from "mint-ui";
+export default {
+  name: "App",
+  data() {
+    return {
+      username: "",
+      checkItem: [],
+      invoiceRecordList: [],
+      addressList: [],
+      accessToken: "",
+      make: "",
+      order: "",
+      appKey: "",
+      typeList: ""
+    };
+  },
+  methods: {
+    //获取发票类型
+    getOrderTypeList() {
+      this.$ajax({
+        method: "GET",
+        url: "/order-types",
+        params: {
+          accessToken: this.accessToken,
+          username: this.username
+        }
+      })
+        .then(res => {
+          if (res.status === 200) {
+            this.typeList = res.data.content;
+            setTimeout(function() {
+              Indicator.close();
+            }, 1500);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          Indicator.close();
+          Toast(error.response.data.message);
+        });
+    },
+    goInvoice(pl, orderType) {
+      if (pl === "product") {
+        this.$router.push({ path: "/product" });
+      } else if (pl === "order") {
+        //orderType 赋值
+        localStorage.setItem("orderType", orderType);
+        this.$router.push(`/out-order`);
+      }
+    },
+    goInvoiceRecord() {
+      this.$router.push(`/record`);
+    },
+    goAddressManage() {
+      this.$router.push({
+        path: "/company/",
+        name: "company",
+        params: {
+          companyLists: "companyLists"
+        }
+      });
+    },
+    //获取发票类型
+    getInvoiceType() {
+      this.$ajax({
+        method: "get",
+        url: "/api/shop/0/support",
+        params: {
+          accessToken: this.accessToken,
+          username: this.username
+        }
+      })
+        .then(res => {
+          if (res.data.content.ifProduct !== false) {
+            this.make = res.data.content.ifProduct;
+            localStorage.setItem("make", this.make);
+          }
+          if (res.data.content.ifOrder !== false) {
+            this.order = res.data.content.ifOrder;
+            localStorage.setItem("order", this.order);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  },
+  created() {
+    //一进页面清空make，order
+    localStorage.removeItem("make");
+    localStorage.removeItem("order");
+    //获取username
+    this.username = this.$route.query.username;
+    //获取accessToken
+    this.accessToken = this.$route.query.accessToken;
+    // 获取taxNumber
+    // this.taxNumber = this.$route.query.taxNumber;
+    this.appKey = this.$route.query.appKey;
+    if (this.accessToken && this.username) {
+      localStorage.setItem("accessToken", this.accessToken);
+      localStorage.setItem("username", this.username);
+      this.$store.state.username = this.$route.query.username;
+      // localStorage.setItem("taxNumber", this.taxNumber);
+    } else {
+      this.accessToken = localStorage.getItem("accessToken");
+      this.username = localStorage.getItem("username");
+      if (!this.accessToken || !this.username) {
+        router.push(`/error`);
+      }
+    }
+  },
+  mounted() {
+    let that = this;
+    Indicator.open({
+      text: "加载中...",
+      spinnerType: "fading-circle"
+    });
+    that.getOrderTypeList();
+    setTimeout(function() {
+      that.getInvoiceType();
+    }, 1000);
+  }
+};
+</script>
+
+<style scoped>
+.page-title {
+  font-size: 18px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  margin-bottom: 8px;
+  background: #fff !important;
+}
+
+.parking-order {
+  border-bottom: 1px solid #f4f4f4;
+}
+
+.mint-cell-text {
+  font-size: 16px;
+}
+
+.mint-cell-wrapper {
+  background: none !important;
+  position: relative;
+}
+
+.inovice-record a {
+  border-bottom: 1px solid #f4f4f4;
+}
+
+.mint-btn {
+  margin: 20px;
+  height: 44px;
+  background-color: #52c9f5;
+  border-radius: 8px;
+  box-shadow: 0px 3px 15px 0px rgba(12, 143, 192, 0.23);
+  color: #fff;
+  text-align: center;
+  line-height: 44px;
+  font-size: 16px;
+}
+</style>
