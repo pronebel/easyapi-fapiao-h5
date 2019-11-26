@@ -271,7 +271,7 @@
             <li>数量</li>
             <li>单价</li>
           </ul>
-          <ul class="contents-content" v-for="content in invoiceItemList">
+          <ul class="contents-content" v-for="(content,index) in invoiceItemList" :key="index">
             <li style="width: 24%;line-height: 15px;padding-top:12px">
               {{ content.name }}
             </li>
