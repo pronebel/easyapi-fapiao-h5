@@ -9,7 +9,9 @@
             <div class="mint-cell-title">
               <span class="mint-cell-text">
                 <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">发票抬头</font>
+                  <font style="vertical-align: inherit;font-size: 15px"
+                    >发票抬头</font
+                  >
                 </font>
               </span>
             </div>
@@ -25,13 +27,15 @@
           </div>
           <div class="mint-cell-right"></div>
         </a>
-        <div class="rise-list" v-if="searchList!==''">
+        <div class="rise-list" v-if="searchList !== ''">
           <ul>
             <li
-              v-for="(item,index) in searchList"
+              v-for="(item, index) in searchList"
               :key="index"
               @click="chooseRise(index)"
-            >{{item.name}}</li>
+            >
+              {{ item.name }}
+            </li>
           </ul>
         </div>
         <a class="mint-cell mint-field">
@@ -40,7 +44,9 @@
             <div class="mint-cell-title">
               <span class="mint-cell-text">
                 <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">税号</font>
+                  <font style="vertical-align: inherit;font-size: 15px"
+                    >税号</font
+                  >
                 </font>
               </span>
             </div>
@@ -68,7 +74,9 @@
             <div class="mint-cell-title">
               <span class="mint-cell-text">
                 <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">地址</font>
+                  <font style="vertical-align: inherit;font-size: 15px"
+                    >地址</font
+                  >
                 </font>
               </span>
             </div>
@@ -96,7 +104,9 @@
             <div class="mint-cell-title">
               <span class="mint-cell-text">
                 <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">电话</font>
+                  <font style="vertical-align: inherit;font-size: 15px"
+                    >电话</font
+                  >
                 </font>
               </span>
             </div>
@@ -124,7 +134,9 @@
             <div class="mint-cell-title">
               <span class="mint-cell-text">
                 <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">开户行</font>
+                  <font style="vertical-align: inherit;font-size: 15px"
+                    >开户行</font
+                  >
                 </font>
               </span>
             </div>
@@ -152,7 +164,9 @@
             <div class="mint-cell-title">
               <span class="mint-cell-text">
                 <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">开户行账号</font>
+                  <font style="vertical-align: inherit;font-size: 15px"
+                    >开户行账号</font
+                  >
                 </font>
               </span>
             </div>
@@ -178,7 +192,12 @@
     </div>
     <div class="bottom">
       <mt-button class="submit" @click="confirm">保存</mt-button>
-      <mt-button v-if="this.title ==='edit'" class="submit_btnDelet" @click="btnDelet">删除</mt-button>
+      <mt-button
+        v-if="this.title === 'edit'"
+        class="submit_btnDelet"
+        @click="btnDelet"
+        >删除</mt-button
+      >
     </div>
   </div>
 </template>

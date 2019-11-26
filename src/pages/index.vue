@@ -1,22 +1,27 @@
 <template>
   <div class="body">
     <div class="page-cell">
-      <div
-        style="border-bottom:1px solid #f4f4f4;"
-        v-for="(type,index) in typeList"
-        v-if="order === true"
-        :key="index"
-      >
-        <div class="mint-cell router-link">
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title" @click="goInvoice('order',type.name)">
-              <!---->
-              <span class="mint-cell-text">{{type.name}}</span>
+      <div v-if="order === true">
+        <div
+          style="border-bottom:1px solid #f4f4f4;"
+          v-for="(type, index) in typeList"
+          :key="index"
+        >
+          <div class="mint-cell router-link">
+            <div class="mint-cell-wrapper">
+              <div
+                class="mint-cell-title"
+                @click="goInvoice('order', type.name)"
+              >
+                <!---->
+                <span class="mint-cell-text">{{ type.name }}</span>
+              </div>
+              <i class="mint-cell-allow-right"></i>
             </div>
-            <i class="mint-cell-allow-right"></i>
           </div>
         </div>
       </div>
+
       <div class="inovice-record" style="margin-top:10px;">
         <a @click="goInvoiceRecord" class="mint-cell">
           <div class="mint-cell-wrapper">
@@ -36,7 +41,11 @@
             <i class="mint-cell-allow-right"></i>
           </div>
         </a>
-        <a href="javascript:void(0);" @click="goAddressManage" class="mint-cell">
+        <a
+          href="javascript:void(0);"
+          @click="goAddressManage"
+          class="mint-cell"
+        >
           <div class="mint-cell-wrapper">
             <div class="mint-cell-title">
               <!---->
@@ -46,8 +55,8 @@
           </div>
         </a>
       </div>
-      <div class="mint-btn" v-if="make===true">
-        <div class="mint-cell-title" @click="goInvoice('product','')">
+      <div class="mint-btn" v-if="make === true">
+        <div class="mint-cell-title" @click="goInvoice('product', '')">
           <!---->
           <span class="mint-cell-text">我要开票</span>
         </div>
@@ -104,11 +113,11 @@ export default {
       } else if (pl === "order") {
         //orderType 赋值
         localStorage.setItem("orderType", orderType);
-        this.$router.push(`/out-order`);
+        this.$router.push("/out-order");
       }
     },
     goInvoiceRecord() {
-      this.$router.push(`/record`);
+      this.$router.push("/record");
     },
     goAddressManage() {
       this.$router.push({
@@ -164,7 +173,7 @@ export default {
       this.accessToken = localStorage.getItem("accessToken");
       this.username = localStorage.getItem("username");
       if (!this.accessToken || !this.username) {
-        router.push(`/error`);
+        this.$router.push("/error");
       }
     }
   },

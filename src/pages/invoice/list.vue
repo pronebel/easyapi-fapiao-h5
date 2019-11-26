@@ -7,14 +7,18 @@
     <!--</div>-->
     <div class="no-record-con" v-show="isNull">
       <p>
-        <img src="../../assets/images/no-reaord_03.png" alt>
+        <img src="../../assets/images/no-reaord_03.png" alt />
       </p>
       <p class="record-text">暂时还没有记录!</p>
     </div>
     <!--</div>-->
     <div style="margin-top: 60px">
       <div id="loading">
-        <mt-spinner color="#56cbf6" v-show="loadingList" type="fading-circle"></mt-spinner>
+        <mt-spinner
+          color="#56cbf6"
+          v-show="loadingList"
+          type="fading-circle"
+        ></mt-spinner>
       </div>
 
       <div
@@ -24,19 +28,23 @@
         @click="goInvoiceDetail(item.invoiceId)"
       >
         <div class="record-con-top">
-          <p hidden>{{item.invoiceId}}</p>
+          <p hidden>{{ item.invoiceId }}</p>
           <p class="time">
             <span style="font-size: 15px;color: #333">电子发票</span>
-            <span class="record-status">{{item.statements}}</span>
+            <span class="record-status">{{ item.statements }}</span>
           </p>
         </div>
         <div class="record-con-bottom">
           <p class="record-invoice">
-            <span style="color: #333;font-size: 14px">{{item.orderType}}</span>
+            <span style="color: #333;font-size: 14px">{{
+              item.orderType
+            }}</span>
           </p>
           <p class="record-order">
-            <span style="color: #333;font-size: 14px">{{item.updateTime}}</span>
-            <span class="price">￥{{item.price}}</span>
+            <span style="color: #333;font-size: 14px">{{
+              item.updateTime
+            }}</span>
+            <span class="price">￥{{ item.price }}</span>
           </p>
         </div>
       </div>
@@ -105,7 +113,7 @@ export default {
 };
 </script>
 
-<style scoped >
+<style scoped>
 .no-record-con {
   margin-top: 80px;
   padding: 60px;
