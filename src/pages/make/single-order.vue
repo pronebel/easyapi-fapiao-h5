@@ -580,9 +580,7 @@ export default {
           this.remark = this.scanContent.remark;
           this.calculatedAmount();
         })
-        .catch(error => {
-          console.log(error);
-        });
+
     },
     getEmailInfo() {
       let username = this.username;
@@ -597,32 +595,29 @@ export default {
           (this.loadingList = false), (this.email = res.data.content.email);
           this.contactInformation = res.data.content.mobile;
         })
-        .catch(error => {
-          console.log(error);
-        });
     },
     goInvoiceSuccess() {
       this.showDisabled = false;
       //验证邮箱
       let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-      debugger;
+
       if (this.ifNeedEmail === true) {
         if (this.email === "") {
-          debugger;
+
           this.showDisabled = true;
           return Toast("请输入邮箱");
         } else if (!regEmail.test(this.email)) {
-          debugger;
+
           this.showDisabled = true;
           return Toast("邮箱格式不正确");
         }
       } else {
-        debugger;
+
         if (this.email) {
-          debugger;
+
           if (!regEmail.test(this.email)) {
             this.showDisabled = true;
-            debugger;
+
             return Toast("邮箱格式不正确");
           }
         }
@@ -717,9 +712,6 @@ export default {
         .then(res => {
           this.remark = res.data.content.remark;
         })
-        .catch(error => {
-          console.log(error);
-        });
     },
     getInvoicingService() {
       this.$ajax
@@ -732,9 +724,6 @@ export default {
           this.ifNeedMobile = res.data.content.ifNeedMobile;
           this.ifNeedEmail = res.data.content.ifNeedEmail;
         })
-        .catch(error => {
-          console.log(error);
-        });
     }
   },
   watch: {},

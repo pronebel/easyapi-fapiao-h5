@@ -603,24 +603,23 @@ export default {
       this.showDisabled = false;
       //验证邮箱
       let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-      debugger;
       if (this.NeedEmail === true) {
         if (this.email === "") {
-          debugger;
+
           this.showDisabled = true;
           return Toast("请输入邮箱");
         } else if (!regEmail.test(this.email)) {
-          debugger;
+
           this.showDisabled = true;
           return Toast("邮箱格式不正确");
         }
       } else {
-        debugger;
+
         if (this.email) {
-          debugger;
+
           if (!regEmail.test(this.email)) {
             this.showDisabled = true;
-            debugger;
+
             return Toast("邮箱格式不正确");
           }
         }

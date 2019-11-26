@@ -567,7 +567,7 @@ export default {
           this.showDisabled = true;
           return Toast("请输入邮箱");
         } else if (!regEmail.test(this.email)) {
-          debugger;
+
           this.showDisabled = true;
           return Toast("邮箱格式不正确");
         }
