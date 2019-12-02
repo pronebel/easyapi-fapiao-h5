@@ -371,7 +371,7 @@
       },
       getInvoiceItemList() {
         let outOrderNo = this.outOrderNo;
-        this.$ajax.get("/api/item/" + outOrderNo, {
+        this.$ajax.get("/out-order/" + outOrderNo, {
           params: {
             username: this.username,
             taxNumber: this.taxNumber,
