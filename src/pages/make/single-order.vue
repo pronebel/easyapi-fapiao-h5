@@ -295,7 +295,7 @@
         contentId: '',
         howMany: '',
         remark: '',
-        returnUrl : '',
+        returnUrl: '',
         priceSplicing: '',
         invoiceForm: {
           type: ''
@@ -400,7 +400,7 @@
             }
           }).then(res => {
           this.loadingList = false,
-          this.email = res.data.content.email;
+            this.email = res.data.content.email;
           this.contactInformation = res.data.content.mobile;
         }).catch(error => {
           console.log(error);
@@ -485,7 +485,7 @@
           }).then(res => {
           if (res.data.code === '1') {
             this.$messagebox.alert(res.data.message);
-            this.$router.push({path : '/single-order-success', query: {returnUrl:this.returnUrl}});
+            this.$router.push({path: '/single-order-success', query: {returnUrl: this.returnUrl}});
           }
         }).catch(error => {
           this.showDisabled = false;
