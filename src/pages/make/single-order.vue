@@ -264,22 +264,34 @@
         </div>
         <div class="invoice-contents">
           <p>发票内容</p>
-          <ul class="contents-title">
-            <li style="width: 24%">商品名称</li>
-            <li style="width: 24%">规格型号</li>
-            <li>单位</li>
-            <li>数量</li>
-            <li>单价</li>
-          </ul>
-          <ul class="contents-content" v-for="(content,index) in invoiceItemList" :key="index">
-            <li style="width: 24%;line-height: 15px;padding-top:12px">
-              {{ content.name }}
-            </li>
-            <li style="width: 24%">{{ content.model }}</li>
-            <li>{{ content.unit }}</li>
-            <li>{{ content.number }}</li>
-            <li>{{ content.price }}</li>
-          </ul>
+          <a class="mint-cell mint-field" style=" border-bottom: 1px solid#ddd;"
+          >
+            <div class="mint-cell-left"></div>
+            <div class="mint-cell-wrapper">
+              <div class="mint-cell-title">
+
+                <span class="mint-cell-text"
+                ><font style="vertical-align: inherit;"
+                ><font style="vertical-align: inherit;"
+                >发票内容</font
+                ></font
+                ></span
+                >
+              </div>
+              <div class="mint-cell-value">
+                {{Object.values(JSON.parse(outOrder.fields))[0]}}
+                <div class="mint-field-clear" style="display: none;">
+                  <i class="mintui mintui-field-error"></i>
+                </div>
+                <span class="mint-field-state is-default"
+                ><i class="mintui mintui-field-default"></i
+                ></span>
+                <div class="mint-field-other"></div>
+              </div>
+
+            </div>
+            <div class="mint-cell-right"></div>
+          </a>
           <a class="mint-cell mint-field" style=" border-bottom: 1px solid#ddd;"
           >
             <div class="mint-cell-left"></div>
@@ -293,10 +305,8 @@
                 ></font
                 ></span
                 >
-
               </div>
               <div class="mint-cell-value">
-                <!--<input placeholder="" type="tel" class="mint-field-core" v-model="invoiceForm.mergeSum" disabled>-->
                 <span style="color:#ff4848 "
                 >{{ amountOfMoney }} <span style="color: #999">元</span></span
                 >
@@ -460,7 +470,7 @@
       return {
         loadingList: true,
         amountOfMoney: 0,
-        invoiceItemList: [],
+        outOrder: '',
         contentList: "",
         outOrderNo: "",
         order: "",
@@ -485,7 +495,6 @@
         howMany: "",
         remark: "",
         returnUrl: "",
-        priceSplicing: "",
         invoiceForm: {
           type: ""
         }
@@ -518,23 +527,23 @@
       getDefaultCompany() {
         let username = this.username;
         this.$ajax.get("/company/" + username + "/default", {
-            params: {
-              accessToken: this.accessToken
-            }
-          }).then(res => {
-            if (res.data.code === 0) {
-              this.company = [];
-            } else {
-              this.company = res.data.content;
-              this.invoiceForm.purchaserName = this.company.name;
-              this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
-              this.invoiceForm.address = this.company.address;
-              this.invoiceForm.phone = this.company.phone;
-              this.invoiceForm.purchaserBank = this.company.bank;
-              this.invoiceForm.purchaserBankAccount = this.company.bankAccount;
-              this.invoiceForm.companyId = this.company.companyId;
-            }
-          });
+          params: {
+            accessToken: this.accessToken
+          }
+        }).then(res => {
+          if (res.data.code === 0) {
+            this.company = [];
+          } else {
+            this.company = res.data.content;
+            this.invoiceForm.purchaserName = this.company.name;
+            this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
+            this.invoiceForm.address = this.company.address;
+            this.invoiceForm.phone = this.company.phone;
+            this.invoiceForm.purchaserBank = this.company.bank;
+            this.invoiceForm.purchaserBankAccount = this.company.bankAccount;
+            this.invoiceForm.companyId = this.company.companyId;
+          }
+        });
       },
       toAddressManage() {
         if (this.company.length === 0) {
@@ -557,23 +566,30 @@
       },
       getInvoiceItemList() {
         let outOrderNo = this.outOrderNo;
-        this.$ajax.get("/out-order/" + outOrderNo, {
+        this.$ajax.get("/out-orders", {
           params: {
-            username: this.username,
+            size: this.size,
+            accessToken: this.accessToken,
             taxNumber: this.taxNumber,
+            username: this.username,
             state: 0,
-            accessToken: this.accessToken
+            no: outOrderNo
           }
+          // this.$ajax.get("/out-order/" + outOrderNo, {
+          //   params: {
+          //     username: this.username,
+          //     taxNumber: this.taxNumber,
+          //     state: 0,
+          //     accessToken: this.accessToken
+          //   }
         }).then(res => {
-          this.scanContent = res.data.content;
           if (res.data.code == 1) {
             this.$router.push({
               path: "/invoice/detail",
-              query: {id: this.scanContent.invoiceId}
+              query: {id: res.data.content.invoice.invoiceId}
             });
           }
-          this.invoiceItemList = res.data.content.invoiceItems;
-          this.remark = this.scanContent.remark;
+          this.outOrder = res.data.content[0];
           this.calculatedAmount();
         })
       },
@@ -626,12 +642,9 @@
             }
           }
         }
-        if (this.invoiceItemList !== null) {
-          for (var i = 0; i < this.invoiceItemList.length; i++) {
-            this.contentId += this.invoiceItemList[i].invoiceItemId + ",";
-            this.howMany += this.invoiceItemList[i].number + ",";
-            this.priceSplicing += this.invoiceItemList[i].price + ",";
-          }
+        if (this.outOrder !== null) {
+            this.contentId += this.outOrder.invoiceItemId + ",";
+            this.howMany += 1 + ",";
         }
         this.invoiceForm.accessToken = this.accessToken;
         this.invoiceForm.addrMobile = this.contactInformation;
@@ -644,9 +657,7 @@
           0,
           this.contentId.length - 1
         );
-        this.$ajax({
-          method: "POST",
-          url: "/invoice/apply",
+        this.$ajax.post('/invoice/make',{
           params: {
             type: this.invoiceForm.type,
             companyId: this.company.companyId,
@@ -676,13 +687,8 @@
       },
       //计算发票金额
       calculatedAmount() {
-        let money = 0;
-        if (this.invoiceItemList !== null) {
-          for (var i = 0; i < this.invoiceItemList.length; i++) {
-            money +=
-              this.invoiceItemList[i].price * this.invoiceItemList[i].number;
-          }
-          this.amountOfMoney = money.toFixed(2);
+        if (this.outOrder !== null) {
+          this.amountOfMoney = this.outOrder.price.toFixed(2);
         }
       },
       //获取备注

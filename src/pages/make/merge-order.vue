@@ -636,21 +636,16 @@
         let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
         if (this.NeedEmail === true) {
           if (this.email === "") {
-
             this.showDisabled = true;
             return Toast("请输入邮箱");
           } else if (!regEmail.test(this.email)) {
-
             this.showDisabled = true;
             return Toast("邮箱格式不正确");
           }
         } else {
-
           if (this.email) {
-
             if (!regEmail.test(this.email)) {
               this.showDisabled = true;
-
               return Toast("邮箱格式不正确");
             }
           }
@@ -677,24 +672,20 @@
           this.invoiceForm.accessToken = this.accessToken;
           this.invoiceForm.addrMobile = this.contactInformation;
           this.invoiceForm.email = this.email;
-          this.$ajax({
-            method: "POST",
-            url: "/merge-make",
+          this.$ajax.post('/merge-make', {
             params: this.invoiceForm,
             header: {
               "Content-Type": "application/x-www-form-urlencoded"
             }
-          })
-            .then(res => {
-              if (res.data.code === "1") {
-                this.$router.push(`/make/success`);
-              }
-            })
-            .catch(error => {
-              this.showDisabled = false;
-              Toast("请检查信息并完善");
-              this.showDisabled = true;
-            });
+          }).then(res => {
+            if (res.data.code === "1") {
+              this.$router.push(`/make/success`);
+            }
+          }).catch(error => {
+            this.showDisabled = false;
+            Toast("请检查信息并完善");
+            this.showDisabled = true;
+          });
         }
       },
       //计算发票金额

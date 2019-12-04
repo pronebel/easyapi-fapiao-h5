@@ -40,9 +40,7 @@
                 </p>
                 <p class="name">
                   <!-- <span>产品名称：</span> -->
-                  <span v-if="item.fields">{{
-                    Object.values(JSON.parse(item.fields))[0]
-                  }}</span>
+                  <span v-if="item.fields">{{Object.values(JSON.parse(item.fields))[0]}}</span>
                 </p>
                 <p>
                   <span class="time">{{ item.orderTime }}</span>
