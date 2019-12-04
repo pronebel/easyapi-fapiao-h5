@@ -511,19 +511,6 @@
         this.loadingList = false;
         this.company = item;
       },
-      getOrder() {
-        if (this.order === "true") {
-          this.invoiceForm.mergeSum = localStorage.getItem("tot");
-          this.seletedOrderList = JSON.parse(localStorage.getItem("seleted"));
-          for (var i = 0; i < this.seletedOrderList.length; i++) {
-            this.itemIds += this.seletedOrderList[i].invoiceItemId + ",";
-            this.invoiceForm.itemIds = this.itemIds;
-            this.invoiceForm.category = "增值税电子普通发票";
-            this.invoiceForm.property = "电子";
-            this.invoiceForm.username = this.seletedOrderList[i].username;
-          }
-        }
-      },
       getDefaultCompany() {
         let username = this.username;
         this.$ajax.get("/company/" + username + "/default", {
@@ -564,7 +551,7 @@
           });
         }
       },
-      getInvoiceItemList() {
+      getOutOrder() {
         let outOrderNo = this.outOrderNo;
         this.$ajax.get("/out-orders", {
           params: {
@@ -612,13 +599,13 @@
           if (this.email === "") {
             this.showDisabled = true;
             return Toast("请输入邮箱");
-          } else if (Isemail.validate(this.email)) {
+          } else if (!Isemail.validate(this.email)) {
             this.showDisabled = true;
             return Toast("邮箱格式不正确");
           }
         } else {
           if (this.email) {
-            if (Isemail.validate(this.email)) {
+            if (!Isemail.validate(this.email)) {
               this.showDisabled = true;
               return Toast("邮箱格式不正确");
             }
@@ -756,10 +743,9 @@
     mounted() {
       this.getEmailInfo();
       this.getDefaultCompany();
-      this.getOrder();
       this.getSpecifications();
       this.getInvoicingService();
-      this.getInvoiceItemList();
+      this.getOutOrder();
     }
   };
 </script>
