@@ -38,86 +38,83 @@
 </template>
 
 <script>
-import Header from "../../components/header.vue";
+  import Header from "../../components/header.vue";
 
-export default {
-  name: "out-order",
-  components: {
-    Header
-  },
-  data() {
-    return {
-      headerTitle: "发票内容详情",
-      id: "",
-      accessToken: "",
-      invoiceItems: "",
-      serviceType: ""
-    };
-  },
-  methods: {
-    goBack() {
-      history.go(-1);
+  export default {
+    name: "out-order",
+    components: {
+      Header
     },
-    getInvoiceDetails() {
-      this.id = this.$route.query.id;
-      this.$ajax
-        .get("/api/invoice/record/" + this.id, {
+    data() {
+      return {
+        headerTitle: "发票内容详情",
+        id: "",
+        accessToken: "",
+        invoiceItems: "",
+        serviceType: ""
+      };
+    },
+    methods: {
+      goBack() {
+        history.go(-1);
+      },
+      getInvoiceDetails() {
+        this.id = this.$route.query.id;
+        this.$ajax.get("/api/invoice/record/" + this.id, {
           params: {
             accessToken: this.accessToken,
             size: 500
           }
-        })
-        .then(res => {
+        }).then(res => {
           this.invoiceItems = res.data.content.invoiceItems;
           this.serviceType = res.data.content.serviceType;
-        })
-        .catch(error => {
+        }).catch(error => {
           console.log(error);
         });
+      }
+    },
+    watch: {},
+    created() {
+      this.id = this.$route.query.id;
+      this.accessToken = localStorage.getItem("accessToken");
+    },
+    mounted() {
+      this.getInvoiceDetails();
     }
-  },
-  watch: {},
-  created() {
-    this.id = this.$route.query.id;
-    this.accessToken = localStorage.getItem("accessToken");
-  },
-  mounted() {
-    this.getInvoiceDetails();
-  }
-};
+  };
 </script>
 
 <style scoped>
-.associated-con {
-  padding: 0 10px;
-}
+  .associated-con {
+    padding: 0 10px;
+  }
 
-.order-con {
-  margin-top: 10px;
-  border-radius: 5px;
-}
+  .order-con {
+    margin-top: 10px;
+    border-radius: 5px;
+  }
 
-.order-con:first-of-type {
-  margin-top: 60px;
-}
+  .order-con:first-of-type {
+    margin-top: 60px;
+  }
 
-.order-right {
-  margin-left: 20px;
-  padding: 10px 0;
-  width: 100%;
-}
+  .order-right {
+    margin-left: 20px;
+    padding: 10px 0;
+    width: 100%;
+  }
 
-.order-right p {
-  margin-top: 10px;
-}
+  .order-right p {
+    margin-top: 10px;
+  }
 
-.order-right .time {
-  float: right;
-  color: #a1a1a1;
-}
+  .order-right .time {
+    float: right;
+    color: #a1a1a1;
+  }
 
-.order-right .price {
-  color: #ff4848;
-  float: right;
-}
+  .order-right .price {
+    color: #ff4848;
+    float: right;
+  }
 </style>

@@ -27,17 +27,17 @@
           <p>发票详情</p>
           <form action="" id="formBox" ref="invoiceForm" :model="invoiceForm">
             <a class="mint-cell mint-field"
-              ><!---->
+            >
               <div class="mint-cell-left"></div>
               <div class="mint-cell-wrapper">
                 <div class="mint-cell-title">
-                  <!---->
+
                   <span
                     class="mint-cell-text"
                     style="font-size: 15px;color:#333"
-                    >抬头类型</span
+                  >抬头类型</span
                   >
-                  <!---->
+
                 </div>
                 <div class="mint-cell-value">
                   <input
@@ -62,24 +62,24 @@
                   />
                   <label for="radio-1-2" @click="SaveType('个人')">个人</label>
                 </div>
-                <!---->
+
               </div>
             </a>
             <a
               class="mint-cell mint-field"
               @click="toAddressManage"
               v-if="invoiceForm.type === '企业'"
-              ><!---->
+            >
               <div class="mint-cell-left"></div>
               <div class="mint-cell-wrapper">
                 <div class="mint-cell-title">
-                  <!---->
+
                   <span
                     class="mint-cell-text"
                     style="font-size: 15px;color:#333"
-                    >发票抬头</span
+                  >发票抬头</span
                   >
-                  <!---->
+
                 </div>
                 <div class="mint-cell-value">
                   <span style="font-size: 15px;color:#333">{{
@@ -89,29 +89,29 @@
                     <i class="mintui mintui-field-error"></i>
                   </div>
                   <span class="mint-field-state is-default"
-                    ><i class="mintui mintui-field-default"></i
+                  ><i class="mintui mintui-field-default"></i
                   ></span>
                   <div class="mint-field-other"></div>
                 </div>
-                <!----><i class="mint-cell-allow-right"></i>
+                <i class="mint-cell-allow-right"></i>
               </div>
               <div class="mint-cell-right"></div>
             </a>
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'"
-              ><!---->
+            >
               <div class="mint-cell-left"></div>
               <div class="mint-cell-wrapper">
                 <div class="mint-cell-title">
-                  <!---->
+
                   <span class="mint-cell-text"
-                    ><font style="vertical-align: inherit;"
-                      ><font
-                        style="vertical-align: inherit;font-size: 15px;color:#333"
-                        >税号</font
-                      ></font
-                    ></span
+                  ><font style="vertical-align: inherit;"
+                  ><font
+                    style="vertical-align: inherit;font-size: 15px;color:#333"
+                  >税号</font
+                  ></font
+                  ></span
                   >
-                  <!---->
+
                 </div>
                 <div class="mint-cell-value">
                   <span style="font-size: 15px;color:#333">{{
@@ -121,29 +121,29 @@
                     <i class="mintui mintui-field-error"></i>
                   </div>
                   <span class="mint-field-state is-default"
-                    ><i class="mintui mintui-field-default"></i
+                  ><i class="mintui mintui-field-default"></i
                   ></span>
                   <div class="mint-field-other"></div>
                 </div>
-                <!---->
+
               </div>
               <div class="mint-cell-right"></div>
             </a>
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'"
-              ><!---->
+            >
               <div class="mint-cell-left"></div>
               <div class="mint-cell-wrapper">
                 <div class="mint-cell-title">
-                  <!---->
+
                   <span class="mint-cell-text"
-                    ><font style="vertical-align: inherit;"
-                      ><font
-                        style="vertical-align: inherit;font-size: 15px;color:#333"
-                        >地址</font
-                      ></font
-                    ></span
+                  ><font style="vertical-align: inherit;"
+                  ><font
+                    style="vertical-align: inherit;font-size: 15px;color:#333"
+                  >地址</font
+                  ></font
+                  ></span
                   >
-                  <!---->
+
                 </div>
                 <div class="mint-cell-value" style="display: block">
                   <span style="font-size: 15px;color:#333">{{
@@ -153,29 +153,29 @@
                     <i class="mintui mintui-field-error"></i>
                   </div>
                   <span class="mint-field-state is-default"
-                    ><i class="mintui mintui-field-default"></i
+                  ><i class="mintui mintui-field-default"></i
                   ></span>
                   <div class="mint-field-other"></div>
                 </div>
-                <!---->
+
               </div>
               <div class="mint-cell-right"></div>
             </a>
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'"
-              ><!---->
+            >
               <div class="mint-cell-left"></div>
               <div class="mint-cell-wrapper">
                 <div class="mint-cell-title">
-                  <!---->
+
                   <span class="mint-cell-text"
-                    ><font style="vertical-align: inherit;"
-                      ><font
-                        style="vertical-align: inherit;font-size: 15px;color:#333"
-                        >电话</font
-                      ></font
-                    ></span
+                  ><font style="vertical-align: inherit;"
+                  ><font
+                    style="vertical-align: inherit;font-size: 15px;color:#333"
+                  >电话</font
+                  ></font
+                  ></span
                   >
-                  <!---->
+
                 </div>
                 <div class="mint-cell-value" style="display: block">
                   <span style="font-size: 15px;color:#333">{{
@@ -185,29 +185,29 @@
                     <i class="mintui mintui-field-error"></i>
                   </div>
                   <span class="mint-field-state is-default"
-                    ><i class="mintui mintui-field-default"></i
+                  ><i class="mintui mintui-field-default"></i
                   ></span>
                   <div class="mint-field-other"></div>
                 </div>
-                <!---->
+
               </div>
               <div class="mint-cell-right"></div>
             </a>
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'"
-              ><!---->
+            >
               <div class="mint-cell-left"></div>
               <div class="mint-cell-wrapper">
                 <div class="mint-cell-title">
-                  <!---->
+
                   <span class="mint-cell-text"
-                    ><font style="vertical-align: inherit;"
-                      ><font
-                        style="vertical-align: inherit;font-size: 15px;color:#333"
-                        >开户行</font
-                      ></font
-                    ></span
+                  ><font style="vertical-align: inherit;"
+                  ><font
+                    style="vertical-align: inherit;font-size: 15px;color:#333"
+                  >开户行</font
+                  ></font
+                  ></span
                   >
-                  <!---->
+
                 </div>
                 <div class="mint-cell-value">
                   <span style="font-size: 15px;color:#333">{{
@@ -217,29 +217,29 @@
                     <i class="mintui mintui-field-error"></i>
                   </div>
                   <span class="mint-field-state is-default"
-                    ><i class="mintui mintui-field-default"></i
+                  ><i class="mintui mintui-field-default"></i
                   ></span>
                   <div class="mint-field-other"></div>
                 </div>
-                <!---->
+
               </div>
               <div class="mint-cell-right"></div>
             </a>
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'"
-              ><!---->
+            >
               <div class="mint-cell-left"></div>
               <div class="mint-cell-wrapper">
                 <div class="mint-cell-title">
-                  <!---->
+
                   <span class="mint-cell-text"
-                    ><font style="vertical-align: inherit;"
-                      ><font
-                        style="vertical-align: inherit;font-size: 15px;color:#333"
-                        >开户行账号</font
-                      ></font
-                    ></span
+                  ><font style="vertical-align: inherit;"
+                  ><font
+                    style="vertical-align: inherit;font-size: 15px;color:#333"
+                  >开户行账号</font
+                  ></font
+                  ></span
                   >
-                  <!---->
+
                 </div>
                 <div class="mint-cell-value">
                   <span style="font-size: 15px;color:#333">{{
@@ -249,30 +249,30 @@
                     <i class="mintui mintui-field-error"></i>
                   </div>
                   <span class="mint-field-state is-default"
-                    ><i class="mintui mintui-field-default"></i
+                  ><i class="mintui mintui-field-default"></i
                   ></span>
                   <div class="mint-field-other"></div>
                 </div>
-                <!---->
+
               </div>
               <div class="mint-cell-right"></div>
             </a>
             <a
               class="mint-cell mint-field"
               v-if="invoiceForm.type === '企业' && make === 'false'"
-              ><!---->
+            >
               <div class="mint-cell-left"></div>
               <div class="mint-cell-wrapper">
                 <div class="mint-cell-title">
-                  <!---->
+
                   <span class="mint-cell-text"
-                    ><font style="vertical-align: inherit;"
-                      ><font style="vertical-align: inherit;"
-                        >发票内容</font
-                      ></font
-                    ></span
+                  ><font style="vertical-align: inherit;"
+                  ><font style="vertical-align: inherit;"
+                  >发票内容</font
+                  ></font
+                  ></span
                   >
-                  <!---->
+
                 </div>
                 <div class="mint-cell-value">
                   <!--<input placeholder="" type="tel" class="mint-field-core" v-model="invoiceForm.mergeName" disabled>-->
@@ -281,11 +281,11 @@
                     <i class="mintui mintui-field-error"></i>
                   </div>
                   <span class="mint-field-state is-default"
-                    ><i class="mintui mintui-field-default"></i
+                  ><i class="mintui mintui-field-default"></i
                   ></span>
                   <div class="mint-field-other"></div>
                 </div>
-                <!---->
+
               </div>
               <div class="mint-cell-right"></div>
             </a>
@@ -322,52 +322,53 @@
           </ul>
           <div class="btn">
             <mt-button class="submit-btn" @click="addContent">
-              +添加发票内容</mt-button
+              +添加发票内容
+            </mt-button
             >
           </div>
           <a class="mint-cell mint-field" style=" border-bottom: 1px solid#ddd;"
-            ><!---->
+          >
             <div class="mint-cell-left"></div>
             <div class="mint-cell-wrapper">
               <div class="mint-cell-title">
-                <!---->
+
                 <span class="mint-cell-text"
-                  ><font style="vertical-align: inherit;"
-                    ><font style="vertical-align: inherit;"
-                      >发票金额</font
-                    ></font
-                  ></span
+                ><font style="vertical-align: inherit;"
+                ><font style="vertical-align: inherit;"
+                >发票金额</font
+                ></font
+                ></span
                 >
-                <!---->
+
               </div>
               <div class="mint-cell-value">
                 <span v-if="make === 'true'" style="color:#ff4848 "
-                  >{{ amountOfMoney }} <span style="color: #999">元</span></span
+                >{{ amountOfMoney }} <span style="color: #999">元</span></span
                 >
                 <div class="mint-field-clear" style="display: none;">
                   <i class="mintui mintui-field-error"></i>
                 </div>
                 <span class="mint-field-state is-default"
-                  ><i class="mintui mintui-field-default"></i
+                ><i class="mintui mintui-field-default"></i
                 ></span>
                 <div class="mint-field-other"></div>
               </div>
-              <!---->
+
             </div>
             <div class="mint-cell-right"></div>
           </a>
           <a class="mint-cell mint-field"
-            ><!---->
+          >
             <div class="mint-cell-left"></div>
             <div class="mint-cell-wrapper">
               <div class="mint-cell-title">
-                <!---->
+
                 <span class="mint-cell-text"
-                  ><font style="vertical-align: inherit;"
-                    ><font style="vertical-align: inherit;">备注</font></font
-                  ></span
+                ><font style="vertical-align: inherit;"
+                ><font style="vertical-align: inherit;">备注</font></font
+                ></span
                 >
-                <!---->
+
               </div>
               <div class="mint-cell-value">
                 <input
@@ -381,11 +382,11 @@
                   <i class="mintui mintui-field-error"></i>
                 </div>
                 <span class="mint-field-state is-default"
-                  ><i class="mintui mintui-field-default"></i
+                ><i class="mintui mintui-field-default"></i
                 ></span>
                 <div class="mint-field-other"></div>
               </div>
-              <!---->
+
             </div>
             <div class="mint-cell-right"></div>
           </a>
@@ -393,20 +394,20 @@
         <div class="page-part">
           <p>接收方式</p>
           <a class="mint-cell mint-field"
-            ><!---->
+          >
             <div class="mint-cell-left"></div>
             <div class="mint-cell-wrapper">
               <div class="mint-cell-title">
-                <!---->
+
                 <span class="mint-cell-text"
-                  ><font style="vertical-align: inherit;"
-                    ><font
-                      style="vertical-align: inherit;color:#333;font-size: 15px"
-                      >电子邮件</font
-                    ></font
-                  ></span
+                ><font style="vertical-align: inherit;"
+                ><font
+                  style="vertical-align: inherit;color:#333;font-size: 15px"
+                >电子邮件</font
+                ></font
+                ></span
                 >
-                <!---->
+
               </div>
               <div class="mint-cell-value">
                 <input
@@ -420,29 +421,29 @@
                   <i class="mintui mintui-field-error"></i>
                 </div>
                 <span class="mint-field-state is-default"
-                  ><i class="mintui mintui-field-default"></i
+                ><i class="mintui mintui-field-default"></i
                 ></span>
                 <div class="mint-field-other"></div>
               </div>
-              <!---->
+
             </div>
             <div class="mint-cell-right"></div>
           </a>
           <a class="mint-cell mint-field"
-            ><!---->
+          >
             <div class="mint-cell-left"></div>
             <div class="mint-cell-wrapper">
               <div class="mint-cell-title">
-                <!---->
+
                 <span class="mint-cell-text"
-                  ><font style="vertical-align: inherit;"
-                    ><font
-                      style="vertical-align: inherit; color:#333;font-size: 15px"
-                      >联系方式</font
-                    ></font
-                  ></span
+                ><font style="vertical-align: inherit;"
+                ><font
+                  style="vertical-align: inherit; color:#333;font-size: 15px"
+                >联系方式</font
+                ></font
+                ></span
                 >
-                <!---->
+
               </div>
               <div class="mint-cell-value">
                 <input
@@ -456,11 +457,11 @@
                   <i class="mintui mintui-field-error"></i>
                 </div>
                 <span class="mint-field-state is-default"
-                  ><i class="mintui mintui-field-default"></i
+                ><i class="mintui mintui-field-default"></i
                 ></span>
                 <div class="mint-field-other"></div>
               </div>
-              <!---->
+
             </div>
             <div class="mint-cell-right"></div>
           </a>
@@ -469,7 +470,8 @@
               class="submit"
               @click="goInvoiceSuccess"
               v-if="showDisabled"
-              >提交</mt-button
+            >提交
+            </mt-button
             >
             <mt-button class="submit" v-else>开票中...</mt-button>
           </div>
@@ -488,69 +490,68 @@
 </template>
 
 <script>
-import Header from "../../components/header.vue";
-import { Navbar, TabItem } from "mint-ui";
-import { Toast } from "mint-ui";
-import { MessageBox } from "mint-ui";
+  import Header from "../../components/header.vue";
+  import {Navbar, TabItem} from "mint-ui";
+  import {Toast} from "mint-ui";
+  import {MessageBox} from "mint-ui";
+  import Isemail from "isemail";
 
-export default {
-  name: "make",
-  components: {
-    Header
-  },
-  data() {
-    return {
-      loadingList: true,
-      amountOfMoney: 0,
-      preservationDetails: "",
-      accessToken: "",
-      contentList: "",
-      make: "",
-      order: "",
-      showDisabled: true,
-      selected: "1",
-      headerTitle: "开具电子发票",
-      active: "tab-container1",
-      contactInformation: "",
-      NeedMobile: "",
-      NeedEmail: "",
-      company: {},
-      itemIds: "",
-      email: "",
-      seletedOrderList: [],
-      sum: 0,
-      item: {},
-      mergeTax: 0,
-      contentId: "",
-      howMany: "",
-      remark: "",
-      priceSplicing: "",
-      invoiceForm: {
-        type: ""
-      }
-    };
-  },
+  export default {
+    name: "make",
+    components: {
+      Header
+    },
+    data() {
+      return {
+        loadingList: true,
+        amountOfMoney: 0,
+        preservationDetails: "",
+        accessToken: "",
+        contentList: "",
+        make: "",
+        order: "",
+        showDisabled: true,
+        selected: "1",
+        headerTitle: "开具电子发票",
+        active: "tab-container1",
+        contactInformation: "",
+        NeedMobile: "",
+        NeedEmail: "",
+        company: {},
+        itemIds: "",
+        email: "",
+        seletedOrderList: [],
+        sum: 0,
+        item: {},
+        mergeTax: 0,
+        contentId: "",
+        howMany: "",
+        remark: "",
+        priceSplicing: "",
+        invoiceForm: {
+          type: ""
+        }
+      };
+    },
 
-  methods: {
-    goBack() {
-      history.go(-1);
-    },
-    SaveType(type) {
-      localStorage.setItem("type", type);
-    },
-    seletedOrder(item) {
-      this.loadingList = false;
-      this.company = item;
-    },
-    getDefaultCompany() {
-      let username = this.$store.state.username;
-      this.$ajax
-        .get("/company/" + username + "/default", {
+    methods: {
+      goBack() {
+        history.go(-1);
+      },
+      SaveType(type) {
+        localStorage.setItem("type", type);
+      },
+      seletedOrder(item) {
+        this.loadingList = false;
+        this.company = item;
+      },
+      getDefaultCompany() {
+        let username = this.$store.state.username;
+        this.$ajax.get("/company/" + username + "/default", {
           params: {
             accessToken: this.accessToken
           }
-        })
-        .then(res => {
+        }).then(res => {
           if (res.data.code === 0) {
             this.company = [];
           } else {
@@ -564,125 +565,113 @@ export default {
             this.invoiceForm.companyId = this.company.companyId;
           }
         });
-    },
-    toAddressManage() {
-      if (this.company.length === 0) {
-        this.$router.push({
-          path: "/company/",
-          name: "company",
-          params: {
-            id: ""
-          }
-        });
-      } else {
-        this.$router.push({
-          path: "/company/",
-          name: "company",
-          params: {
-            id: this.company.companyId
-          }
-        });
-      }
-    },
-    getEmailInfo() {
-      let username = this.$store.state.username;
-      this.$ajax
-        .get("/api/user/" + username + "/invoice/money", {
+      },
+      toAddressManage() {
+        if (this.company.length === 0) {
+          this.$router.push({
+            path: "/company/",
+            name: "company",
+            params: {
+              id: ""
+            }
+          });
+        } else {
+          this.$router.push({
+            path: "/company/",
+            name: "company",
+            params: {
+              id: this.company.companyId
+            }
+          });
+        }
+      },
+      getEmailInfo() {
+        let username = this.$store.state.username;
+        this.$ajax.get("/api/user/" + username + "/invoice/money", {
           params: {
             accessToken: this.accessToken,
             invoiceForm: this.invoiceForm
           }
-        })
-        .then(res => {
+        }).then(res => {
           this.loadingList = false;
           this.email = res.data.content.email;
           this.contactInformation = res.data.content.mobile;
         });
-    },
-    goInvoiceSuccess() {
-      this.showDisabled = false;
-      //验证邮箱
-      let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-      if (this.NeedEmail === true) {
-        if (this.email === "") {
-
-          this.showDisabled = true;
-          return Toast("请输入邮箱");
-        } else if (!regEmail.test(this.email)) {
-
-          this.showDisabled = true;
-          return Toast("邮箱格式不正确");
-        }
-      } else {
-
-        if (this.email) {
-
-          if (!regEmail.test(this.email)) {
+      },
+      goInvoiceSuccess() {
+        this.showDisabled = false;
+        //验证邮箱
+        if (this.NeedEmail === true) {
+          if (this.email === "") {
             this.showDisabled = true;
-
+            return Toast("请输入邮箱");
+          } else if (!Isemail.validate(this.email)) {
+            this.showDisabled = true;
             return Toast("邮箱格式不正确");
           }
+        } else {
+          if (this.email) {
+            if (!Isemail.validate(this.email)) {
+              this.showDisabled = true;
+              return Toast("邮箱格式不正确");
+            }
+          }
         }
-      }
-      //手机号验证
-      let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-      if (this.NeedMobile === true) {
-        if (this.contactInformation === "") {
-          this.showDisabled = true;
-          return Toast("请输入手机号码");
-        } else if (!reg.test(this.contactInformation)) {
-          this.showDisabled = true;
-          return Toast("手机格式不正确");
-        }
-      } else {
-        if (this.contactInformation) {
-          if (!reg.test(this.contactInformation)) {
+        //手机号验证
+        let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+        if (this.NeedMobile === true) {
+          if (this.contactInformation === "") {
+            this.showDisabled = true;
+            return Toast("请输入手机号码");
+          } else if (!reg.test(this.contactInformation)) {
             this.showDisabled = true;
             return Toast("手机格式不正确");
           }
+        } else {
+          if (this.contactInformation) {
+            if (!reg.test(this.contactInformation)) {
+              this.showDisabled = true;
+              return Toast("手机格式不正确");
+            }
+          }
         }
-      }
-      if (this.preservationDetails !== null) {
-        for (var i = 0; i < this.preservationDetails.length; i++) {
-          this.contentId += this.preservationDetails[i].invoiceProductId + ",";
-          this.howMany += this.preservationDetails[i].amount + ",";
-          this.priceSplicing += this.preservationDetails[i].unitPrice + ",";
+        if (this.preservationDetails !== null) {
+          for (var i = 0; i < this.preservationDetails.length; i++) {
+            this.contentId += this.preservationDetails[i].invoiceProductId + ",";
+            this.howMany += this.preservationDetails[i].amount + ",";
+            this.priceSplicing += this.preservationDetails[i].unitPrice + ",";
+          }
         }
-      }
-      let username = this.$store.state.username;
-      //验证手机号
-      this.$ajax({
-        method: "POST",
-        url: "/api/invoice/make",
-        header: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        params: {
-          productIds: this.contentId.substring(0, this.contentId.length - 1),
-          productNums: this.howMany.substring(0, this.howMany.length - 1),
-          productPrices: this.priceSplicing.substring(
-            0,
-            this.priceSplicing.length - 1
-          ),
-          accessToken: this.accessToken,
-          type: this.invoiceForm.type,
-          category: "增值税电子普通发票",
-          property: "电子",
-          ifUseMergeVm: "false",
-          remark: this.invoiceForm.inputValue,
-          username: username,
-          companyId: this.company.companyId,
-          email: this.email,
-          addrMobile: this.contactInformation
-        }
-      })
-        .then(res => {
+        let username = this.$store.state.username;
+        //验证手机号
+        this.$ajax.post('/api/invoice/make', {
+          header: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          params: {
+            productIds: this.contentId.substring(0, this.contentId.length - 1),
+            productNums: this.howMany.substring(0, this.howMany.length - 1),
+            productPrices: this.priceSplicing.substring(
+              0,
+              this.priceSplicing.length - 1
+            ),
+            accessToken: this.accessToken,
+            type: this.invoiceForm.type,
+            category: "增值税电子普通发票",
+            property: "电子",
+            ifUseMergeVm: "false",
+            remark: this.invoiceForm.inputValue,
+            username: username,
+            companyId: this.company.companyId,
+            email: this.email,
+            addrMobile: this.contactInformation
+          }
+        }).then(res => {
           if (res.data.code === "1") {
             this.$messagebox.alert(res.data.message);
             this.$router.push(`/make/success`);
           }
-        })
-        .catch(error => {
+        }).catch(error => {
           if (error.response.data.code === "1") {
             this.showDisabled = false;
             Toast(error.response.data.message);
@@ -693,261 +682,85 @@ export default {
             this.showDisabled = true;
           }
         });
-      localStorage.removeItem("preservationDetails");
-    },
-    //计算发票金额
-    calculatedAmount() {
-      let money = 0;
-      if (this.preservationDetails !== null) {
-        for (var i = 0; i < this.preservationDetails.length; i++) {
-          money +=
-            this.preservationDetails[i].unitPrice *
-            this.preservationDetails[i].amount;
+        localStorage.removeItem("preservationDetails");
+      },
+      //计算发票金额
+      calculatedAmount() {
+        let money = 0;
+        if (this.preservationDetails !== null) {
+          for (var i = 0; i < this.preservationDetails.length; i++) {
+            money += this.preservationDetails[i].unitPrice * this.preservationDetails[i].amount;
+          }
+          this.amountOfMoney = money.toFixed(2);
         }
-        this.amountOfMoney = money.toFixed(2);
-      }
-    },
-    //获取备注
-    getSpecifications() {
-      this.$ajax
-        .get("/api/invoice/rule", {
+      },
+      //获取备注
+      getSpecifications() {
+        this.$ajax.get("/api/invoice/rule", {
           params: {
             accessToken: this.accessToken
           }
-        })
-        .then(res => {
+        }).then(res => {
           this.remark = res.data.content.remark;
-        })
-        .catch(error => {
+        }).catch(error => {
           console.log(error);
         });
-    },
-    //删除内容
-    deleteContent(id) {
-      for (var i = 0; i < this.preservationDetails.length; i++) {
-        if (id === this.preservationDetails[i].invoiceProductId) {
-          this.preservationDetails.splice(i, 1);
+      },
+      //删除内容
+      deleteContent(id) {
+        for (var i = 0; i < this.preservationDetails.length; i++) {
+          if (id === this.preservationDetails[i].invoiceProductId) {
+            this.preservationDetails.splice(i, 1);
+          }
+          localStorage.setItem("preservationDetails", JSON.stringify(this.preservationDetails));
+          this.preservationDetails = JSON.parse(localStorage.getItem("preservationDetails"));
         }
-        localStorage.setItem(
-          "preservationDetails",
-          JSON.stringify(this.preservationDetails)
-        );
-        this.preservationDetails = JSON.parse(
-          localStorage.getItem("preservationDetails")
-        );
-      }
-      this.amountOfMoney = 0;
-      this.calculatedAmount();
-    },
-    getInvoicingService() {
-      this.$ajax
-        .get("/api/shop/0/support", {
+        this.amountOfMoney = 0;
+        this.calculatedAmount();
+      },
+      getInvoicingService() {
+        this.$ajax.get("/api/shop/0/support", {
           params: {
             accessToken: this.accessToken
           }
-        })
-        .then(res => {
+        }).then(res => {
           this.NeedMobile = res.data.content.ifNeedMobile;
           this.NeedEmail = res.data.content.ifNeedEmail;
-        })
-        .catch(error => {
+        }).catch(error => {
           console.log(error);
         });
+      },
+      //跳转添加内容
+      addContent() {
+        this.$router.push(`/addProduct`);
+      }
     },
-    //跳转添加内容
-    addContent() {
-      this.$router.push(`/addProduct`);
-    }
-  },
-  watch: {},
-  created() {
-    this.make = localStorage.getItem("make");
-    this.order = localStorage.getItem("order");
-    this.accessToken = localStorage.getItem("accessToken");
-    this.preservationDetails = JSON.parse(
-      localStorage.getItem("preservationDetails")
-    );
-    this.invoiceForm.type = localStorage.getItem("type");
-    if (this.invoiceForm.type) {
+    watch: {},
+    created() {
+      this.make = localStorage.getItem("make");
+      this.order = localStorage.getItem("order");
+      this.accessToken = localStorage.getItem("accessToken");
+      this.preservationDetails = JSON.parse(localStorage.getItem("preservationDetails"));
       this.invoiceForm.type = localStorage.getItem("type");
-    } else {
-      this.invoiceForm.type = "企业";
+      if (this.invoiceForm.type) {
+        this.invoiceForm.type = localStorage.getItem("type");
+      } else {
+        this.invoiceForm.type = "企业";
+      }
+    },
+    activated() {
+      this.seletedOrder();
+    },
+    mounted() {
+      this.calculatedAmount();
+      this.getDefaultCompany();
+      this.getEmailInfo();
+      this.getSpecifications();
+      this.getInvoicingService();
     }
-  },
-  activated() {
-    this.seletedOrder();
-  },
-  mounted() {
-    this.calculatedAmount();
-    this.getDefaultCompany();
-    this.getEmailInfo();
-    this.getSpecifications();
-    this.getInvoicingService();
-  }
-};
+  };
 </script>
 
 <style scoped>
-.mint-cell-value label {
-  padding-left: 5px;
-}
-
-/*.body {*/
-/*position: absolute;*/
-/*top: 0;*/
-/*bottom: 0;*/
-/*left: 0;*/
-/*right: 0;*/
-/*overflow: auto;*/
-/*z-index: 9;*/
-/*}*/
-.nav {
-  margin-top: 53px;
-}
-
-.nav > p,
-.page-part p {
-  height: 30px;
-  line-height: 30px;
-  background-color: #f2f2f2;
-  padding: 0px 10px;
-  color: #666666;
-  font-size: 14px;
-}
-
-.invoice-type {
-  text-align: center;
-  height: 70px;
-  background: #fff;
-  padding: 20px 10px;
-}
-
-.invoice-type p:last-of-type {
-  margin-top: 10px;
-}
-
-.mint-navbar .mint-tab-item {
-  border: 1px solid #dddddd;
-  border-radius: 4px;
-  color: #999;
-}
-
-.mint-navbar .mint-tab-item:last-of-type {
-  margin-left: 10px;
-  color: #999;
-}
-
-.mint-navbar .mint-tab-item.is-selected {
-  border: 1px solid #52c9f5;
-  border-radius: 4px;
-  margin-bottom: 0 !important;
-  color: #38b8e7 !important;
-}
-
-.page-part a {
-  border-bottom: 1px solid #ddd;
-}
-
-.mint-cell-wrapper {
-  background: none !important;
-}
-
-#radio-1-2 {
-  margin-left: 30px;
-}
-
-.bottom {
-  padding: 0 10px;
-  margin-top: 20px;
-}
-
-.bottom .submit {
-  width: 100%;
-  background: #56cbf6;
-  border: none;
-  height: 50px;
-  border-radius: 10px;
-  color: #fff;
-  margin-bottom: 20px;
-}
-
-.paper-capacitor {
-  text-align: center;
-  padding: 40px 0;
-  color: red;
-  font-size: 18px;
-}
-
-.invoice-contents {
-  width: 100%;
-  height: auto;
-}
-
-.invoice-contents p {
-  height: 30px;
-  line-height: 30px;
-  background-color: #f2f2f2;
-  padding: 0px 10px;
-  color: #666;
-  font-size: 14px;
-}
-
-.contents-title {
-  background-color: #fff;
-  padding: 0px 10px;
-  display: flex;
-  list-style: none;
-  border-bottom: 1px solid #ddd;
-}
-
-.contents-title li {
-  width: 18%;
-  line-height: 44px;
-  color: #333;
-  font-size: 12px;
-  text-align: center;
-  font-weight: 500;
-}
-
-.contents-content {
-  background-color: #fff;
-  padding: 0px 10px;
-  display: flex;
-  list-style: none;
-  border-bottom: 1px solid #ddd;
-}
-
-.contents-content li {
-  width: 18%;
-  line-height: 40px;
-  text-align: center;
-  font-size: 12px;
-  color: #333;
-}
-
-.btn {
-  width: 100%;
-  height: 80px;
-  background-color: #fff;
-  text-align: center;
-  border-bottom: 1px solid #ddd;
-}
-
-.btn .submit-btn {
-  width: 143px;
-  height: 33px;
-  background-color: #fff;
-  color: #52c9f5;
-  font-size: 12px;
-  margin-top: 20px;
-  border: 1px solid #52c9f5;
-}
-
-#loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  text-align: center;
-  z-index: 999;
-}
+  @import 'make.css';
 </style>

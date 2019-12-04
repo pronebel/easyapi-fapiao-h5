@@ -39,7 +39,6 @@ export default {
     },
     toInvoice() {
       let returnUrl = localStorage.getItem("returnUrl");
-      console.log(returnUrl);
       if (returnUrl.indexOf("backwxurl") !== -1) {
         wx.miniProgram.navigateBack(-1);
       } else {
@@ -55,26 +54,5 @@ export default {
 </script>
 
 <style scoped>
-.success-con {
-  margin-top: 120px;
-  text-align: center;
-  padding: 0 10px;
-}
-
-.success-button {
-  margin-top: 50px;
-}
-
-.success-button div .button {
-  padding: 5px 50px;
-  border: 1px solid #56cbf6;
-  border-radius: 10px;
-  color: #4faeec;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.success-button div .button:active {
-  background: #b8bbbf;
-}
+  @import 'success.css';
 </style>

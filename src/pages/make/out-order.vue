@@ -2,7 +2,7 @@
   <div>
     <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
     <div class="no-record-con" v-show="isNull">
-      <p><img src="../../assets/images/no-reaord_03.png" alt="" /></p>
+      <p><img src="../../assets/images/no-reaord_03.png" alt=""/></p>
       <p class="record-text">暂时还没有记录！</p>
     </div>
     <div class="page-checklist header-d" style="margin-top: 60px">
@@ -76,7 +76,8 @@
           class="next-button next-button-to"
           @click="goElectronicInvoice"
           :disabled="seletedList.length < 1"
-          >下一步</mt-button
+        >下一步
+        </mt-button
         >
       </label>
     </div>
@@ -84,73 +85,71 @@
 </template>
 
 <script>
-import Header from "../../components/header.vue";
-export default {
-  name: "out-order",
-  components: {
-    Header: Header,
-  },
-  data() {
-    return {
-      loadMoreText: "加载中...",
-      loading: false, //下拉加载
-      loading2: false, //下拉加载
-      // loadingList: true, //列表加载
-      isNull: false,
-      page: 0,
-      size: 4,
-      headerTitle: "开票",
-      invoiceList: [],
-      seletedList: [],
-      checkItem: [],
-      allCheck: false,
-      tatol: 0,
-      accessToken: ""
-    };
-  },
+  import Header from "../../components/header.vue";
 
-  methods: {
-    goBack() {
-      history.go(-1);
+  export default {
+    name: "out-order",
+    components: {
+      Header: Header,
     },
-    checked(index) {
-      if (this.checkItem[index].satus === true) {
-        this.checkItem[index].satus = false;
-      } else {
-        this.checkItem[index].satus = true;
-      }
+    data() {
+      return {
+        loadMoreText: "加载中...",
+        loading: false, //下拉加载
+        loading2: false, //下拉加载
+        // loadingList: true, //列表加载
+        isNull: false,
+        page: 0,
+        size: 4,
+        headerTitle: "开票",
+        invoiceList: [],
+        seletedList: [],
+        checkItem: [],
+        allCheck: false,
+        tatol: 0,
+        accessToken: ""
+      };
+    },
 
-      this.seletedList = this.checkItem.filter(function(
-        satus,
-        index,
-        checkItem
-      ) {
-        return checkItem[index].satus === true;
-      });
+    methods: {
+      goBack() {
+        history.go(-1);
+      },
+      checked(index) {
+        if (this.checkItem[index].satus === true) {
+          this.checkItem[index].satus = false;
+        } else {
+          this.checkItem[index].satus = true;
+        }
+        this.seletedList = this.checkItem.filter(function (
+          satus,
+          index,
+          checkItem
+        ) {
+          return checkItem[index].satus === true;
+        });
 
-      this.seletedList.length === this.checkItem.length
-        ? (this.allCheck = true)
-        : (this.allCheck = false);
-    },
-    //上拉加载
-    loadMore() {
-      this.loading = true;
-      this.loading2 = true;
-      this.size++;
-      this.allCheck = false;
-      this.getOutOrderList();
-    },
-    getOutOrderList() {
-      this.$ajax
-        .get("/out-orders", {
+        this.seletedList.length === this.checkItem.length
+          ? (this.allCheck = true)
+          : (this.allCheck = false);
+      },
+      //上拉加载
+      loadMore() {
+        this.loading = true;
+        this.loading2 = true;
+        this.size++;
+        this.allCheck = false;
+        this.getOutOrderList();
+      },
+      getOutOrderList() {
+        this.$ajax.get("/out-orders", {
           params: {
             size: this.size,
             accessToken: this.accessToken,
             username: this.$store.state.username,
             state: 0
           }
-        })
-        .then(res => {
+        }).then(res => {
           if (res.data.code !== 0) {
             var data = res.data.content;
             this.isNull = false;
@@ -169,159 +168,58 @@ export default {
             this.loadMoreText = "";
             this.isNull = true;
           }
-        })
-        .catch(error => {
+        }).catch(error => {
           console.log(error);
         });
-    },
-    //全选
-    change: function() {
-      var that = this;
-      that.checkItem.forEach(function(v) {
-        return (v.satus = that.allCheck);
-      });
-      if (that.allCheck === true) {
-        this.seletedList = that.checkItem;
-      } else {
-        this.seletedList = [];
-      }
-    },
-    //单选勾住后全选
-    itemChange: function() {
-      this.seletedList = this.checkItem.filter(function(v) {
-        return v.satus === true;
-      });
-      this.seletedList.length === this.checkItem.length
-        ? (this.allCheck = true)
-        : (this.allCheck = false);
-    },
-    goElectronicInvoice() {
-      localStorage.setItem("tot", this.pricetotale);
-      localStorage.setItem("seleted", JSON.stringify(this.seletedList));
-      this.$router.push({ path: "/merge-order" });
-    }
-  },
-  computed: {
-    //计算总价
-    pricetotale: function() {
-      let tatol = 0;
-      for (var i = 0; i < this.checkItem.length; i++) {
-        var item = this.checkItem[i];
-        if (item.satus === true) {
-          tatol += item.price;
+      },
+      //全选
+      change: function () {
+        var that = this;
+        that.checkItem.forEach(function (v) {
+          return (v.satus = that.allCheck);
+        });
+        if (that.allCheck === true) {
+          this.seletedList = that.checkItem;
+        } else {
+          this.seletedList = [];
         }
+      },
+      //单选勾住后全选
+      itemChange: function () {
+        this.seletedList = this.checkItem.filter(function (v) {
+          return v.satus === true;
+        });
+        this.seletedList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
+      },
+      goElectronicInvoice() {
+        localStorage.setItem("tot", this.pricetotale);
+        localStorage.setItem("seleted", JSON.stringify(this.seletedList));
+        this.$router.push({path: "/merge-order"});
       }
-      tatol = tatol.toFixed(2);
-      //千位分隔符正则
-      return tatol;
+    },
+    computed: {
+      //计算总价
+      pricetotale: function () {
+        let tatol = 0;
+        for (var i = 0; i < this.checkItem.length; i++) {
+          var item = this.checkItem[i];
+          if (item.satus === true) {
+            tatol += item.price;
+          }
+        }
+        tatol = tatol.toFixed(2);
+        //千位分隔符正则
+        return tatol;
+      }
+    },
+    created() {
+      this.accessToken = localStorage.getItem("accessToken");
+    },
+    mounted() {
+      this.getOutOrderList();
     }
-  },
-  created() {
-    this.accessToken = localStorage.getItem("accessToken");
-  },
-  mounted() {
-    this.getOutOrderList();
-  }
-};
+  };
 </script>
-<style>
-.next-button-to .mint-button-text {
-  font-size: 18px;
-}
-</style>
 <style scoped>
-.no-record-con {
-  margin-top: 80px;
-  padding: 60px;
-  text-align: center;
-}
-
-.no-record-con img {
-  width: 100%;
-}
-
-.record-text {
-  margin-top: 20px;
-  color: #666;
-}
-.order-con {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 12px;
-  padding-right: 12px;
-}
-
-.page-checklist {
-  margin-bottom: 60px;
-  position: relative;
-}
-
-.page-infinite-loading {
-  text-align: center;
-  height: 50px;
-  line-height: 50px;
-}
-
-.mint-cell-wrapper {
-  background: none !important;
-}
-
-.mint-checklist-label {
-  padding: 0 !important;
-}
-
-.order-right {
-  margin-left: 12px;
-  width: 100%;
-}
-
-.order-right p {
-  margin-top: 10px;
-}
-
-.order-right .time {
-  color: #a1a1a1;
-}
-
-.order-right .price {
-  color: #ff4848;
-  float: right;
-}
-
-.mint-footer {
-  height: 50px;
-  line-height: 50px;
-  background: #fff;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  color: #666;
-}
-
-.mint-footer .price {
-  color: #ff4848;
-}
-
-.mint-footer .next-button {
-  border-radius: 0;
-  width: 100px;
-  height: 50px;
-  background: #56cbf6;
-  float: right;
-  border: none !important;
-  color: #fff;
-}
-
-.mint-footer .mint-checklist-label {
-  padding-right: 0 !important;
-}
-
-#loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  text-align: center;
-  z-index: 999;
-}
+  @import 'make.css';
 </style>

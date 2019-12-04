@@ -13,7 +13,7 @@
         ></mt-spinner>
       </div>
       <div class="no-record-con" v-show="isNull">
-        <p><img src="../../assets/images/no-reaord_03.png" alt="" /></p>
+        <p><img src="../../assets/images/no-reaord_03.png" alt=""/></p>
         <p class="record-text">暂时还没有记录！</p>
       </div>
       <div
@@ -82,39 +82,37 @@
 </template>
 
 <script>
-import Header from "../../components/header.vue";
-import { setTimeout } from "timers";
+  import Header from "../../components/header.vue";
+  import {setTimeout} from "timers";
 
-export default {
-  name: "chooseCompany",
-  components: {
-    Header
-  },
-  data() {
-    return {
-      loadingList: true,
-      headerTitle: "抬头管理",
-      companyList: [],
-      obj2: {},
-      id: "",
-      isNull: false,
-      accessToken: "",
-      companyId: ""
-    };
-  },
-  methods: {
-    goBack() {
-      history.go(-1);
+  export default {
+    name: "chooseCompany",
+    components: {
+      Header
     },
-    getCompanyList() {
-      this.$ajax
-        .get("/companies", {
+    data() {
+      return {
+        loadingList: true,
+        headerTitle: "抬头管理",
+        companyList: [],
+        obj2: {},
+        id: "",
+        isNull: false,
+        accessToken: "",
+        companyId: ""
+      };
+    },
+    methods: {
+      goBack() {
+        history.go(-1);
+      },
+      getCompanyList() {
+        this.$ajax.get("/companies", {
           params: {
             accessToken: this.accessToken,
             username: localStorage.getItem("username")
           }
-        })
-        .then(res => {
+        }).then(res => {
           if (res.data.code !== 0) {
             this.loadingList = false;
             this.companyList = res.data.content;
@@ -122,188 +120,69 @@ export default {
             this.isNull = true;
             this.loadingList = false;
           }
-        })
-        .catch(error => {
+        }).catch(error => {
           console.log(error);
           this.loadingList = false;
         });
-    },
-    seletedOrder(item) {
-      this.defaultCompany(item.companyId);
-      this.$emit("seletedOrder", item);
-      setTimeout(() => {
-        this.$router.back(-1);
-      }, 500);
-    },
-    //设置默认值
-    defaultCompany(companyId) {
-      this.$ajax("/company/" + companyId, {
-        method: "PUT",
-        data: {
-          accessToken: this.accessToken,
-          ifDefault: true
-        }
-      })
-        .then(res => {})
-        .catch(error => {
+      },
+      seletedOrder(item) {
+        this.defaultCompany(item.companyId);
+        this.$emit("seletedOrder", item);
+        setTimeout(() => {
+          this.$router.back(-1);
+        }, 500);
+      },
+      //设置默认值
+      defaultCompany(companyId) {
+        this.$ajax("/company/" + companyId, {
+          method: "PUT",
+          data: {
+            accessToken: this.accessToken,
+            ifDefault: true
+          }
+        }).then(res => {
+        }).catch(error => {
           console.log(error);
         });
-    },
-    goAddAddress() {
-      this.$router.push({ name: "address" });
-    },
+      },
+      goAddAddress() {
+        this.$router.push({name: "address"});
+      },
 
-    deleteData(index) {
-      let id = this.companyList[index].companyId;
-      this.$ajax
-        .delete("/company/" + id, {
+      deleteData(index) {
+        let id = this.companyList[index].companyId;
+        this.$ajax.delete("/company/" + id, {
           params: {
             accessToken: this.accessToken,
             username: localStorage.getItem("username")
           }
-        })
-        .then(res => {
+        }).then(res => {
           if (res.data.code === 1) {
             this.$messagebox.alert(res.data.message);
             this.getCompanyList();
           }
-        })
-        .catch(error => {
+        }).catch(error => {
           console.log(error);
         });
+      },
+      edit(index) {
+        this.id = this.companyList[index].companyId;
+        this.$router.push({name: "address", params: {id: this.id}});
+      }
     },
-    edit(index) {
-      this.id = this.companyList[index].companyId;
-      this.$router.push({ name: "address", params: { id: this.id } });
+    created() {
+      this.accessToken = localStorage.getItem("accessToken");
+      this.beforeRouteEnter;
+    },
+    activated() {
+      this.getCompanyList();
+    },
+    mounted() {
+      this.getCompanyList();
     }
-  },
-  created() {
-    this.accessToken = localStorage.getItem("accessToken");
-    this.beforeRouteEnter;
-  },
-  activated() {
-    this.getCompanyList();
-  },
-  mounted() {
-    this.getCompanyList();
-  }
-};
+  };
 </script>
 
 <style scoped>
-.no-record-con {
-  margin-top: 80px;
-  padding: 60px;
-  text-align: center;
-}
-
-.no-record-con img {
-  width: 100%;
-}
-
-.record-text {
-  margin-top: 20px;
-  color: #ccc;
-}
-
-.add-con {
-  background: #f4f4f4;
-  padding: 0 10px 20px;
-}
-
-.address-con {
-  background: #fff;
-  background-size: 100% 100%;
-  padding: 10px 15px 30px;
-  border-bottom: 1px solid #f4f4f4;
-  margin-top: 15px;
-  border-radius: 8px;
-  box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.11);
-}
-
-.address-top {
-  border-bottom: 1px solid #f4f4f4;
-  height: 40px;
-  line-height: 40px;
-}
-
-.rise-title {
-  display: block;
-  width: 70px;
-  float: left;
-  font-size: 14px;
-  color: #333333;
-}
-
-.rise-text {
-  float: left;
-  max-width: 170px;
-  display: block;
-  overflow: hidden; /*内容超出后隐藏*/
-  text-overflow: ellipsis; /* 超出内容显示为省略号*/
-  white-space: nowrap; /*文本不进行换行*/
-  font-size: 14px;
-  color: #333333;
-}
-
-.edit,
-.delete {
-  float: right;
-}
-
-.edit {
-  color: #52c9f5;
-  margin-right: 10px;
-}
-
-.delete {
-  color: red;
-}
-
-.address-bottom {
-  margin-top: 10px;
-}
-
-.address-bottom div {
-  font-size: 13px;
-}
-
-.address-bottom .address-bottom-title {
-  height: 25px;
-  /*margin-top: 25px;*/
-  vertical-align: top;
-}
-
-.address-bottom .address-bottom-name {
-  float: left;
-  width: 90px;
-  color: #999;
-}
-
-.address-bottom .address-bottom-con {
-  float: left;
-  margin-left: 10px;
-}
-
-.bottom {
-  padding: 0 10px;
-  margin-top: 20px;
-}
-
-.bottom .submit {
-  width: 100%;
-  background: #56cbf6;
-  border: none;
-  height: 50px;
-  border-radius: 10px;
-  color: #fff;
-}
-
-#loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  text-align: center;
-  z-index: 999;
-}
+  @import 'company.css';
 </style>
