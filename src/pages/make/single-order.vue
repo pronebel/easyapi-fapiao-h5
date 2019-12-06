@@ -491,7 +491,6 @@
         sum: 0,
         item: {},
         mergeTax: 0,
-        contentId: "",
         howMany: "",
         remark: "",
         returnUrl: "",
@@ -506,6 +505,17 @@
       },
       SaveType(type) {
         localStorage.setItem("type", type);
+        if (type == "企业") {
+          this.getDefaultCompany();
+        } else if (type == "个人") {
+          this.invoiceForm.purchaserName = "个人";
+          this.invoiceForm.purchaserTaxpayerNumber = "";
+          this.invoiceForm.address = "";
+          this.invoiceForm.phone = "";
+          this.invoiceForm.purchaserBank = "";
+          this.invoiceForm.purchaserBankAccount = "";
+          this.invoiceForm.companyId = "";
+        }
       },
       seletedOrder(item) {
         this.loadingList = false;
@@ -522,13 +532,15 @@
             this.company = [];
           } else {
             this.company = res.data.content;
-            this.invoiceForm.purchaserName = this.company.name;
-            this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
-            this.invoiceForm.address = this.company.address;
-            this.invoiceForm.phone = this.company.phone;
-            this.invoiceForm.purchaserBank = this.company.bank;
-            this.invoiceForm.purchaserBankAccount = this.company.bankAccount;
-            this.invoiceForm.companyId = this.company.companyId;
+            if (localStorage.getItem("type") == '企业') {
+              this.invoiceForm.purchaserName = this.company.name;
+              this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
+              this.invoiceForm.address = this.company.address;
+              this.invoiceForm.phone = this.company.phone;
+              this.invoiceForm.purchaserBank = this.company.bank;
+              this.invoiceForm.purchaserBankAccount = this.company.bankAccount;
+              this.invoiceForm.companyId = this.company.companyId;
+            }
           }
         });
       },
@@ -629,10 +641,6 @@
             }
           }
         }
-        if (this.outOrder !== null) {
-            this.contentId += this.outOrder.invoiceItemId + ",";
-            this.howMany += 1 + ",";
-        }
         this.invoiceForm.accessToken = this.accessToken;
         this.invoiceForm.addrMobile = this.contactInformation;
         this.invoiceForm.email = this.email;
@@ -640,25 +648,14 @@
         this.invoiceForm.type = this.invoiceForm.type;
         this.invoiceForm.category = "增值税电子普通发票";
         this.invoiceForm.property = "电子";
-        this.invoiceForm.itemIds = this.contentId.substring(
-          0,
-          this.contentId.length - 1
-        );
-        this.$ajax.post('/invoice/make',{
-          params: {
-            type: this.invoiceForm.type,
-            companyId: this.company.companyId,
-            category: "增值税电子普通发票",
-            property: "电子",
-            email: this.email,
-            itemIds: this.contentId.substring(0, this.contentId.length - 1),
-            addrMobile: this.contactInformation,
-            username: this.username
-          },
-          header: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        }).then(res => {
+        this.invoiceForm.outOrderIds = this.outOrder.outOrderId;
+        this.$ajax({
+          method: "POST",
+          url: 'https://fapiao-api.easyapi.com/merge-make',
+          params: this.invoiceForm,
+          headers: {"Content-Type": "application/x-www-form-urlencoded"}
+        })
+          .then(res => {
           if (res.data.code === "1") {
             this.$messagebox.alert(res.data.message);
             this.$router.push({
