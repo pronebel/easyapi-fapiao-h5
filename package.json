@@ -1,6 +1,8 @@
 {
   "name": "easyapi-fapiao-h5",
   "version": "0.1.0",
+  "description": "EasyAPI发票管理H5端",
+  "author": "EasyAPI <leida@easyapi.com>",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
