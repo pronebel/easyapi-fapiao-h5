@@ -7,7 +7,7 @@
     <!--</div>-->
     <div class="no-record-con" v-show="isNull">
       <p>
-        <img src="../../assets/images/no-reaord_03.png" alt />
+        <img src="../../assets/images/no-record_03.png" alt />
       </p>
       <p class="record-text">暂时还没有记录!</p>
     </div>
@@ -133,7 +133,7 @@ export default {
   color: #ccc;
 }
 .record-con {
-  background: url("../../assets/images/recor-bg1.png") no-repeat center;
+  background: url("../../assets/images/record-bg1.png") no-repeat center;
   background-size: 100% 100%;
   padding: 15px 24px 30px;
   margin-top: 10px;

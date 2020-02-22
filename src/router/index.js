@@ -15,19 +15,19 @@ export default new Router({
       path: "/out-order",
       name: "out-order",
       component: resolve => require(["../pages/make/out-order.vue"], resolve),
-      meta: { title: "开具发票" }
+      meta: {title: "开具发票"}
     },
     {
       path: "/record",
       name: "record",
       component: resolve => require(["../pages/invoice/list.vue"], resolve),
-      meta: { title: "开票记录" }
+      meta: {title: "开票记录"}
     },
     {
       path: "/company/",
       name: "company",
       component: resolve => require(["../pages/company/list.vue"], resolve),
-      meta: { title: "抬头管理" }
+      meta: {title: "抬头管理"}
     },
     {
       path: "/address/",
@@ -38,7 +38,7 @@ export default new Router({
       path: "/rule",
       name: "rule",
       component: resolve => require(["../pages/rule.vue"], resolve),
-      meta: { title: "开票规则" }
+      meta: {title: "开票规则"}
     },
     {
       path: "/make/success",

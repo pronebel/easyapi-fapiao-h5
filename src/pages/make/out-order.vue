@@ -2,7 +2,7 @@
   <div>
     <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
     <div class="no-record-con" v-show="isNull">
-      <p><img src="../../assets/images/no-reaord_03.png" alt=""/></p>
+      <p><img src="../../assets/images/no-record_03.png" alt=""/></p>
       <p class="record-text">暂时还没有记录！</p>
     </div>
     <div class="page-checklist header-d" style="margin-top: 60px">

@@ -656,14 +656,14 @@
           headers: {"Content-Type": "application/x-www-form-urlencoded"}
         })
           .then(res => {
-          if (res.data.code === "1") {
-            this.$messagebox.alert(res.data.message);
-            this.$router.push({
-              path: "/single-order-success",
-              query: {returnUrl: this.returnUrl}
-            });
-          }
-        }).catch(error => {
+            if (res.data.code === "1") {
+              this.$messagebox.alert(res.data.message);
+              this.$router.push({
+                path: "/single-order-success",
+                query: {returnUrl: this.returnUrl}
+              });
+            }
+          }).catch(error => {
           this.showDisabled = false;
           Toast("请检查信息并完善");
           this.showDisabled = true;

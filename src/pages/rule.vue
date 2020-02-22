@@ -11,7 +11,7 @@
   import Header from "../components/header.vue";
 
   export default {
-    name: "InvoiceRule",
+    name: "Rule",
     components: {
       Header
     },

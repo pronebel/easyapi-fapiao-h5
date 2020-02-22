@@ -21,9 +21,9 @@
 <style scoped>
   .error {
     display: flex;
-    justify-content: center; /*x轴对齐方式*/
-    align-items: center; /*y轴对滴方式*/
-    height: 100%; /**屏幕高度百分百*/
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
 
   .error-con {

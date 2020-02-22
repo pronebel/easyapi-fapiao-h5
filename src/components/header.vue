@@ -3,9 +3,7 @@
     <div class="mint-header-button is-left">
       <a @click="goBack()" class="router-link-active">
         <button class="mint-button mint-button--default mint-button--normal">
-          <span class="mint-button-icon"
-          ><i class="mintui mintui-back"></i
-          ></span>
+          <span class="mint-button-icon"><i class="mintui mintui-back"></i></span>
           <label class="mint-button-text"></label>
         </button>
       </a>
