@@ -83,6 +83,7 @@
 
 <script>
   import Header from "../../components/header.vue";
+  import {defaultCompany} from "../../api/company";
   import {setTimeout} from "timers";
 
   export default {
@@ -134,13 +135,7 @@
       },
       //设置默认值
       defaultCompany(companyId) {
-        this.$ajax("/company/" + companyId, {
-          method: "PUT",
-          data: {
-            accessToken: this.accessToken,
-            ifDefault: true
-          }
-        }).then(res => {
+        defaultCompany(companyId).then(res => {
         }).catch(error => {
           console.log(error);
         });

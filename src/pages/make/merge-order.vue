@@ -497,7 +497,7 @@
 </template>
 
 <script>
-  import api from "@/api/api";
+  import {getDefaultCompany} from "../../api/company";
   import Header from "../../components/header.vue";
   import {Navbar, TabItem} from "mint-ui";
   import {Toast} from "mint-ui";
@@ -578,12 +578,7 @@
       },
 
       getDefaultCompany() {
-        let username = this.$store.state.username;
-        this.$ajax.get("/company/" + username + "/default", {
-          params: {
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        getDefaultCompany(this.$store.state.username).then(res => {
           if (res.data.code === 0) {
             this.company = [];
           } else {

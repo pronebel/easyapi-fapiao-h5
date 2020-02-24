@@ -49,7 +49,6 @@
       return {
         headerTitle: "发票内容详情",
         id: "",
-        accessToken: "",
         invoiceItems: "",
         serviceType: ""
       };
@@ -62,7 +61,7 @@
         this.id = this.$route.query.id;
         this.$ajax.get("/api/invoice/record/" + this.id, {
           params: {
-            accessToken: this.accessToken,
+            accessToken: localStorage.getItem("accessToken"),
             size: 500
           }
         }).then(res => {
@@ -76,7 +75,6 @@
     watch: {},
     created() {
       this.id = this.$route.query.id;
-      this.accessToken = localStorage.getItem("accessToken");
     },
     mounted() {
       this.getInvoiceDetails();
@@ -85,36 +83,5 @@
 </script>
 
 <style scoped>
-  .associated-con {
-    padding: 0 10px;
-  }
-
-  .order-con {
-    margin-top: 10px;
-    border-radius: 5px;
-  }
-
-  .order-con:first-of-type {
-    margin-top: 60px;
-  }
-
-  .order-right {
-    margin-left: 20px;
-    padding: 10px 0;
-    width: 100%;
-  }
-
-  .order-right p {
-    margin-top: 10px;
-  }
-
-  .order-right .time {
-    float: right;
-    color: #a1a1a1;
-  }
-
-  .order-right .price {
-    color: #ff4848;
-    float: right;
-  }
+  @import 'out-order.css';
 </style>

@@ -455,6 +455,7 @@
 </template>
 
 <script>
+  import {getDefaultCompany} from "../../api/company";
   import Header from "../../components/header.vue";
   import {Navbar, TabItem} from "mint-ui";
   import {Toast} from "mint-ui";
@@ -523,11 +524,7 @@
       },
       getDefaultCompany() {
         let username = this.username;
-        this.$ajax.get("/company/" + username + "/default", {
-          params: {
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        getDefaultCompany(username).then(res => {
           if (res.data.code === 0) {
             this.company = [];
           } else {
@@ -574,13 +571,6 @@
             state: 0,
             no: outOrderNo
           }
-          // this.$ajax.get("/out-order/" + outOrderNo, {
-          //   params: {
-          //     username: this.username,
-          //     taxNumber: this.taxNumber,
-          //     state: 0,
-          //     accessToken: this.accessToken
-          //   }
         }).then(res => {
           if (res.data.code == 1) {
             this.$router.push({

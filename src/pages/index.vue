@@ -2,17 +2,10 @@
   <div class="body">
     <div class="page-cell">
       <div v-if="order === true">
-        <div
-          style="border-bottom:1px solid #f4f4f4;"
-          v-for="(type, index) in typeList"
-          :key="index"
-        >
+        <div style="border-bottom:1px solid #f4f4f4;" v-for="(type, index) in typeList" :key="index">
           <div class="mint-cell router-link">
             <div class="mint-cell-wrapper">
-              <div
-                class="mint-cell-title"
-                @click="goInvoice('order', type.name)"
-              >
+              <div class="mint-cell-title" @click="goInvoice('order', type.name)">
                 <span class="mint-cell-text">{{ type.name }}</span>
               </div>
               <i class="mint-cell-allow-right"></i>
@@ -21,42 +14,28 @@
         </div>
       </div>
 
-      <div class="inovice-record" style="margin-top:10px;">
+      <div class="invoice-record" style="margin-top:10px;">
         <a @click="goInvoiceRecord" class="mint-cell">
           <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-
-              <span class="mint-cell-text">开票记录</span>
-            </div>
+            <div class="mint-cell-title"><span class="mint-cell-text">开票记录</span></div>
             <i class="mint-cell-allow-right"></i>
           </div>
         </a>
         <a href="/rule" class="mint-cell">
           <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-
-              <span class="mint-cell-text">开票规则</span>
-            </div>
+            <div class="mint-cell-title"><span class="mint-cell-text">开票规则</span></div>
             <i class="mint-cell-allow-right"></i>
           </div>
         </a>
-        <a
-          href="javascript:void(0);"
-          @click="goAddressManage"
-          class="mint-cell"
-        >
+        <a href="javascript:void(0);" @click="goCompanyManage" class="mint-cell">
           <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-
-              <span class="mint-cell-text">抬头管理</span>
-            </div>
+            <div class="mint-cell-title"><span class="mint-cell-text">抬头管理</span></div>
             <i class="mint-cell-allow-right"></i>
           </div>
         </a>
       </div>
       <div class="mint-btn" v-if="make === true">
-        <div class="mint-cell-title" @click="goInvoice('product', '')">
-
+        <div class="mint-cell-title" @click="goMakeInvoice('product', '')">
           <span class="mint-cell-text">我要开票</span>
         </div>
       </div>
@@ -103,11 +82,10 @@
           Toast(error.response.data.message);
         });
       },
-      goInvoice(pl, orderType) {
+      goMakeInvoice(pl, orderType) {
         if (pl === "product") {
           this.$router.push({path: "/product"});
         } else if (pl === "order") {
-          //orderType 赋值
           localStorage.setItem("orderType", orderType);
           this.$router.push("/out-order");
         }
@@ -115,7 +93,7 @@
       goInvoiceRecord() {
         this.$router.push("/record");
       },
-      goAddressManage() {
+      goCompanyManage() {
         this.$router.push({
           path: "/company/",
           name: "company",
@@ -178,19 +156,6 @@
 </script>
 
 <style scoped>
-  .page-title {
-    font-size: 18px;
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
-    margin-bottom: 8px;
-    background: #fff !important;
-  }
-
-  .parking-order {
-    border-bottom: 1px solid #f4f4f4;
-  }
-
   .mint-cell-text {
     font-size: 16px;
   }
@@ -200,7 +165,7 @@
     position: relative;
   }
 
-  .inovice-record a {
+  .invoice-record a {
     border-bottom: 1px solid #f4f4f4;
   }
 

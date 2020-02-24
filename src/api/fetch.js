@@ -6,16 +6,15 @@ axios.defaults.baseURL = "https://fapiao-api.easyapi.com";
 //拦截器  请求----------------
 axios.interceptors.request.use(
   function (config) {
-    //获取token
-    let token = localStorage.getItem("accessToken");
+    let accessToken = localStorage.getItem("accessToken");
     let taxNumber = localStorage.getItem("taxNumber");
     if (config.params) {
-      config.params.accessToken = token;
+      config.params.accessToken = accessToken;
     }
     if (config.data) {
-      config.data.accessToken = token;
+      config.data.accessToken = accessToken;
     }
-    if (!token) {
+    if (!accessToken) {
       router.push(`/error`);
     }
     return config;

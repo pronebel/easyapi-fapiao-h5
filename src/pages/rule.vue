@@ -8,6 +8,7 @@
 </template>
 
 <script>
+  import {getProductList} from "../api/info";
   import Header from "../components/header.vue";
 
   export default {
@@ -18,7 +19,6 @@
     data() {
       return {
         headerTitle: "开票规则",
-        accessToken: "",
         content: ""
       };
     },
@@ -43,7 +43,6 @@
       this.getInfo();
     },
     created() {
-      this.accessToken = localStorage.getItem("accessToken");
     }
   };
 </script>

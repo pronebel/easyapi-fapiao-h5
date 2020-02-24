@@ -7,7 +7,7 @@
     <!--</div>-->
     <div class="no-record-con" v-show="isNull">
       <p>
-        <img src="../../assets/images/no-record_03.png" alt />
+        <img src="../../assets/images/no-record_03.png" alt/>
       </p>
       <p class="record-text">暂时还没有记录!</p>
     </div>
@@ -53,38 +53,32 @@
 </template>
 
 <script>
-import Header from "../../components/header.vue";
+  import {getInvoiceList} from "../../api/invoice";
+  import Header from "../../components/header.vue";
 
-export default {
-  name: "record",
-  components: {
-    Header
-  },
-  data() {
-    return {
-      headerTitle: "开票记录",
-      invoiceRecordList: [],
-      loadingList: true,
-      id: "",
-      isNull: false,
-      accessToken: ""
-    };
-  },
-  methods: {
-    goBack() {
-      history.go(-1);
+  export default {
+    name: "record",
+    components: {
+      Header
     },
-    // 获取当前行数据
-    getInvoiceRecordList() {
-      this.$ajax
-        .get("/api/invoice/records", {
-          params: {
-            accessToken: this.accessToken,
-            username: this.$store.state.username,
-            size: 500
-          }
-        })
-        .then(res => {
+    data() {
+      return {
+        headerTitle: "开票记录",
+        invoiceRecordList: [],
+        loadingList: true,
+        id: "",
+        isNull: false,
+      };
+    },
+    methods: {
+      goBack() {
+        history.go(-1);
+      },
+      getInvoiceList() {
+        let params = {
+          size: 500
+        }
+        getInvoiceList(params).then(res => {
           if (res.data.code !== 0) {
             this.isNull = false;
             setTimeout(() => {
@@ -95,82 +89,81 @@ export default {
             this.isNull = true;
             this.loadingList = false;
           }
-        })
-        .catch(error => {
+        }).catch(error => {
           console.log(error);
         });
+      },
+      goInvoiceDetail(id) {
+        this.$router.push({path: "/invoice/detail", query: {id: id}});
+      }
     },
-    goInvoiceDetail(id) {
-      this.$router.push({ path: "/invoice/detail", query: { id: id } });
+    created() {
+    },
+    mounted() {
+      this.getInvoiceList();
     }
-  },
-  created() {
-    this.accessToken = localStorage.getItem("accessToken");
-  },
-  mounted() {
-    this.getInvoiceRecordList();
-  }
-};
+  };
 </script>
 
 <style scoped>
-.no-record-con {
-  margin-top: 80px;
-  padding: 60px;
-  text-align: center;
-}
+  .no-record-con {
+    margin-top: 80px;
+    padding: 60px;
+    text-align: center;
+  }
 
-.invoice-record-con {
-  padding: 0 10px;
-}
+  .invoice-record-con {
+    padding: 0 10px;
+  }
 
-.no-record-con img {
-  width: 100%;
-}
+  .no-record-con img {
+    width: 100%;
+  }
 
-.record-text {
-  margin-top: 20px;
-  color: #ccc;
-}
-.record-con {
-  background: url("../../assets/images/record-bg1.png") no-repeat center;
-  background-size: 100% 100%;
-  padding: 15px 24px 30px;
-  margin-top: 10px;
-}
+  .record-text {
+    margin-top: 20px;
+    color: #ccc;
+  }
 
-.record-con .record-con-top {
-  /*height: 40px;*/
-  /*line-height: 40px;*/
-}
+  .record-con {
+    background: url("../../assets/images/record-bg1.png") no-repeat center;
+    background-size: 100% 100%;
+    padding: 15px 24px 30px;
+    margin-top: 10px;
+  }
 
-.record-con .record-con-bottom {
-  margin-top: 30px;
-}
+  .record-con .record-con-top {
+    /*height: 40px;*/
+    /*line-height: 40px;*/
+  }
 
-.record-con-bottom .record-order {
-  margin-top: 10px;
-}
+  .record-con .record-con-bottom {
+    margin-top: 30px;
+  }
 
-.time > span:first-of-type {
-  font-size: 14px;
-}
+  .record-con-bottom .record-order {
+    margin-top: 10px;
+  }
 
-.record-status {
-  color: #80d4f7;
-  float: right;
-}
+  .time > span:first-of-type {
+    font-size: 14px;
+  }
 
-.price {
-  color: #ff4848;
-  float: right;
-}
+  .record-status {
+    color: #80d4f7;
+    float: right;
+  }
 
-#loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  text-align: center;
-  z-index: 999;
-}
+  .price {
+    color: #ff4848;
+    float: right;
+  }
+
+  #loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    z-index: 999;
+  }
 </style>

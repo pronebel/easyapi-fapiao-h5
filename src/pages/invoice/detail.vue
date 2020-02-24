@@ -267,7 +267,7 @@
 </template>
 
 <script>
-  import api from "@/api/api";
+  import {getInvoice} from "../../api/invoice";
   import Header from "../../components/header.vue";
   import {MessageBox} from "mint-ui";
 
@@ -283,8 +283,7 @@
         invoiceDetail: {},
         invoiceItems: [],
         serviceType: "",
-        url: "",
-        accessToken: ""
+        url: ""
       };
     },
 
@@ -310,13 +309,7 @@
         this.$router.push(`/out-order`);
       },
       getInvoiceDetail() {
-        this.id = this.$route.query.id;
-        this.$ajax.get("/api/invoice/record/" + this.id, {
-          params: {
-            accessToken: this.accessToken,
-            username: this.$store.state.username
-          }
-        }).then(res => {
+        getInvoice(this.$route.query.id).then(res => {
           this.invoiceDetail = res.data.content;
           this.url = res.data.content.electronicInvoiceUrl;
           this.serviceType = res.data.content.serviceType;
@@ -334,7 +327,6 @@
     },
     created() {
       this.id = this.$route.query.id;
-      this.accessToken = localStorage.getItem("accessToken");
     },
     watch: {},
     mounted() {

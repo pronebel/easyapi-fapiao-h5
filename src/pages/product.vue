@@ -77,6 +77,7 @@
 </template>
 
 <script>
+  import {getProductList} from "../api/product";
   import Header from "../components/header.vue";
   import {MessageBox} from "mint-ui";
 
@@ -105,11 +106,7 @@
         history.go(-1);
       },
       getProductList() {
-        this.$ajax.get("/products", {
-          params: {
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        getProductList().then(res => {
           this.productList = res.data.content;
         });
       },

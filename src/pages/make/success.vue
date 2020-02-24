@@ -31,8 +31,6 @@
         loading: false,
         finished: false,
         headerTitle: "提交成功",
-        username: "",
-        accessToken: ""
       };
     },
 
@@ -46,13 +44,14 @@
       toInvoice() {
         this.$router.push({
           path: "/",
-          query: {username: this.username, accessToken: this.accessToken}
+          query: {
+            username: localStorage.getItem("username"),
+            accessToken: localStorage.getItem("accessToken")
+          }
         });
       }
     },
     created() {
-      this.accessToken = localStorage.getItem("accessToken");
-      this.username = localStorage.getItem("username");
     }
   };
 </script>
