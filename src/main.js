@@ -6,7 +6,7 @@ import axios from './api/fetch.js'
 import Mint from "mint-ui";
 import "mint-ui/lib/style.css";
 import "./assets/css/common.css";
-import store from "./vuex/store";
+import store from "./store/store";
 
 Vue.config.productionTip = false;
 Vue.use(Vuex);
