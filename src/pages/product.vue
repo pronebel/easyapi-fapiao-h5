@@ -14,9 +14,7 @@
               <option
                 v-for="(item,index) in productList"
                 :value="item.invoiceProductId"
-                :key="index"
-              >{{ item.name }} {{ item.specification }}</option
-              >
+                :key="index">{{ item.name }} {{ item.specification }}</option>
             </select>
           </span>
         </li>

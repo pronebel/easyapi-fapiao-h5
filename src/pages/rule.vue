@@ -8,7 +8,6 @@
 </template>
 
 <script>
-  import {getProductList} from "../api/info";
   import Header from "../components/header.vue";
 
   export default {
