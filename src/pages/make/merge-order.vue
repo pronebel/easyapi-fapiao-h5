@@ -678,7 +678,7 @@
             }
           }).catch(error => {
             this.showDisabled = false;
-            Toast("请检查信息并完善");
+            Toast(error.response.data.message);
             this.showDisabled = true;
           });
         }
