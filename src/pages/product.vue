@@ -129,7 +129,7 @@
                 name: this.name,
                 number: this.number
               };
-              let oldList = JSON.parse(localStorage.getItem("productList"));
+              let oldList = JSON.parse(localStorage.getItem("productList")) || [];
               oldList.push(obj);
               localStorage.setItem("productList", JSON.stringify(oldList));
               this.$router.push({path: "/product"});

@@ -1,4 +1,6 @@
-import {baseUrl, axios} from "request";
+import axios from 'axios'
+
+import {baseUrl} from "./request";
 
 
 /**
@@ -7,11 +9,7 @@ import {baseUrl, axios} from "request";
  * @see https://www.easyai.com
  */
 export const getInvoiceList = (params) => axios.get(`${baseUrl}/api/invoice/records`, {
-  params: {
-    params,
-    accessToken: localStorage.getItem("accessToken"),
-    username: this.$store.state.username
-  }
+  params: params
 });
 
 /**
@@ -19,9 +17,10 @@ export const getInvoiceList = (params) => axios.get(`${baseUrl}/api/invoice/reco
  *
  * @see https://www.easyai.com
  */
-export const getInvoice = (id) => axios.get(`${baseUrl}/api/invoice/record/${id}`, {
-  params: {
-    accessToken: localStorage.getItem("accessToken"),
-    username: this.$store.state.username
-  }
-});
+export const getInvoice = (id) => {
+  let params = {};
+  params.accessToken = localStorage.getItem("accessToken")
+  return axios.get(`${baseUrl}/api/invoice/record/${id}`, {
+    params: params
+  });
+}

@@ -1,5 +1,6 @@
-import {baseUrl, axios} from "request";
+import axios from 'axios'
 
+import {baseUrl} from "./request";
 
 /**
  * 获取开票规则

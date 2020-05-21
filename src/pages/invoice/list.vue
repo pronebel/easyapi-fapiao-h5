@@ -76,8 +76,9 @@
       },
       getInvoiceList() {
         let params = {
-          size: 500
+          size: 10
         }
+        params.username = this.$route.query.username
         getInvoiceList(params).then(res => {
           if (res.data.code !== 0) {
             this.isNull = false;
@@ -89,9 +90,7 @@
             this.isNull = true;
             this.loadingList = false;
           }
-        }).catch(error => {
-          console.log(error);
-        });
+        })
       },
       goInvoiceDetail(id) {
         this.$router.push({path: "/invoice/detail", query: {id: id}});

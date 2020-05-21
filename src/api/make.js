@@ -1,3 +1,4 @@
-import {baseUrl, axios} from "request";
+import axios from 'axios'
 
+import {baseUrl} from "./request";
 
