@@ -10,10 +10,10 @@
         <li>
           <span class="classification-name">商品名称</span>
           <span>
-            <select v-model="tradeName" @change="choice" class="Drop-down-box">
+            <select v-model="productId" @change="choice" class="Drop-down-box">
               <option
                 v-for="(item,index) in productList"
-                :value="item.invoiceProductId"
+                :value="item.productId"
                 :key="index">{{ item.name }} {{ item.specification }}</option>
             </select>
           </span>
@@ -36,7 +36,7 @@
             <input
               type="text"
               disabled
-              v-model="company"
+              v-model="unit"
               placeholder="单位"
               class="mint-field-core"
             />
@@ -47,7 +47,7 @@
           <span class="classification-input">
             <input
               placeholder="需要手动输入数量"
-              v-model="amount"
+              v-model="number"
               type="tel"
               class="mint-field-core"
             />
@@ -59,7 +59,7 @@
             <input
               type="number"
               step="0.01"
-              v-model="unitPrice"
+              v-model="price"
               placeholder="可输入"
               style="color:#ff4848;"
               class="mint-field-core"
@@ -87,15 +87,13 @@
     data() {
       return {
         headerTitle: "开具电子发票",
-        tradeName: "",
-        productList: "",
+        productId: "",
         accessToken: "",
         specifications: "",
-        company: "",
-        unitPrice: "",
-        amount: "",
-        preservationDetails: [],
-        superposition: []
+        unit: "",
+        price: "",
+        number: "",
+        productList: [],
       };
     },
 
@@ -110,37 +108,31 @@
       },
       choice(name) {
         for (var i = 0; i < this.productList.length; i++) {
-          if (this.tradeName === this.productList[i].invoiceProductId) {
+          if (this.productId === this.productList[i].productId) {
             this.specifications = this.productList[i].specification;
-            this.company = this.productList[i].unit;
-            this.unitPrice = this.productList[i].price;
+            this.unit = this.productList[i].unit;
+            this.price = this.productList[i].price;
             this.name = this.productList[i].name;
           }
         }
       },
       addTo() {
         let obj = {};
-
-        if (this.unitPrice !== "") {
-          if (this.amount !== "") {
-            if (this.amount !== "0" && this.unitPrice !== 0) {
+        if (this.price !== "") {
+          if (this.number !== "") {
+            if (this.number !== "0" && this.price !== 0) {
               obj = {
-                invoiceProductId: this.tradeName,
+                productId: this.productId,
                 specifications: this.specifications,
-                company: this.company,
-                unitPrice: this.unitPrice,
+                unit: this.unit,
+                price: this.price,
                 name: this.name,
-                amount: this.amount
+                number: this.number
               };
-              if (!this.superposition) {
-                this.preservationDetails.push(obj);
-                localStorage.setItem("preservationDetails", JSON.stringify(this.preservationDetails));
-                this.$router.push({path: "/product"});
-              } else {
-                this.superposition.push(obj);
-                localStorage.setItem("preservationDetails", JSON.stringify(this.superposition));
-                this.$router.push({path: "/product"});
-              }
+              let oldList = JSON.parse(localStorage.getItem("productList"));
+              oldList.push(obj);
+              localStorage.setItem("productList", JSON.stringify(oldList));
+              this.$router.push({path: "/product"});
             } else {
               MessageBox("提示", "数量,单价不能为0");
             }
@@ -157,9 +149,6 @@
     },
     created() {
       this.accessToken = localStorage.getItem("accessToken");
-      this.superposition = JSON.parse(
-        localStorage.getItem("preservationDetails")
-      );
     },
     activated() {
     },

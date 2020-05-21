@@ -210,9 +210,7 @@
 
                 </div>
                 <div class="mint-cell-value">
-                  <span style="font-size: 15px;color:#333">{{
-                    company.bank
-                  }}</span>
+                  <span style="font-size: 15px;color:#333">{{company.bank}}</span>
                   <div class="mint-field-clear" style="display: none;">
                     <i class="mintui mintui-field-error"></i>
                   </div>
@@ -242,9 +240,7 @@
 
                 </div>
                 <div class="mint-cell-value">
-                  <span style="font-size: 15px;color:#333">{{
-                    company.bankAccount
-                  }}</span>
+                  <span style="font-size: 15px;color:#333">{{ company.bankAccount }}</span>
                   <div class="mint-field-clear" style="display: none;">
                     <i class="mintui mintui-field-error"></i>
                   </div>
@@ -303,19 +299,19 @@
           </ul>
           <ul
             class="contents-content"
-            v-for="(content, index) in preservationDetails"
+            v-for="(product, index) in productList"
             :key="index"
           >
             <li style="width: 24%;line-height: 15px;padding-top:12px">
-              {{ content.name }}
+              {{ product.name }}
             </li>
-            <li style="width: 24%">{{ content.specifications }}</li>
-            <li>{{ content.company }}</li>
-            <li>{{ content.amount }}</li>
-            <li>{{ content.unitPrice }}</li>
+            <li style="width: 24%">{{ product.specifications }}</li>
+            <li>{{ product.unit }}</li>
+            <li>{{ product.number }}</li>
+            <li>{{ product.price }}</li>
             <li
               style="color: #56cbf6"
-              @click="deleteContent(content.invoiceProductId)"
+              @click="deleteContent(product.productId)"
             >
               删除
             </li>
@@ -495,6 +491,9 @@
   import {Toast} from "mint-ui";
   import {MessageBox} from "mint-ui";
   import Isemail from "isemail";
+  import axios from '../../api/request'
+  import {getDefaultCompany} from "../../api/company";
+
 
   export default {
     name: "make",
@@ -505,9 +504,8 @@
       return {
         loadingList: true,
         amountOfMoney: 0,
-        preservationDetails: "",
+        productList: "",
         accessToken: "",
-        contentList: "",
         make: "",
         order: "",
         showDisabled: true,
@@ -518,16 +516,12 @@
         NeedMobile: "",
         NeedEmail: "",
         company: {},
-        itemIds: "",
         email: "",
         seletedOrderList: [],
         sum: 0,
         item: {},
         mergeTax: 0,
-        contentId: "",
-        howMany: "",
         remark: "",
-        priceSplicing: "",
         invoiceForm: {
           type: ""
         }
@@ -547,11 +541,7 @@
       },
       getDefaultCompany() {
         let username = this.$store.state.username;
-        this.$ajax.get("/company/" + username + "/default", {
-          params: {
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        getDefaultCompany(username).then(res => {
           if (res.data.code === 0) {
             this.company = [];
           } else {
@@ -587,7 +577,7 @@
       },
       getEmailInfo() {
         let username = this.$store.state.username;
-        this.$ajax.get("/api/user/" + username + "/invoice/money", {
+        axios.get("/api/user/" + username + "/invoice/money", {
           params: {
             accessToken: this.accessToken,
             invoiceForm: this.invoiceForm
@@ -635,37 +625,24 @@
             }
           }
         }
-        if (this.preservationDetails !== null) {
-          for (var i = 0; i < this.preservationDetails.length; i++) {
-            this.contentId += this.preservationDetails[i].invoiceProductId + ",";
-            this.howMany += this.preservationDetails[i].amount + ",";
-            this.priceSplicing += this.preservationDetails[i].unitPrice + ",";
-          }
+        if (this.productList === null) {
+          this.showDisabled = true;
+          return Toast("商品服务不能为空");
         }
         let username = this.$store.state.username;
         //验证手机号
-        this.$ajax.post('/api/invoice/make', {
-          header: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          params: {
-            productIds: this.contentId.substring(0, this.contentId.length - 1),
-            productNums: this.howMany.substring(0, this.howMany.length - 1),
-            productPrices: this.priceSplicing.substring(
-              0,
-              this.priceSplicing.length - 1
-            ),
-            accessToken: this.accessToken,
-            type: this.invoiceForm.type,
-            category: "增值税电子普通发票",
-            property: "电子",
-            ifUseMergeVm: "false",
-            remark: this.invoiceForm.inputValue,
-            username: username,
-            companyId: this.company.companyId,
-            email: this.email,
-            addrMobile: this.contactInformation
-          }
+        axios.post('/invoice/product/make', {
+          products: this.productList,
+          accessToken: this.accessToken,
+          type: this.invoiceForm.type,
+          category: "增值税电子普通发票",
+          property: "电子",
+          ifUseMergeVm: "false",
+          remark: this.invoiceForm.inputValue,
+          username: username,
+          companyId: this.company.companyId,
+          email: this.email,
+          addrMobile: this.contactInformation
         }).then(res => {
           if (res.data.code === "1") {
             this.$messagebox.alert(res.data.message);
@@ -682,21 +659,21 @@
             this.showDisabled = true;
           }
         });
-        localStorage.removeItem("preservationDetails");
+        localStorage.removeItem("productList");
       },
       //计算发票金额
       calculatedAmount() {
         let money = 0;
-        if (this.preservationDetails !== null) {
-          for (var i = 0; i < this.preservationDetails.length; i++) {
-            money += this.preservationDetails[i].unitPrice * this.preservationDetails[i].amount;
+        if (this.productList !== null) {
+          for (var i = 0; i < this.productList.length; i++) {
+            money += this.productList[i].price * this.productList[i].number;
           }
           this.amountOfMoney = money.toFixed(2);
         }
       },
       //获取备注
       getSpecifications() {
-        this.$ajax.get("/api/invoice/rule", {
+        axios.get("/api/invoice/rule", {
           params: {
             accessToken: this.accessToken
           }
@@ -708,18 +685,18 @@
       },
       //删除内容
       deleteContent(id) {
-        for (var i = 0; i < this.preservationDetails.length; i++) {
-          if (id === this.preservationDetails[i].invoiceProductId) {
-            this.preservationDetails.splice(i, 1);
+        for (var i = 0; i < this.productList.length; i++) {
+          if (id === this.productList[i].productId) {
+            this.productList.splice(i, 1);
           }
-          localStorage.setItem("preservationDetails", JSON.stringify(this.preservationDetails));
-          this.preservationDetails = JSON.parse(localStorage.getItem("preservationDetails"));
+          localStorage.setItem("productList", JSON.stringify(this.productList));
+          this.productList = JSON.parse(localStorage.getItem("productList"));
         }
         this.amountOfMoney = 0;
         this.calculatedAmount();
       },
       getInvoicingService() {
-        this.$ajax.get("/api/shop/0/support", {
+        axios.get("/api/shop/0/support", {
           params: {
             accessToken: this.accessToken
           }
@@ -740,7 +717,7 @@
       this.make = localStorage.getItem("make");
       this.order = localStorage.getItem("order");
       this.accessToken = localStorage.getItem("accessToken");
-      this.preservationDetails = JSON.parse(localStorage.getItem("preservationDetails"));
+      this.productList = JSON.parse(localStorage.getItem("productList"));
       this.invoiceForm.type = localStorage.getItem("type");
       if (this.invoiceForm.type) {
         this.invoiceForm.type = localStorage.getItem("type");

@@ -434,7 +434,7 @@
         customCategory: "软件开发服务",
         price: 1,
         amountOfMoney: 0,
-        preservationDetails: [],
+        productList: [],
         contentList: "",
         outOrderNo: "",
         order: "",
@@ -528,7 +528,7 @@
           }
         }).then(res => {
           this.categoryName = res.data.content;
-          this.preservationDetails = res.data.content.invoiceItems;
+          this.productList = res.data.content.invoiceItems;
           this.remark = this.scanContent.remark;
         }).catch(error => {
           console.log(error);
@@ -588,10 +588,10 @@
             }
           }
         }
-        if (this.preservationDetails !== null) {
+        if (this.productList !== null) {
         }
-        this.$ajax.post('/api/invoice/make-by-price', {
-          params: {
+        this.$ajax.post('/invoice/category/make', {
+          data: {
             type: this.invoiceForm.type,
             companyId: this.company.companyId,
             category: "增值税电子普通发票",
@@ -603,9 +603,6 @@
             addrMobile: this.contactInformation,
             username: this.username,
             accessToken: this.accessToken
-          },
-          header: {
-            "Content-Type": "application/x-www-form-urlencoded"
           }
         }).then(res => {
           if (res.data.code === "1") {
@@ -617,7 +614,7 @@
           }
         }).catch(error => {
           this.showDisabled = false;
-          Toast("请检查信息并完善");
+          Toast(error.response.data.message);
           this.showDisabled = true;
         });
       },

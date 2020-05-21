@@ -119,17 +119,11 @@
         } else {
           this.checkItem[index].satus = true;
         }
-        this.seletedList = this.checkItem.filter(function (
-          satus,
-          index,
-          checkItem
-        ) {
+        this.seletedList = this.checkItem.filter(function (satus, index, checkItem) {
           return checkItem[index].satus === true;
         });
 
-        this.seletedList.length === this.checkItem.length
-          ? (this.allCheck = true)
-          : (this.allCheck = false);
+        this.seletedList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
       },
       //上拉加载
       loadMore() {

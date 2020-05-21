@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios from 'axios'
 
 export const baseUrl = "https://fapiao-api.easyapi.com";
+
 
 /**
  * 添加公司抬头信息
@@ -47,10 +48,8 @@ export const deleteCompany = id => axios.delete(`${baseUrl}/company/${id}`, {
  * @see https://www.easyai.com
  */
 export const defaultCompany = id => axios.put(`${baseUrl}/company/${id}`, {
-  data: {
-    accessToken: localStorage.getItem("accessToken"),
-    ifDefault: true
-  }
+  accessToken: localStorage.getItem("accessToken"),
+  ifDefault: true
 });
 
 /**
@@ -59,7 +58,7 @@ export const defaultCompany = id => axios.put(`${baseUrl}/company/${id}`, {
  * @see https://www.easyai.com
  */
 export const getDefaultCompany = username => axios.get(`${baseUrl}/company/${username}/default`, {
-  data: {
+  params: {
     accessToken: localStorage.getItem("accessToken")
   }
 });

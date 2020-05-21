@@ -1,6 +1,5 @@
-import axios from "axios";
+import {baseUrl, axios} from "request";
 
-export const baseUrl = "https://fapiao-api.easyapi.com";
 
 /**
  * 获取发票列表

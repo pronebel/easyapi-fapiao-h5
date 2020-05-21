@@ -1,13 +1,14 @@
 import axios from 'axios'
 import router from "../router";
 
-axios.defaults.baseURL = "https://fapiao-api.easyapi.com";
+export const baseUrl = "https://fapiao-api.easyapi.com";
+
+axios.defaults.baseURL = 'https://fapiao-api.easyapi.com';
 
 //拦截器  请求----------------
 axios.interceptors.request.use(
   function (config) {
     let accessToken = localStorage.getItem("accessToken");
-    let taxNumber = localStorage.getItem("taxNumber");
     if (config.params) {
       config.params.accessToken = accessToken;
     }
@@ -41,4 +42,4 @@ axios.interceptors.response.use(
   }
 );
 
-export default axios
+export default axios;

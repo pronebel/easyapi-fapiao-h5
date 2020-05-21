@@ -5,7 +5,7 @@
         <div style="border-bottom:1px solid #f4f4f4;" v-for="(type, index) in typeList" :key="index">
           <div class="mint-cell router-link">
             <div class="mint-cell-wrapper">
-              <div class="mint-cell-title" @click="goInvoice('order', type.name)">
+              <div class="mint-cell-title" @click="goMakeInvoice('order', type.name)">
                 <span class="mint-cell-text">{{ type.name }}</span>
               </div>
               <i class="mint-cell-allow-right"></i>
@@ -45,6 +45,8 @@
 <script>
   import {Indicator} from "mint-ui";
   import {Toast} from "mint-ui";
+  import {getOrderTypeList} from "../api/api";
+  import {getShopSupport} from "../api/shop";
 
   export default {
     name: "App",
@@ -64,12 +66,7 @@
     methods: {
       //获取发票类型
       getOrderTypeList() {
-        this.$ajax.get('/order-types', {
-          params: {
-            accessToken: this.accessToken,
-            username: this.username
-          }
-        }).then(res => {
+        getOrderTypeList(this.username).then(res => {
           if (res.status === 200) {
             this.typeList = res.data.content;
             setTimeout(function () {
@@ -104,12 +101,7 @@
       },
       //获取发票类型
       getInvoiceType() {
-        this.$ajax.get('/api/shop/0/support', {
-          params: {
-            accessToken: this.accessToken,
-            username: this.username
-          }
-        }).then(res => {
+        getShopSupport(this.username).then(res => {
           if (res.data.content.ifProduct !== false) {
             this.make = res.data.content.ifProduct;
             localStorage.setItem("make", this.make);

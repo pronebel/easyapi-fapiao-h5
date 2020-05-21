@@ -2,18 +2,18 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router";
 import Vuex from "vuex";
-import axios from './api/fetch.js'
 import Mint from "mint-ui";
 import "mint-ui/lib/style.css";
 import "./assets/css/common.css";
 import store from "./store/store";
 
+import axios from './api/request'
+Vue.prototype.$ajax = axios
+
 Vue.config.productionTip = false;
 Vue.use(Vuex);
 Vue.use(Mint);
 Vue.use(require("vue-wechat-title"));
-
-Vue.prototype.$ajax = axios;
 
 new Vue({
   router,

@@ -502,6 +502,7 @@
   import {Navbar, TabItem} from "mint-ui";
   import {Toast} from "mint-ui";
   import {MessageBox} from "mint-ui";
+  import qs from 'qs';
 
   export default {
     name: "make",
@@ -512,7 +513,6 @@
       return {
         loadingList: true,
         amountOfMoney: 0,
-        preservationDetails: "",
         accessToken: "",
         contentList: "",
         make: "",
@@ -620,7 +620,7 @@
             invoiceForm: this.invoiceForm
           }
         }).then(res => {
-          (this.loadingList = false), console.log(res);
+          this.loadingList = false
           this.email = res.data.content.email;
           this.contactInformation = res.data.content.mobile;
         });
@@ -667,12 +667,7 @@
           this.invoiceForm.accessToken = this.accessToken;
           this.invoiceForm.addrMobile = this.contactInformation;
           this.invoiceForm.email = this.email;
-          this.$ajax.post('/merge-make', {
-            params: this.invoiceForm,
-            header: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            }
-          }).then(res => {
+          this.$ajax.post('/merge-make', this.invoiceForm, {}).then(res => {
             if (res.data.code === "1") {
               this.$router.push(`/make/success`);
             }
@@ -683,18 +678,7 @@
           });
         }
       },
-      //计算发票金额
-      calculatedAmount() {
-        let money = 0;
-        if (this.preservationDetails !== null) {
-          for (var i = 0; i < this.preservationDetails.length; i++) {
-            money +=
-              this.preservationDetails[i].unitPrice *
-              this.preservationDetails[i].amount;
-          }
-          this.amountOfMoney = money.toFixed(2);
-        }
-      },
+
       //获取备注
       getSpecifications() {
         this.$ajax.get("/api/invoice/rule", {
@@ -703,23 +687,9 @@
           }
         }).then(res => {
           this.remark = res.data.content.remark;
-        }).catch(error => {
-          console.log(error);
-        });
+        })
       },
-      //删除内容
-      deleteContent(id) {
-        for (var i = 0; i < this.preservationDetails.length; i++) {
-          if (id === this.preservationDetails[i].invoiceProductId) {
-            this.preservationDetails.splice(i, 1);
-          }
-          localStorage.setItem("preservationDetails", JSON.stringify(this.preservationDetails)
-          );
-          this.preservationDetails = JSON.parse(localStorage.getItem("preservationDetails"));
-        }
-        this.amountOfMoney = 0;
-        this.calculatedAmount();
-      },
+
       getInvoicingService() {
         this.$ajax.get("/api/shop/0/support", {
           params: {
@@ -728,9 +698,7 @@
         }).then(res => {
           this.NeedMobile = res.data.content.ifNeedMobile;
           this.NeedEmail = res.data.content.ifNeedEmail;
-        }).catch(error => {
-          console.log(error);
-        });
+        })
       }
     },
     watch: {},
@@ -738,9 +706,6 @@
       this.make = localStorage.getItem("make");
       this.order = localStorage.getItem("order");
       this.accessToken = localStorage.getItem("accessToken");
-      this.preservationDetails = JSON.parse(
-        localStorage.getItem("preservationDetails")
-      );
       this.invoiceForm.type = localStorage.getItem("type");
       if (this.invoiceForm.type) {
         this.invoiceForm.type = localStorage.getItem("type");
@@ -752,7 +717,6 @@
       this.seletedOrder();
     },
     mounted() {
-      this.calculatedAmount();
       this.getDefaultCompany();
       this.getOrder();
       this.getEmailInfo();

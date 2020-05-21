@@ -25,7 +25,6 @@
           <p>
             <span class="rise-title">发票抬头：</span
             ><span class="rise-text">{{ item.name }}</span>
-            <!--<span class="delete" @click="deleteData(index)">删除</span>-->
             <span class="edit" @click="edit(index)">编辑</span>
           </p>
         </div>
