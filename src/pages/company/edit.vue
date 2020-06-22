@@ -311,7 +311,7 @@
                 url: "/company/" + this.id,
                 data: this.companyForm
               }).then(res => {
-                if (res.data.code === "1") {
+                if (res.data.code === 1) {
                   this.$messagebox.alert(res.data.message);
                   if (this.$route.params.companyLists === "companyLists") {
                     this.$router.push(`/company/`);
@@ -334,7 +334,7 @@
                 url: "/company",
                 data: this.companyForm
               }).then(res => {
-                if (res.data.code === "1") {
+                if (res.data.code === 1) {
                   this.$messagebox.alert(res.data.message);
                   let id = res.data.content.companyId;
                   if (this.$route.params.companyLists) {

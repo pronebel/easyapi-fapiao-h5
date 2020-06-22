@@ -644,12 +644,12 @@
           email: this.email,
           addrMobile: this.contactInformation
         }).then(res => {
-          if (res.data.code === "1") {
+          if (res.data.code === 1) {
             this.$messagebox.alert(res.data.message);
             this.$router.push(`/make/success`);
           }
         }).catch(error => {
-          if (error.response.data.code === "1") {
+          if (error.response.data.code === 1) {
             this.showDisabled = false;
             Toast(error.response.data.message);
             this.showDisabled = true;

@@ -668,7 +668,7 @@
           this.invoiceForm.addrMobile = this.contactInformation;
           this.invoiceForm.email = this.email;
           this.$ajax.post('/merge-make', this.invoiceForm, {}).then(res => {
-            if (res.data.code === "1") {
+            if (res.data.code === 1) {
               this.$router.push(`/make/success`);
             }
           }).catch(error => {
