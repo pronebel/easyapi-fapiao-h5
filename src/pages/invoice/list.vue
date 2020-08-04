@@ -78,7 +78,7 @@
         let params = {
           size: 10
         }
-        params.username = this.$route.query.username
+        params.username = localStorage.getItem("username")
         getInvoiceList(params).then(res => {
           if (res.data.code !== 0) {
             this.isNull = false;

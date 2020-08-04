@@ -619,7 +619,6 @@
         });
       },
       selectCustomCategoryId() {
-        console.log(this.customCategory);
       },
       //获取备注
       getSpecifications() {
