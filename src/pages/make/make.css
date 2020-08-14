@@ -328,7 +328,6 @@
 }
 
 .order-right p {
-  /*margin-top: 10px;*/
   background: white!important;
 }
 
@@ -435,11 +434,6 @@
 
 .mint-cell-wrapper {
   background: none !important;
-}
-
-.mint-cell {
-  margin: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.15);
 }
 
 #radio-1-2 {
