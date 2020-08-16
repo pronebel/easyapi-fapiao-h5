@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
+    <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <div class="rule-con">
       <div v-html="content">{{ content }}</div>
     </div>
@@ -36,6 +36,11 @@
           console.log(error);
         });
       }
+    },
+    computed: {
+      show() {
+        return this.$store.state.ifShowH5NavBar
+      },
     },
     watch: {},
     mounted() {

@@ -1,6 +1,6 @@
 <template>
   <div class="invoice-record-con">
-    <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
+    <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <!--<div v-if="invoiceRecordList.length<1">-->
     <!--<div class="no-record">-->
     <!--<my-header @headBack="goBack()" :headerTitle="headerTitle"></my-header>-->
@@ -95,6 +95,11 @@
       goInvoiceDetail(id) {
         this.$router.push({path: "/invoice/detail", query: {id: id}});
       }
+    },
+    computed: {
+      show() {
+        return this.$store.state.ifShowH5NavBar
+      },
     },
     created() {
     },

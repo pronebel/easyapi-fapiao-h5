@@ -3,7 +3,7 @@
     class="add-con"
     style="position: fixed;top: 0;bottom: 0;left: 0;right: 0; overflow: auto;z-index: 99;"
   >
-    <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
+    <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <div style="margin-top: 60px">
       <div id="loading">
         <mt-spinner
@@ -163,6 +163,11 @@
         this.id = this.companyList[index].companyId;
         this.$router.push({name: "address", params: {id: this.id}});
       }
+    },
+    computed: {
+      show() {
+        return this.$store.state.ifShowH5NavBar
+      },
     },
     created() {
       this.accessToken = localStorage.getItem("accessToken");

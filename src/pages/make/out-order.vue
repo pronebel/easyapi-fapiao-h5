@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
+    <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <div class="no-record-con" v-show="isNull">
       <p><img src="../../assets/images/no-record_03.png" alt=""/></p>
       <p class="record-text">暂时还没有记录！</p>
@@ -83,6 +83,7 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import Header from "../../components/header.vue";
 
   export default {
@@ -190,6 +191,12 @@
       }
     },
     computed: {
+      show() {
+        return this.$store.state.ifShowH5NavBar
+      },
+      ...mapGetters([
+        'sidebar'
+      ]),
       //计算总价
       pricetotale: function () {
         let tatol = 0;
