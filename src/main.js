@@ -6,9 +6,14 @@ import Mint from "mint-ui";
 import "mint-ui/lib/style.css";
 import "./assets/css/common.css";
 import store from "./store/store";
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
+
 
 import axios from './api/request'
 Vue.prototype.$ajax = axios
+
+Vue.use(MintUI);
 
 Vue.config.productionTip = false;
 Vue.use(Vuex);

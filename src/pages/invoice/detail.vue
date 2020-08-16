@@ -263,6 +263,20 @@
         <!--<mt-button class="submit" @click="goElectronicInvoice">重发电子发票与订单</mt-button>-->
       </div>
     </div>
+    <mt-popup
+       v-model="popupVisible"
+        position="middle"
+        style="padding:30px"
+        align="center">
+        <p style="fontSize:17px">发票预览</p>
+        <img :src="imgUrl" alt="" style="width:350px">
+        <div style="margin-bottom:20px">
+           <mt-button type="primary" size="small">复制发票下载地址</mt-button>
+        </div>
+        <div style="width:200px,fontSize:12px"> 
+          <textarea :value="url" style="width:300px"/>  
+        </div>
+    </mt-popup>
   </div>
 </template>
 
@@ -283,7 +297,9 @@
         invoiceDetail: {},
         invoiceItems: [],
         serviceType: "",
-        url: ""
+        url: "",
+        imgUrl:"",
+        popupVisible: false
       };
     },
 
@@ -291,7 +307,8 @@
       //查看发票
       viewPicture() {
         if (this.invoiceDetail.state === 1) {
-          window.location.href = this.url;
+          // window.location.href = this.url;
+          this.popupVisible = true
         } else if (this.invoiceDetail.state === 2) {
           this.$toast("当前发票作废了");
         } else if (this.invoiceDetail.state === 3) {
@@ -312,6 +329,7 @@
         getInvoice(this.$route.query.id).then(res => {
           this.invoiceDetail = res.data.content;
           this.url = res.data.content.electronicInvoiceUrl;
+          this.imgUrl = res.data.content.electronicInvoiceImg;
           this.serviceType = res.data.content.serviceType;
           this.invoiceItems = this.invoiceDetail.invoiceItems;
         }).catch(error => {
