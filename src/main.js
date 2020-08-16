@@ -7,13 +7,15 @@ import "mint-ui/lib/style.css";
 import "./assets/css/common.css";
 import store from "./store/store";
 import MintUI from 'mint-ui'
-import 'mint-ui/lib/style.css'
+import 'mint-ui/lib/style.css';
+import clipboard from 'clipboard';
 
 
 import axios from './api/request'
 Vue.prototype.$ajax = axios
 
 Vue.use(MintUI);
+Vue.prototype.clipboard = clipboard;
 
 Vue.config.productionTip = false;
 Vue.use(Vuex);

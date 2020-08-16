@@ -271,11 +271,12 @@
         <p style="fontSize:17px">发票预览</p>
         <img :src="imgUrl" alt="" style="width:350px">
         <div style="margin-bottom:20px">
-           <mt-button type="primary" size="small">复制发票下载地址</mt-button>
+           <mt-button type="primary" size="small" data-clipboard-action="copy" class="copyPdfUrl" :data-clipboard-text="url" @click="copyLink">复制发票下载地址</mt-button>
         </div>
         <div style="width:200px,fontSize:12px"> 
           <textarea :value="url" style="width:300px"/>  
         </div>
+        <p style="margin-top:7px">复制发票下载地址并在浏览器中打开进行下载</p>
     </mt-popup>
   </div>
 </template>
@@ -284,6 +285,7 @@
   import {getInvoice} from "../../api/invoice";
   import Header from "../../components/header.vue";
   import {MessageBox} from "mint-ui";
+  import Clipboard from "clipboard";
 
   export default {
     name: "invoiceDetail",
@@ -341,6 +343,16 @@
           path: "/out-order",
           query: {id: this.$route.query.id}
         });
+      },
+      copyLink() {
+         let _this = this;
+         let clipboard = new this.clipboard(".copyPdfUrl");
+         clipboard.on('success', function () {
+           _this.$toast("复制成功")
+         });
+         clipboard.on('error', function () {
+           _this.$toast("复制失败")
+         });
       }
     },
     created() {
