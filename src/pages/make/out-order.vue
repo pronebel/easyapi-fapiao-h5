@@ -15,7 +15,7 @@
           class="mint-checklist page-part"
           v-for="(item, index) in checkItem"
           :key="index"
-          style="box-shadow: 0 0 5px rgba(0,0,0,0.15);margin-bottom:5px!important; "
+          style="box-shadow: 0 0 5px rgba(0,0,0,0.15);"
         >
           <a class="mint-cell">
             <div class="mint-cell-wrapper order-con">
