@@ -9,7 +9,7 @@ const store = new Vuex.Store({
     author: "我是store里的内容",
     userType: null,
     username: localStorage.getItem("username"),
-    ifShowH5NavBar:true
+    ifShowH5NavBar:false
   },
   //改变转台操作
   mutations: {

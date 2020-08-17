@@ -57,7 +57,7 @@
   }
 
   .rule-con {
-    margin-top: 60px;
+    margin-top: 10px;
     background: #fff;
     background-size: 100%;
     padding: 20px 10px;

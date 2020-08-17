@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div style="padding: 0 10px;">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <div class="no-record-con" v-show="isNull">
       <p><img src="../../assets/images/no-record_03.png" alt=""/></p>
       <p class="record-text">暂时还没有记录！</p>
     </div>
-    <div class="page-checklist header-d" style="margin-top: 60px">
+    <div class="page-checklist header-d" style="margin-top: 10px">
       <div
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="loading"
@@ -15,6 +15,7 @@
           class="mint-checklist page-part"
           v-for="(item, index) in checkItem"
           :key="index"
+          style="box-shadow: 0 0 5px rgba(0,0,0,0.15);margin-bottom:5px!important; "
         >
           <a class="mint-cell">
             <div class="mint-cell-wrapper order-con">
@@ -221,8 +222,4 @@
 </script>
 <style scoped>
   @import 'make.css';
-  .mint-cell {
-    margin: 5px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.15);
-  }
 </style>

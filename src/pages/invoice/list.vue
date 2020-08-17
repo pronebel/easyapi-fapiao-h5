@@ -12,7 +12,7 @@
       <p class="record-text">暂时还没有记录!</p>
     </div>
     <!--</div>-->
-    <div style="margin-top: 60px">
+    <div style="margin-top: 10px">
       <div id="loading">
         <mt-spinner
           color="#56cbf6"
