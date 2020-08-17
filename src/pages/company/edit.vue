@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
+    <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <div class="page-part">
       <form action ref="companyForm" :model="companyForm">
         <a class="mint-cell mint-field">
@@ -196,8 +196,8 @@
 </template>
 <script>
   import Header from "../../components/header.vue";
-  import {MessageBox} from "mint-ui";
-  import {Toast} from "mint-ui";
+  import { MessageBox } from "mint-ui";
+  import { Toast } from "mint-ui";
 
   export default {
     name: "addAddress",
@@ -251,18 +251,26 @@
       },
       //删除
       btnDelet() {
-        this.$ajax.delete("/company/" + this.id, {
-          params: {
-            accessToken: this.accessToken,
-            username: this.$store.state.username
+        MessageBox({
+          title: "提示",
+          message: "确定删除?",
+          showCancelButton: true
+        }).then(action => {
+          if (action === "confirm") {
+            this.$ajax.delete("/company/" + this.id, {
+              params: {
+                accessToken: this.accessToken,
+                username: this.$store.state.username
+              }
+            }).then(res => {
+              if (res.data.code === 1) {
+                this.$messagebox.alert(res.data.message);
+                this.$router.push({ path: "/company/" });
+              }
+            }).catch(error => {
+              console.log(error);
+            });
           }
-        }).then(res => {
-          if (res.data.code === 1) {
-            this.$messagebox.alert(res.data.message);
-            this.$router.push({path: "/company/"});
-          }
-        }).catch(error => {
-          console.log(error);
         });
       },
       searchRiseList() {
@@ -355,6 +363,11 @@
             }
           }
         });
+      }
+    },
+    computed: {
+      show() {
+        return this.$store.state.ifShowH5NavBar;
       }
     },
     created() {
