@@ -54,6 +54,7 @@
       </div>
       <div class="page-infinite-loading">
         <p v-if="loading2">{{ loadMoreText }}</p>
+        <p v-if="noMore">没有更多数据了</p>
       </div>
     </div>
     <div class="mint-footer" v-show="isNull == false">
@@ -83,13 +84,13 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
+  import { mapGetters } from "vuex";
   import Header from "../../components/header.vue";
 
   export default {
     name: "out-order",
     components: {
-      Header: Header,
+      Header: Header
     },
     data() {
       return {
@@ -97,9 +98,11 @@
         loading: false, //下拉加载
         loading2: false, //下拉加载
         isNull: false,
+        noMore: false,
         page: 0,
         size: 10,
         headerTitle: "开票",
+        arr:[],
         invoiceList: [],
         selectList: [],
         checkItem: [],
@@ -118,7 +121,7 @@
         } else {
           this.checkItem[index].satus = true;
         }
-        this.selectList = this.checkItem.filter(function (satus, index, checkItem) {
+        this.selectList = this.checkItem.filter(function(satus, index, checkItem) {
           return checkItem[index].satus === true;
         });
         this.selectList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
@@ -129,6 +132,9 @@
         this.loading2 = true;
         this.page++;
         this.allCheck = false;
+        // for (var i = 0; i < this.arr.length; i++) {
+        //   this.checkItem.push(this.arr[i]);
+        // }
         this.getOutOrderList();
       },
       getOutOrderList() {
@@ -148,25 +154,29 @@
               v.satus = false;
             }
             this.checkItem = data;
-            if (this.checkItem.length === res.data.content.length) {
-              this.loadMoreText = "";
-              this.loading = true;
-            } else {
-              this.loading = false;
-              this.checkItem = data;
-            }
+              if (this.checkItem.length === res.data.content.length) {
+                this.loading2 = true;
+                this.loading = false;
+                this.checkItem = data;
+              } else {
+                this.loadMoreText = "";
+                this.loading = true;
+                this.loading2 = false;
+                this.noMore = true;
+              }
           } else {
             this.loadMoreText = "";
-            this.isNull = true;
+            this.noMore = true;
           }
         }).catch(error => {
           console.log(error);
         });
+        // this.loading = false;
       },
       //全选
-      change: function () {
+      change: function() {
         let _this = this;
-        _this.checkItem.forEach(function (v) {
+        _this.checkItem.forEach(function(v) {
           return (v.satus = _this.allCheck);
         });
         if (_this.allCheck === true) {
@@ -176,8 +186,8 @@
         }
       },
       //单选勾住后全选
-      itemChange: function () {
-        this.selectList = this.checkItem.filter(function (v) {
+      itemChange: function() {
+        this.selectList = this.checkItem.filter(function(v) {
           return v.satus === true;
         });
         this.selectList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
@@ -185,18 +195,18 @@
       goElectronicInvoice() {
         localStorage.setItem("tot", this.totalPrice);
         localStorage.setItem("seleted", JSON.stringify(this.selectList));
-        this.$router.push({path: "/merge-order"});
+        this.$router.push({ path: "/merge-order" });
       }
     },
     computed: {
       show() {
-        return this.$store.state.ifShowH5NavBar
+        return this.$store.state.ifShowH5NavBar;
       },
       ...mapGetters([
-        'sidebar'
+        "sidebar"
       ]),
       //计算总价
-      totalPrice: function () {
+      totalPrice: function() {
         let totalPrice = 0;
         for (let i = 0; i < this.checkItem.length; i++) {
           let item = this.checkItem[i];
