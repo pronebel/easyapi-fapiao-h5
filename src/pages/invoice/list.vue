@@ -30,19 +30,17 @@
         <div class="record-con-top">
           <p hidden>{{ item.invoiceId }}</p>
           <p class="time">
-            <span style="font-size: 15px;color: #333">电子发票</span>
+            <span style="font-size: 16px;color: #333333">电子发票</span>
             <span class="record-status">{{ item.statements }}</span>
           </p>
         </div>
         <div class="record-con-bottom">
           <p class="record-invoice">
-            <span style="color: #333;font-size: 14px">{{
-              item.orderType
-            }}</span>
+            <span style="color: #333;font-size: 14px">商品订单</span>
           </p>
           <p class="record-order">
             <span style="color: #333;font-size: 14px">{{
-              item.updateTime
+              item.addTime
             }}</span>
             <span class="price">￥{{ item.price }}</span>
           </p>
@@ -53,7 +51,7 @@
 </template>
 
 <script>
-  import {getInvoiceList} from "../../api/invoice";
+  import { getInvoiceList } from "../../api/invoice";
   import Header from "../../components/header.vue";
 
   export default {
@@ -67,7 +65,7 @@
         invoiceRecordList: [],
         loadingList: true,
         id: "",
-        isNull: false,
+        isNull: false
       };
     },
     methods: {
@@ -77,8 +75,8 @@
       getInvoiceList() {
         let params = {
           size: 10
-        }
-        params.username = localStorage.getItem("username")
+        };
+        params.username = localStorage.getItem("username");
         getInvoiceList(params).then(res => {
           if (res.data.code !== 0) {
             this.isNull = false;
@@ -90,16 +88,16 @@
             this.isNull = true;
             this.loadingList = false;
           }
-        })
+        });
       },
       goInvoiceDetail(id) {
-        this.$router.push({path: "/invoice/detail", query: {id: id}});
+        this.$router.push({ path: "/invoice/detail", query: { id: id } });
       }
     },
     computed: {
       show() {
-        return this.$store.state.ifShowH5NavBar
-      },
+        return this.$store.state.ifShowH5NavBar;
+      }
     },
     created() {
     },
@@ -132,12 +130,11 @@
   .record-con {
     background: url("../../assets/images/record-bg1.png") no-repeat center;
     background-size: 100% 100%;
-    padding: 15px 24px 30px;
+    padding: 15px 24px 20px;
     margin-top: 10px;
   }
 
   .record-con .record-con-top {
-    /*height: 40px;*/
     /*line-height: 40px;*/
   }
 
