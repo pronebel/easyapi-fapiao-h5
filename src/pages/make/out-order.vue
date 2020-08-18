@@ -69,12 +69,11 @@
         </span>
         <span style="margin-left: 9px;">本页全选</span>
         <span style="margin-left:15%">合计：</span>
-        <span class="price">￥{{ pricetotale }}</span>
-        <!--<button class="next-button">下一步</button>-->
+        <span class="price">￥{{ totalPrice }}</span>
         <mt-button
           class="next-button next-button-to"
           @click="goElectronicInvoice"
-          :disabled="seletedList.length < 1"
+          :disabled="selectList.length < 1"
         >下一步
         </mt-button
         >
@@ -84,7 +83,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import {mapGetters} from 'vuex'
   import Header from "../../components/header.vue";
 
   export default {
@@ -97,16 +96,14 @@
         loadMoreText: "加载中...",
         loading: false, //下拉加载
         loading2: false, //下拉加载
-        // loadingList: true, //列表加载
         isNull: false,
         page: 0,
-        size: 4,
+        size: 10,
         headerTitle: "开票",
         invoiceList: [],
-        seletedList: [],
+        selectList: [],
         checkItem: [],
         allCheck: false,
-        tatol: 0,
         accessToken: ""
       };
     },
@@ -121,17 +118,16 @@
         } else {
           this.checkItem[index].satus = true;
         }
-        this.seletedList = this.checkItem.filter(function (satus, index, checkItem) {
+        this.selectList = this.checkItem.filter(function (satus, index, checkItem) {
           return checkItem[index].satus === true;
         });
-
-        this.seletedList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
+        this.selectList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
       },
       //上拉加载
       loadMore() {
         this.loading = true;
         this.loading2 = true;
-        this.size++;
+        this.page++;
         this.allCheck = false;
         this.getOutOrderList();
       },
@@ -139,13 +135,14 @@
         this.$ajax.get("/out-orders", {
           params: {
             size: this.size,
+            page: this.page,
             accessToken: this.accessToken,
             username: this.$store.state.username,
             state: 0
           }
         }).then(res => {
           if (res.data.code !== 0) {
-            var data = res.data.content;
+            let data = res.data.content;
             this.isNull = false;
             for (var v of data) {
               v.satus = false;
@@ -168,26 +165,26 @@
       },
       //全选
       change: function () {
-        var that = this;
-        that.checkItem.forEach(function (v) {
-          return (v.satus = that.allCheck);
+        let _this = this;
+        _this.checkItem.forEach(function (v) {
+          return (v.satus = _this.allCheck);
         });
-        if (that.allCheck === true) {
-          this.seletedList = that.checkItem;
+        if (_this.allCheck === true) {
+          this.selectList = _this.checkItem;
         } else {
-          this.seletedList = [];
+          this.selectList = [];
         }
       },
       //单选勾住后全选
       itemChange: function () {
-        this.seletedList = this.checkItem.filter(function (v) {
+        this.selectList = this.checkItem.filter(function (v) {
           return v.satus === true;
         });
-        this.seletedList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
+        this.selectList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
       },
       goElectronicInvoice() {
-        localStorage.setItem("tot", this.pricetotale);
-        localStorage.setItem("seleted", JSON.stringify(this.seletedList));
+        localStorage.setItem("tot", this.totalPrice);
+        localStorage.setItem("seleted", JSON.stringify(this.selectList));
         this.$router.push({path: "/merge-order"});
       }
     },
@@ -199,17 +196,16 @@
         'sidebar'
       ]),
       //计算总价
-      pricetotale: function () {
-        let tatol = 0;
-        for (var i = 0; i < this.checkItem.length; i++) {
-          var item = this.checkItem[i];
+      totalPrice: function () {
+        let totalPrice = 0;
+        for (let i = 0; i < this.checkItem.length; i++) {
+          let item = this.checkItem[i];
           if (item.satus === true) {
-            tatol += item.price;
+            totalPrice += item.price;
           }
         }
-        tatol = tatol.toFixed(2);
         //千位分隔符正则
-        return tatol;
+        return totalPrice.toFixed(2);
       }
     },
     created() {
