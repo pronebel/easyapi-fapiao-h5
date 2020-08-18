@@ -370,7 +370,6 @@
                 ></font
                 ></span
                 >
-
               </div>
               <div class="mint-cell-value">
                 <input
@@ -451,7 +450,6 @@
         company: {},
         itemIds: "",
         email: "",
-        seletedOrderList: [],
         categoryName: "",
         sum: 0,
         item: {},

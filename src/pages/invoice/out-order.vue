@@ -6,7 +6,6 @@
         <a class="mint-cell">
           <div class="mint-cell-wrapper">
             <div class="order-right">
-              <!--<p class="num" v-if="this.serviceType===订单开票"><span>订单编号：</span><span>{{item.outOrderNo}}</span></p>-->
               <p class="num">
                 <span>税收编码：</span><span>{{ item.no }}</span>
               </p>
@@ -47,7 +46,7 @@
     },
     data() {
       return {
-        headerTitle: "发票内容详情",
+        headerTitle: "发票明细",
         id: "",
         invoiceItems: "",
         serviceType: ""

@@ -28,7 +28,7 @@
             <span class="edit" @click="edit(index)">编辑</span>
           </p>
         </div>
-        <div class="address-bottom" @click="seletedOrder(item)">
+        <div class="address-bottom" @click="selectCompany(item)">
           <table>
             <tr class="address-bottom-title">
               <td class="">
@@ -75,7 +75,7 @@
       </div>
     </div>
     <div class="bottom">
-      <mt-button class="submit" @click="goAddAddress">新增抬头</mt-button>
+      <mt-button class="submit" @click="gotoEditCompany">新增抬头</mt-button>
     </div>
   </div>
 </template>
@@ -95,11 +95,11 @@
         loadingList: true,
         headerTitle: "抬头管理",
         companyList: [],
-        obj2: {},
         id: "",
         isNull: false,
         accessToken: "",
-        companyId: ""
+        companyId: "",
+        from: "make"
       };
     },
     methods: {
@@ -125,7 +125,10 @@
           this.loadingList = false;
         });
       },
-      seletedOrder(item) {
+      selectCompany(item) {
+        if (this.from != 'make') {
+          return;
+        }
         this.defaultCompany(item.companyId);
         this.$emit("seletedOrder", item);
         setTimeout(() => {
@@ -139,29 +142,12 @@
           console.log(error);
         });
       },
-      goAddAddress() {
-        this.$router.push({name: "address"});
-      },
-
-      deleteData(index) {
-        let id = this.companyList[index].companyId;
-        this.$ajax.delete("/company/" + id, {
-          params: {
-            accessToken: this.accessToken,
-            username: localStorage.getItem("username")
-          }
-        }).then(res => {
-          if (res.data.code === 1) {
-            this.$messagebox.alert(res.data.message);
-            this.getCompanyList();
-          }
-        }).catch(error => {
-          console.log(error);
-        });
+      gotoEditCompany() {
+        this.$router.push({name: "EditCompany", path: "/company/edit"});
       },
       edit(index) {
         this.id = this.companyList[index].companyId;
-        this.$router.push({name: "address", params: {id: this.id}});
+        this.$router.push({name: "EditCompany", path: "/company/edit", params: {id: this.id}});
       }
     },
     computed: {
@@ -171,6 +157,7 @@
     },
     created() {
       this.accessToken = localStorage.getItem("accessToken");
+      this.from = this.$route.params.from;
       this.beforeRouteEnter;
     },
     activated() {

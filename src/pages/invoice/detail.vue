@@ -35,17 +35,6 @@
         <div class="mint-cell-left"></div>
         <div class="mint-cell-wrapper">
           <div class="mint-cell-title">
-            <span class="mint-cell-text">抬头类型</span>
-          </div>
-          <div class="mint-cell-value">
-            <span>{{ invoiceDetail.type }}</span>
-          </div>
-        </div>
-      </a>
-      <a class="mint-cell mint-field">
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
             <span class="mint-cell-text"
             ><font style="vertical-align: inherit;"
             ><font style="vertical-align: inherit;">发票抬头</font></font
@@ -93,60 +82,60 @@
           <div class="mint-cell-title">
             <span class="mint-cell-text"
             ><font style="vertical-align: inherit;"
+            ><font style="vertical-align: inherit;">地址、电话</font></font
+            ></span
+            >
+          </div>
+          <div class="mint-cell-value" style="display: block;">
+            <span>{{ invoiceDetail.purchaserAddress }} {{ invoiceDetail.purchaserPhone }}</span>
+            <div class="mint-field-clear" style="display: none;">
+              <i class="mintui mintui-field-error"></i>
+            </div>
+            <span class="mint-field-state is-default"
+            ><i class="mintui mintui-field-default"></i
+            ></span>
+            <div class="mint-field-other"></div>
+          </div>
+        </div>
+        <div class="mint-cell-right"></div>
+      </a>
+      <a class="mint-cell mint-field">
+        <div class="mint-cell-left"></div>
+        <div class="mint-cell-wrapper">
+          <div class="mint-cell-title">
+            <span class="mint-cell-text"
+            ><font style="vertical-align: inherit;"
+            ><font style="vertical-align: inherit;"
+            >开户行及账号</font
+            ></font
+            ></span
+            >
+          </div>
+          <div class="mint-cell-value">
+            <span>{{ invoiceDetail.purchaserBank }} {{ invoiceDetail.purchaserBankAccount }}</span>
+            <div class="mint-field-clear" style="display: none;">
+              <i class="mintui mintui-field-error"></i>
+            </div>
+            <span class="mint-field-state is-default"
+            ><i class="mintui mintui-field-default"></i
+            ></span>
+            <div class="mint-field-other"></div>
+          </div>
+        </div>
+        <div class="mint-cell-right"></div>
+      </a>
+      <a class="mint-cell mint-field">
+        <div class="mint-cell-left"></div>
+        <div class="mint-cell-wrapper">
+          <div class="mint-cell-title">
+            <span class="mint-cell-text"
+            ><font style="vertical-align: inherit;"
             ><font style="vertical-align: inherit;">发票金额</font></font
             ></span
             >
           </div>
           <div class="mint-cell-value">
             <span>￥{{ invoiceDetail.price }}</span>
-            <div class="mint-field-clear" style="display: none;">
-              <i class="mintui mintui-field-error"></i>
-            </div>
-            <span class="mint-field-state is-default"
-            ><i class="mintui mintui-field-default"></i
-            ></span>
-            <div class="mint-field-other"></div>
-          </div>
-        </div>
-        <div class="mint-cell-right"></div>
-      </a>
-      <a class="mint-cell mint-field">
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
-            <span class="mint-cell-text"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;">地址和电话</font></font
-            ></span
-            >
-          </div>
-          <div class="mint-cell-value" style="display: block;">
-            <span>{{ invoiceDetail.purchaserAddress }}</span>
-            <div class="mint-field-clear" style="display: none;">
-              <i class="mintui mintui-field-error"></i>
-            </div>
-            <span class="mint-field-state is-default"
-            ><i class="mintui mintui-field-default"></i
-            ></span>
-            <div class="mint-field-other"></div>
-          </div>
-        </div>
-        <div class="mint-cell-right"></div>
-      </a>
-      <a class="mint-cell mint-field">
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
-            <span class="mint-cell-text"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;"
-            >开户行和账号</font
-            ></font
-            ></span
-            >
-          </div>
-          <div class="mint-cell-value">
-            <span>{{ invoiceDetail.purchaserBank }}</span>
             <div class="mint-field-clear" style="display: none;">
               <i class="mintui mintui-field-error"></i>
             </div>
@@ -264,19 +253,21 @@
       </div>
     </div>
     <mt-popup
-       v-model="popupVisible"
-        position="middle"
-        style="padding:30px"
-        align="center">
-        <p style="fontSize:17px">发票预览</p>
-        <img :src="imgUrl" alt="" style="width:350px">
-        <div style="margin-bottom:20px">
-           <mt-button type="primary" size="small" data-clipboard-action="copy" class="copyPdfUrl" :data-clipboard-text="url" @click="copyLink">复制发票下载地址</mt-button>
-        </div>
-        <div style="width:200px,fontSize:12px"> 
-          <textarea :value="url" style="width:300px"/>  
-        </div>
-        <p style="margin-top:7px">复制发票下载地址并在浏览器中打开进行下载</p>
+      v-model="popupVisible"
+      position="middle"
+      style="padding:30px"
+      align="center">
+      <p style="fontSize:17px">发票预览</p>
+      <img :src="imgUrl" alt="" style="width:350px">
+      <div style="margin-bottom:20px">
+        <mt-button type="primary" size="small" data-clipboard-action="copy" class="copyPdfUrl"
+                   :data-clipboard-text="url" @click="copyLink">复制发票下载地址
+        </mt-button>
+      </div>
+      <div style="width:200px,fontSize:12px">
+        <textarea :value="url" style="width:300px"/>
+      </div>
+      <p style="margin-top:7px">复制发票下载地址并在浏览器中打开进行下载</p>
     </mt-popup>
   </div>
 </template>
@@ -294,13 +285,13 @@
     },
     data() {
       return {
-        headerTitle: "发票记录详情",
+        headerTitle: "发票详情",
         active: "tab-container1",
         invoiceDetail: {},
         invoiceItems: [],
         serviceType: "",
         url: "",
-        imgUrl:"",
+        imgUrl: "",
         popupVisible: false
       };
     },
@@ -309,7 +300,6 @@
       //查看发票
       viewPicture() {
         if (this.invoiceDetail.state === 1) {
-          // window.location.href = this.url;
           this.popupVisible = true
         } else if (this.invoiceDetail.state === 2) {
           this.$toast("当前发票作废了");
@@ -325,7 +315,7 @@
         history.go(-1);
       },
       goElectronicInvoice() {
-        this.$router.push(`/out-order`);
+        this.$router.push(`/invoice/out-order`);
       },
       getInvoiceDetail() {
         getInvoice(this.$route.query.id).then(res => {
@@ -340,19 +330,19 @@
       },
       goAssociatedOrder() {
         this.$router.push({
-          path: "/out-order",
+          path: "/invoice/out-order",
           query: {id: this.$route.query.id}
         });
       },
       copyLink() {
-         let _this = this;
-         let clipboard = new this.clipboard(".copyPdfUrl");
-         clipboard.on('success', function () {
-           _this.$toast("复制成功")
-         });
-         clipboard.on('error', function () {
-           _this.$toast("复制失败")
-         });
+        let _this = this;
+        let clipboard = new this.clipboard(".copyPdfUrl");
+        clipboard.on('success', function () {
+          _this.$toast("复制成功")
+        });
+        clipboard.on('error', function () {
+          _this.$toast("复制失败")
+        });
       }
     },
     created() {

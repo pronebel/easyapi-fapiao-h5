@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <div class="page-cell">
-      <div v-if="order === true">
+      <div v-if="order === true" style="margin-top:10px;">
         <div style="border-bottom:1px solid #f4f4f4;" v-for="(type, index) in typeList" :key="index">
           <div class="mint-cell router-link">
             <div class="mint-cell-wrapper">
@@ -27,7 +27,7 @@
             <i class="mint-cell-allow-right"></i>
           </div>
         </a>
-        <a href="javascript:void(0);" @click="goCompanyManage" class="mint-cell">
+        <a href="javascript:void(0);" @click="gotoCompany" class="mint-cell">
           <div class="mint-cell-wrapper">
             <div class="mint-cell-title"><span class="mint-cell-text">抬头管理</span></div>
             <i class="mint-cell-allow-right"></i>
@@ -90,12 +90,12 @@
       goInvoiceRecord() {
         this.$router.push("/record");
       },
-      goCompanyManage() {
+      gotoCompany() {
         this.$router.push({
           path: "/company/",
           name: "company",
           params: {
-            companyLists: "companyLists"
+            from: "index"
           }
         });
       },

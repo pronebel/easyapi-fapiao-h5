@@ -186,8 +186,8 @@
       <mt-button class="submit" @click="confirm">保存</mt-button>
       <mt-button
         v-if="this.title === 'edit'"
-        class="submit_btnDelet"
-        @click="btnDelet"
+        class="submit_delete"
+        @click="deleteDate"
       >删除
       </mt-button
       >
@@ -250,7 +250,7 @@
         }
       },
       //删除
-      btnDelet() {
+      deleteDate() {
         MessageBox({
           title: "提示",
           message: "确定删除?",

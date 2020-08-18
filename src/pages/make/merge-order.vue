@@ -99,7 +99,7 @@
             </a>
             <a
               class="mint-cell mint-field"
-              @click="toCompany"
+              @click="gotoCompany"
               v-if="invoiceForm.type === '企业'"
             >
               <div class="mint-cell-left"></div>
@@ -593,13 +593,14 @@
           }
         });
       },
-      toCompany() {
+      gotoCompany() {
         if (this.company.length === 0) {
           this.$router.push({
             path: "/company/",
             name: "company",
             params: {
-              id: ""
+              id: "",
+              from: "make"
             }
           });
         } else {
@@ -607,7 +608,8 @@
             path: "/company/",
             name: "company",
             params: {
-              id: this.company.companyId
+              id: this.company.companyId,
+              from: "make"
             }
           });
         }
@@ -626,57 +628,65 @@
         });
       },
       goInvoiceSuccess() {
-        this.showDisabled = false;
-        //验证邮箱
-        let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-        if (this.NeedEmail === true) {
-          if (this.email === "") {
-            this.showDisabled = true;
-            return Toast("请输入邮箱");
-          } else if (!regEmail.test(this.email)) {
-            this.showDisabled = true;
-            return Toast("邮箱格式不正确");
-          }
-        } else {
-          if (this.email) {
-            if (!regEmail.test(this.email)) {
-              this.showDisabled = true;
-              return Toast("邮箱格式不正确");
-            }
-          }
-        }
-        //手机号验证
-        let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-        if (this.NeedMobile === true) {
-          if (this.contactInformation === "") {
-            this.showDisabled = true;
-            return Toast("请输入手机号码");
-          } else if (!reg.test(this.contactInformation)) {
-            this.showDisabled = true;
-            return Toast("手机格式不正确");
-          }
-        } else {
-          if (this.contactInformation) {
-            if (!reg.test(this.contactInformation)) {
-              this.showDisabled = true;
-              return Toast("手机格式不正确");
-            }
-          }
-        }
-        if (this.order === "true") {
-          this.invoiceForm.accessToken = this.accessToken;
-          this.invoiceForm.addrMobile = this.contactInformation;
-          this.invoiceForm.email = this.email;
-          this.$ajax.post('/merge-make', this.invoiceForm, {}).then(res => {
-            if (res.data.code === 1) {
-              this.$router.push(`/make/success`);
-            }
-          }).catch(error => {
+        MessageBox({
+          title: "提示",
+          message: "确认抬头正确并开票吗？",
+          showCancelButton: true
+        }).then(action => {
+          if (action === "confirm") {
             this.showDisabled = false;
-            Toast(error.response.data.message);
-            this.showDisabled = true;
-          });
-        }
+            //验证邮箱
+            let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+            if (this.NeedEmail === true) {
+              if (this.email === "") {
+                this.showDisabled = true;
+                return Toast("请输入邮箱");
+              } else if (!regEmail.test(this.email)) {
+                this.showDisabled = true;
+                return Toast("邮箱格式不正确");
+              }
+            } else {
+              if (this.email) {
+                if (!regEmail.test(this.email)) {
+                  this.showDisabled = true;
+                  return Toast("邮箱格式不正确");
+                }
+              }
+            }
+            //手机号验证
+            let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+            if (this.NeedMobile === true) {
+              if (this.contactInformation === "") {
+                this.showDisabled = true;
+                return Toast("请输入手机号码");
+              } else if (!reg.test(this.contactInformation)) {
+                this.showDisabled = true;
+                return Toast("手机格式不正确");
+              }
+            } else {
+              if (this.contactInformation) {
+                if (!reg.test(this.contactInformation)) {
+                  this.showDisabled = true;
+                  return Toast("手机格式不正确");
+                }
+              }
+            }
+            if (this.order === "true") {
+              this.invoiceForm.accessToken = this.accessToken;
+              this.invoiceForm.addrMobile = this.contactInformation;
+              this.invoiceForm.email = this.email;
+              this.$ajax.post('/merge-make', this.invoiceForm, {}).then(res => {
+                if (res.data.code === 1) {
+                  this.$router.push(`/make/success`);
+                }
+              }).catch(error => {
+                this.showDisabled = false;
+                Toast(error.response.data.message);
+                this.showDisabled = true;
+              });
+            }
+          }
+        });
       },
 
       //获取备注

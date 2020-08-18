@@ -24,7 +24,7 @@
             <input
               type="text"
               disabled
-              v-model="specifications"
+              v-model="specification"
               placeholder="规格类型"
               class="mint-field-core"
             />
@@ -89,7 +89,7 @@
         headerTitle: "开具电子发票",
         productId: "",
         accessToken: "",
-        specifications: "",
+        specification: "",
         unit: "",
         price: "",
         number: "",
@@ -109,7 +109,7 @@
       choice(name) {
         for (var i = 0; i < this.productList.length; i++) {
           if (this.productId === this.productList[i].productId) {
-            this.specifications = this.productList[i].specification;
+            this.specification = this.productList[i].specification;
             this.unit = this.productList[i].unit;
             this.price = this.productList[i].price;
             this.name = this.productList[i].name;
@@ -123,7 +123,7 @@
             if (this.number !== "0" && this.price !== 0) {
               obj = {
                 productId: this.productId,
-                specifications: this.specifications,
+                specification: this.specification,
                 unit: this.unit,
                 price: this.price,
                 name: this.name,

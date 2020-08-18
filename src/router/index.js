@@ -30,8 +30,8 @@ export default new Router({
       meta: {title: "抬头管理"}
     },
     {
-      path: "/address/",
-      name: "address",
+      path: "/company/edit",
+      name: "EditCompany",
       component: resolve => require(["../pages/company/edit.vue"], resolve)
     },
     {
@@ -51,8 +51,8 @@ export default new Router({
       component: resolve => require(["../pages/invoice/detail.vue"], resolve)
     },
     {
-      path: "/out-order",
-      name: "out-order",
+      path: "/invoice/out-order",
+      name: "InvoiceOutOrder",
       component: resolve => require(["../pages/invoice/out-order.vue"], resolve)
     },
     {
