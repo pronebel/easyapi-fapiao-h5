@@ -2,6 +2,17 @@ import axios from 'axios'
 
 import {baseUrl} from "./request";
 
+/**
+ * 获取公司抬头列表
+ *
+ * @see https://www.easyai.com
+ */
+export const getCompanyList = (params) => axios.get(`${baseUrl}/companies`, {
+  params: {
+    ...params,
+    accessToken: localStorage.getItem("accessToken")
+  }
+});
 
 /**
  * 添加公司抬头信息

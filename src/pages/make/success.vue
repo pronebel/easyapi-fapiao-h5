@@ -7,10 +7,10 @@
       </div>
       <div class="success-button">
         <div>
-          <span @click="toInvoice" class="button">返回首页</span>
+          <span @click="gotoInvoice" class="button">返回首页</span>
         </div>
         <div>
-          <mt-button @click="toInvoiceRecord" class="button1">开票记录</mt-button>
+          <mt-button @click="gotoInvoiceRecord" class="button1">开票记录</mt-button>
         </div>
       </div>
     </div>
@@ -27,9 +27,6 @@
     },
     data() {
       return {
-        list: [],
-        loading: false,
-        finished: false,
         headerTitle: "提交成功",
       };
     },
@@ -38,10 +35,10 @@
       goBack() {
         history.go(-1);
       },
-      toInvoiceRecord() {
+      gotoInvoiceRecord() {
         this.$router.push(`/record`);
       },
-      toInvoice() {
+      gotoInvoice() {
         this.$router.push({
           path: "/",
           query: {

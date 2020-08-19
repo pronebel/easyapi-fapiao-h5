@@ -1,17 +1,12 @@
 <template>
   <div class="invoice-record-con">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <!--<div v-if="invoiceRecordList.length<1">-->
-    <!--<div class="no-record">-->
-    <!--<my-header @headBack="goBack()" :headerTitle="headerTitle"></my-header>-->
-    <!--</div>-->
     <div class="no-record-con" v-show="isNull">
       <p>
         <img src="../../assets/images/no-record_03.png" alt/>
       </p>
       <p class="record-text">暂时还没有记录!</p>
     </div>
-    <!--</div>-->
     <div style="margin-top: 10px">
       <div id="loading">
         <mt-spinner
@@ -51,7 +46,7 @@
 </template>
 
 <script>
-  import { getInvoiceList } from "../../api/invoice";
+  import {getInvoiceList} from "../../api/invoice";
   import Header from "../../components/header.vue";
 
   export default {
@@ -91,7 +86,7 @@
         });
       },
       goInvoiceDetail(id) {
-        this.$router.push({ path: "/invoice/detail", query: { id: id } });
+        this.$router.push({path: "/invoice/detail", query: {id: id}});
       }
     },
     computed: {

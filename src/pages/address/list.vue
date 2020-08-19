@@ -81,7 +81,7 @@
 
 <script>
   import Header from "../../components/header.vue";
-  import {defaultCompany, getCompanyList} from "../../api/company";
+  import {defaultCompany} from "../../api/company";
   import {setTimeout} from "timers";
 
   export default {
@@ -106,7 +106,12 @@
         history.go(-1);
       },
       getCompanyList() {
-        getCompanyList({username: localStorage.getItem("username")}).then(res => {
+        this.$ajax.get("/companies", {
+          params: {
+            accessToken: this.accessToken,
+            username: localStorage.getItem("username")
+          }
+        }).then(res => {
           if (res.data.code !== 0) {
             this.loadingList = false;
             this.companyList = res.data.content;
@@ -164,5 +169,5 @@
 </script>
 
 <style scoped>
-  @import 'company.css';
+  @import 'address.css';
 </style>

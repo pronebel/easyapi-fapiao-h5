@@ -2,6 +2,19 @@ import axios from 'axios'
 
 import {baseUrl} from "./request";
 
+
+/**
+ * 获取地址列表
+ *
+ * @see https://www.easyai.com
+ */
+export const getAddressList = (params) => axios.get(`${baseUrl}/addresses`, {
+  params: {
+    ...params,
+    accessToken: localStorage.getItem("accessToken")
+  }
+});
+
 /**
  * 获取地址信息
  *
@@ -54,7 +67,7 @@ export const deleteAddress = id => axios.delete(`${baseUrl}/address/${id}`, {
 /**
  * 获取我的默认地址信息
  */
-export const getDefaultCompany = username => axios.get(`${baseUrl}/address/${username}/default`, {
+export const getDefaultAddress = username => axios.get(`${baseUrl}/address/${username}/default`, {
   data: {
     accessToken: localStorage.getItem("accessToken")
   }
