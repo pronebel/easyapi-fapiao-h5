@@ -71,6 +71,11 @@ export default new Router({
       component: resolve => require(["../pages/make/single-order.vue"], resolve)
     },
     {
+      path: "/single-query-order",
+      name: "singleQueryOrder",
+      component: resolve => require(["../pages/make/single-query-order.vue"], resolve)
+    },
+    {
       path: "/single-order-success",
       name: "singleOrderSuccess",
       component: resolve =>
