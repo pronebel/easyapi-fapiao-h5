@@ -1,21 +1,21 @@
 <template>
-  <div style="padding: 0 10px;">
+  <div style="padding: 0 10px;height: 100%;">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <div class="no-record-con" v-show="isNull">
       <p><img src="../../assets/images/no-record_03.png" alt=""/></p>
       <p class="record-text">暂时还没有记录！</p>
     </div>
-    <div class="page-checklist header-d" style="margin-top: 10px">
+    <div class="page-checklist header-d" style="margin-top: 10px;height: 100%;overflow:scroll!important; ">
       <div
         v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="loading"
-        infinite-scroll-distance="50"
+        infinite-scroll-disabled="busy"
+        infinite-scroll-distance="10"
+        :auto-fill="false"
       >
         <div
           class="mint-checklist page-part"
           v-for="(item, index) in checkItem"
           :key="index"
-          style="box-shadow: 0 0 5px rgba(0,0,0,0.15);"
         >
           <a class="mint-cell">
             <div class="mint-cell-wrapper order-con">
@@ -53,13 +53,14 @@
         </div>
       </div>
       <div class="page-infinite-loading">
-        <p v-if="loading2">{{ loadMoreText }}</p>
+        <p v-if="loading">{{ loadMoreText }}</p>
         <p v-if="noMore">没有更多数据了</p>
       </div>
     </div>
     <div class="mint-footer" v-show="isNull == false">
       <label class="mint-checklist-label" style="margin-left: 12px;">
-        <span class="mint-checkbox">
+        <div style="display: inline">
+          <span class="mint-checkbox">
           <input
             type="checkbox"
             class="mint-checkbox-input"
@@ -68,16 +69,20 @@
           />
           <span class="mint-checkbox-core"></span>
         </span>
-        <span style="margin-left: 9px;">本页全选</span>
-        <span style="margin-left:15%">合计：</span>
-        <span class="price">￥{{ totalPrice }}</span>
-        <mt-button
-          class="next-button next-button-to"
-          @click="goElectronicInvoice"
-          :disabled="selectList.length < 1"
-        >下一步
-        </mt-button
-        >
+          <span style="margin-left: 9px;">本页全选</span>
+          <span style="margin-left:15%">合计：</span>
+          <span class="price">￥{{ totalPrice }}</span>
+          <!--<p style="position: relative;top: 0;left: 0">开票金额不得低于90元</p>-->
+        </div>
+        <div style="display: inline;height: 50px;width: 50px">
+          <mt-button
+            class="next-button next-button-to"
+            @click="goElectronicInvoice"
+            :disabled="selectList.length < 1"
+          >下一步
+          </mt-button
+          >
+        </div>
       </label>
     </div>
   </div>
@@ -94,15 +99,16 @@
     },
     data() {
       return {
+        totalPages: "",
         loadMoreText: "加载中...",
+        busy: false, //下拉加载
         loading: false, //下拉加载
-        loading2: false, //下拉加载
         isNull: false,
         noMore: false,
         page: 0,
         size: 10,
         headerTitle: "开票",
-        arr:[],
+        arr: [],
         invoiceList: [],
         selectList: [],
         checkItem: [],
@@ -126,18 +132,8 @@
         });
         this.selectList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
       },
-      //上拉加载
-      loadMore() {
-        this.loading = true;
-        this.loading2 = true;
-        this.page++;
-        this.allCheck = false;
-        // for (var i = 0; i < this.arr.length; i++) {
-        //   this.checkItem.push(this.arr[i]);
-        // }
-        this.getOutOrderList();
-      },
       getOutOrderList() {
+        this.busy = true;
         this.$ajax.get("/out-orders", {
           params: {
             size: this.size,
@@ -147,23 +143,16 @@
             state: 0
           }
         }).then(res => {
+          this.totalPages = res.data.totalPages;
           if (res.data.code !== 0) {
             let data = res.data.content;
             this.isNull = false;
             for (var v of data) {
               v.satus = false;
             }
+            console.log(this.page);
             this.checkItem = data;
-              if (this.checkItem.length === res.data.content.length) {
-                this.loading2 = true;
-                this.loading = false;
-                this.checkItem = data;
-              } else {
-                this.loadMoreText = "";
-                this.loading = true;
-                this.loading2 = false;
-                this.noMore = true;
-              }
+            console.log(data);
           } else {
             this.loadMoreText = "";
             this.noMore = true;
@@ -171,7 +160,33 @@
         }).catch(error => {
           console.log(error);
         });
-        // this.loading = false;
+        this.loading = false;
+        this.busy = false;
+      },
+      //上拉加载
+      loadMore() {
+        console.log("我被执行了")
+        this.busy = true;
+        this.loading = true;
+        this.noMore = false;
+        this.page += 1;
+        this.allCheck = false;
+        console.log(this.page);
+        if (this.page <= this.totalPages) {
+          this.loading = true;
+          this.busy = false;
+          this.checkItem = this.checkItem.concat();
+          console.log(this.checkItem);
+        } else {
+          this.loadMoreText = "";
+          this.loading = true;
+          this.loading = false;
+          this.noMore = true;
+        }
+        // for (var i = 0; i < this.arr.length; i++) {
+        //   this.checkItem.push(this.arr[i]);
+        // }
+        this.getOutOrderList();
       },
       //全选
       change: function() {
@@ -223,7 +238,7 @@
     },
     mounted() {
       this.getOutOrderList();
-    }
+    },
   };
 </script>
 <style scoped>

@@ -9,12 +9,12 @@ import store from "./store/store";
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css';
 import clipboard from 'clipboard';
-import infiniteScroll from 'vue-infinite-scroll'
+import { InfiniteScroll } from 'mint-ui';
 
 import axios from './api/request'
 Vue.prototype.$ajax = axios
 
-Vue.use(infiniteScroll)
+Vue.use(InfiniteScroll);
 Vue.use(MintUI);
 Vue.prototype.clipboard = clipboard;
 

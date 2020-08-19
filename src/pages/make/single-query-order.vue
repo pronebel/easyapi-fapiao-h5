@@ -271,15 +271,18 @@
               <div class="mint-cell-title">
 
                 <span class="mint-cell-text"
-                ><font style="vertical-align: inherit;"
-                ><font style="vertical-align: inherit;"
-                >发票内容</font
-                ></font
-                ></span
-                >
+              ><font style="vertical-align: inherit;"
+              ><font style="vertical-align: inherit;"
+              >发票内容</font
+              ></font
+              ></span
+              >
+              </div>
+              <div class="product">
+                <mt-button size="small" class="detail">商品明细</mt-button>
+                <mt-button size="small">商品类别</mt-button>
               </div>
               <div class="mint-cell-value">
-                {{Object.values(JSON.parse(outOrder.fields))[0]}}
                 <div class="mint-field-clear" style="display: none;">
                   <i class="mintui mintui-field-error"></i>
                 </div>
