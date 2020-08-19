@@ -16,6 +16,7 @@
     "is-chinese-phone-number": "^0.1.9",
     "isemail": "^3.2.0",
     "mint-ui": "^2.2.13",
+    "vant": "^2.10.2",
     "vue": "^2.6.11",
     "vue-infinite-scroll": "^2.0.2",
     "vue-router": "^3.4.3",

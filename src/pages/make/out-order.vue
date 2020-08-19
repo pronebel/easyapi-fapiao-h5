@@ -6,11 +6,8 @@
       <p class="record-text">暂时还没有记录！</p>
     </div>
     <div class="page-checklist header-d" style="margin-top: 10px;height: 100%;overflow:scroll!important; ">
-      <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="busy"
-        infinite-scroll-distance="10"
-        :auto-fill="false"
+      <van-list
+        v-model="loading"
       >
         <div
           class="mint-checklist page-part"
@@ -51,7 +48,7 @@
             </div>
           </a>
         </div>
-      </div>
+      </van-list>
       <div class="page-infinite-loading">
         <p v-if="loading">{{ loadMoreText }}</p>
         <p v-if="noMore">没有更多数据了</p>
@@ -91,6 +88,9 @@
 <script>
   import { mapGetters } from "vuex";
   import Header from "../../components/header.vue";
+  import Vue from 'vue';
+  import { List } from 'vant';
+  Vue.use(List);
 
   export default {
     name: "out-order",

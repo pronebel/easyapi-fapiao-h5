@@ -271,16 +271,15 @@
               <div class="mint-cell-title">
 
                 <span class="mint-cell-text"
-              ><font style="vertical-align: inherit;"
-              ><font style="vertical-align: inherit;"
-              >发票内容</font
-              ></font
-              ></span
-              >
+                ><font style="vertical-align: inherit;"
+                ><font style="vertical-align: inherit;"
+                >发票内容</font
+                ></font
+                ></span
+                >
               </div>
               <div class="product">
-                <mt-button size="small" class="detail">商品明细</mt-button>
-                <mt-button size="small">商品类别</mt-button>
+                <span class="detail" v-for="item in list" :key="item.name" :class="{active:active==item.name}" @click="showDetail(item.name)">{{item.name}}</span>
               </div>
               <div class="mint-cell-value">
                 <div class="mint-field-clear" style="display: none;">
@@ -458,12 +457,12 @@
 </template>
 
 <script>
-  import {getDefaultCompany} from "../../api/company";
-  import {queryShopOrder} from "../../api/query";
+  import { getDefaultCompany } from "../../api/company";
+  import { queryShopOrder } from "../../api/query";
   import Header from "../../components/header.vue";
-  import {Navbar, TabItem} from "mint-ui";
-  import {Toast} from "mint-ui";
-  import {MessageBox} from "mint-ui";
+  import { Navbar, TabItem } from "mint-ui";
+  import { Toast } from "mint-ui";
+  import { MessageBox } from "mint-ui";
   import Isemail from "isemail";
 
   export default {
@@ -473,9 +472,17 @@
     },
     data() {
       return {
+        active:'商品明细',
+        list:[{
+          name:'商品明细'
+        },
+          {
+            name:'商品类别'
+          }
+        ],
         loadingList: true,
         amountOfMoney: 0,
-        outOrder: '',
+        outOrder: "",
         contentList: "",
         outOrderNo: "",
         order: "",
@@ -485,7 +492,6 @@
         showDisabled: true,
         selected: "1",
         headerTitle: "开具电子发票",
-        active: "tab-container1",
         contactInformation: "",
         ifNeedMobile: "",
         ifNeedEmail: "",
@@ -505,6 +511,9 @@
       };
     },
     methods: {
+      showDetail(name){
+        this.active=name
+      },
       goBack() {
         history.go(-1);
       },
@@ -533,7 +542,7 @@
             this.company = [];
           } else {
             this.company = res.data.content;
-            if (localStorage.getItem("type") == '企业') {
+            if (localStorage.getItem("type") == "企业") {
               this.invoiceForm.purchaserName = this.company.name;
               this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
               this.invoiceForm.address = this.company.address;
@@ -579,12 +588,12 @@
           if (res.data.code == 1) {
             this.$router.push({
               path: "/invoice/detail",
-              query: {id: res.data.content.invoice.invoiceId}
+              query: { id: res.data.content.invoice.invoiceId }
             });
           }
           this.outOrder = res.data.content[0];
           this.calculatedAmount();
-        })
+        });
       },
       getEmailInfo() {
         let username = this.username;
@@ -596,7 +605,7 @@
         }).then(res => {
           (this.loadingList = false), (this.email = res.data.content.email);
           this.contactInformation = res.data.content.mobile;
-        })
+        });
       },
       goInvoiceSuccess() {
         this.showDisabled = false;
@@ -645,16 +654,16 @@
         this.invoiceForm.outOrderIds = this.outOrder.outOrderId;
         this.$ajax({
           method: "POST",
-          url: 'https://fapiao-api.easyapi.com/merge-make',
+          url: "https://fapiao-api.easyapi.com/merge-make",
           params: this.invoiceForm,
-          headers: {"Content-Type": "application/x-www-form-urlencoded"}
+          headers: { "Content-Type": "application/x-www-form-urlencoded" }
         })
           .then(res => {
             if (res.data.code === 1) {
               this.$messagebox.alert(res.data.message);
               this.$router.push({
                 path: "/single-order-success",
-                query: {returnUrl: this.returnUrl}
+                query: { returnUrl: this.returnUrl }
               });
             }
           }).catch(error => {
@@ -677,7 +686,7 @@
           }
         }).then(res => {
           this.remark = res.data.content.remark;
-        })
+        });
       },
       getInvoicingService() {
         this.$ajax.get("/api/shop/0/support", {
@@ -687,7 +696,7 @@
         }).then(res => {
           this.ifNeedMobile = res.data.content.ifNeedMobile;
           this.ifNeedEmail = res.data.content.ifNeedEmail;
-        })
+        });
       }
     },
     watch: {},
