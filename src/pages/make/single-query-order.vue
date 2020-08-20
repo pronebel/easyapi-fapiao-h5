@@ -455,7 +455,6 @@
   import {Toast} from "mint-ui";
   import {MessageBox} from "mint-ui";
   import Isemail from "isemail";
-
   export default {
     name: "singleOrder",
     components: {
