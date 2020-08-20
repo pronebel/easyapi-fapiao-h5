@@ -13,4 +13,3 @@ export const queryShopOrder = (outOrderNo, username) => axios.get(`${baseUrl}/sh
     username: username
   }
 });
-

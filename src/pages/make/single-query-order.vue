@@ -73,13 +73,11 @@
               <div class="mint-cell-left"></div>
               <div class="mint-cell-wrapper">
                 <div class="mint-cell-title">
-
                   <span
                     class="mint-cell-text"
                     style="font-size: 15px;color:#333"
                   >发票抬头</span
                   >
-
                 </div>
                 <div class="mint-cell-value">
                   <span style="font-size: 15px;color:#333">{{
@@ -102,7 +100,6 @@
               <div class="mint-cell-left"></div>
               <div class="mint-cell-wrapper">
                 <div class="mint-cell-title">
-
                   <span class="mint-cell-text"
                   ><font style="vertical-align: inherit;"
                   ><font
@@ -111,10 +108,8 @@
                   ></font
                   ></span
                   >
-
                 </div>
                 <div class="mint-cell-value">
-                  <!--<input placeholder="" type="tel" class="mint-field-core" v-model="invoiceForm.purchaserTaxpayerNumber" disabled>-->
                   <span style="font-size: 15px;color:#333">{{
                     company.taxNumber
                   }}</span>
@@ -147,7 +142,6 @@
 
                 </div>
                 <div class="mint-cell-value" style="display: block">
-                  <!--<input placeholder="非必填信息" type="tel" class="mint-field-core" v-model="invoiceForm.purchaserAddress" disabled>-->
                   <span style="font-size: 15px;color:#333">{{
                     company.address
                   }}</span>
@@ -180,7 +174,6 @@
 
                 </div>
                 <div class="mint-cell-value" style="display: block">
-                  <!--<input placeholder="非必填信息" type="tel" class="mint-field-core" v-model="invoiceForm.purchaserAddress" disabled>-->
                   <span style="font-size: 15px;color:#333">{{
                     company.phone
                   }}</span>
@@ -279,7 +272,8 @@
                 >
               </div>
               <div class="product">
-                <span class="detail" v-for="item in list" :key="item.name" :class="{active:active==item.name}" @click="showDetail(item.name)">{{item.name}}</span>
+                <span class="detail" v-for="item in list" :key="item.name" :class="{active:active==item.name}"
+                      @click="showDetail(item.name)">{{item.name}}</span>
               </div>
               <div class="mint-cell-value">
                 <div class="mint-field-clear" style="display: none;">
@@ -435,7 +429,7 @@
           <div class="bottom">
             <mt-button
               class="submit"
-              @click="goInvoiceSuccess"
+              @click="makeInvoice"
               v-if="showDisabled"
             >提交
             </mt-button
@@ -450,19 +444,16 @@
         </div>
       </mt-tab-container-item>
     </mt-tab-container>
-    <div>
-      <router-view @seletedOrder="seletedOrder"></router-view>
-    </div>
   </div>
 </template>
 
 <script>
-  import { getDefaultCompany } from "../../api/company";
-  import { queryShopOrder } from "../../api/query";
+  import {getDefaultCompany} from "../../api/company";
+  import {queryShopOrder} from "../../api/query";
   import Header from "../../components/header.vue";
-  import { Navbar, TabItem } from "mint-ui";
-  import { Toast } from "mint-ui";
-  import { MessageBox } from "mint-ui";
+  import {Navbar, TabItem} from "mint-ui";
+  import {Toast} from "mint-ui";
+  import {MessageBox} from "mint-ui";
   import Isemail from "isemail";
 
   export default {
@@ -472,21 +463,20 @@
     },
     data() {
       return {
-        active:'商品明细',
-        list:[{
-          name:'商品明细'
-        },
+        active: '商品明细',
+        list: [
           {
-            name:'商品类别'
+            name: '商品明细'
+          },
+          {
+            name: '商品类别'
           }
         ],
         loadingList: true,
         amountOfMoney: 0,
         outOrder: "",
-        contentList: "",
         outOrderNo: "",
         order: "",
-        make: true,
         accessToken: "",
         scanContent: "",
         showDisabled: true,
@@ -496,23 +486,18 @@
         ifNeedMobile: "",
         ifNeedEmail: "",
         company: {},
-        itemIds: "",
         email: "",
-        seletedOrderList: [],
         sum: 0,
         item: {},
-        mergeTax: 0,
-        howMany: "",
         remark: "",
-        returnUrl: "",
         invoiceForm: {
           type: ""
         }
       };
     },
     methods: {
-      showDetail(name){
-        this.active=name
+      showDetail(name) {
+        this.active = name
       },
       goBack() {
         history.go(-1);
@@ -530,10 +515,6 @@
           this.invoiceForm.purchaserBankAccount = "";
           this.invoiceForm.companyId = "";
         }
-      },
-      seletedOrder(item) {
-        this.loadingList = false;
-        this.company = item;
       },
       getDefaultCompany() {
         let username = this.username;
@@ -560,7 +541,7 @@
             path: "/company/",
             name: "company",
             params: {
-              id: ""
+              from: "make"
             }
           });
         } else {
@@ -573,25 +554,12 @@
           });
         }
       },
-      getOutOrder() {
-        let outOrderNo = this.outOrderNo;
-        this.$ajax.get("/out-orders", {
-          params: {
-            size: this.size,
-            accessToken: this.accessToken,
-            taxNumber: this.taxNumber,
-            username: this.username,
-            state: 0,
-            no: outOrderNo
-          }
-        }).then(res => {
+      getShopOrder() {
+        queryShopOrder(this.outOrderNo, localStorage.getItem("username")).then(res => {
           if (res.data.code == 1) {
-            this.$router.push({
-              path: "/invoice/detail",
-              query: { id: res.data.content.invoice.invoiceId }
-            });
+            this.outOrder = res.data.content;
+            this.amountOfMoney = res.data.content.price;
           }
-          this.outOrder = res.data.content[0];
           this.calculatedAmount();
         });
       },
@@ -607,7 +575,7 @@
           this.contactInformation = res.data.content.mobile;
         });
       },
-      goInvoiceSuccess() {
+      makeInvoice() {
         this.showDisabled = false;
         //验证邮箱
         if (this.ifNeedEmail === true) {
@@ -651,32 +619,25 @@
         this.invoiceForm.type = this.invoiceForm.type;
         this.invoiceForm.category = "增值税电子普通发票";
         this.invoiceForm.property = "电子";
-        this.invoiceForm.outOrderIds = this.outOrder.outOrderId;
+        this.invoiceForm.price = this.amountOfMoney;
+        this.invoiceForm.outOrderNo = this.outOrder.outOrderNo;
+        this.invoiceForm.items = this.outOrder.items;
         this.$ajax({
           method: "POST",
-          url: "https://fapiao-api.easyapi.com/merge-make",
-          params: this.invoiceForm,
-          headers: { "Content-Type": "application/x-www-form-urlencoded" }
-        })
-          .then(res => {
-            if (res.data.code === 1) {
-              this.$messagebox.alert(res.data.message);
-              this.$router.push({
-                path: "/single-order-success",
-                query: { returnUrl: this.returnUrl }
-              });
-            }
-          }).catch(error => {
+          url: "https://fapiao-api.easyapi.com/invoice/make",
+          params: this.invoiceForm
+        }).then(res => {
+          if (res.data.code === 1) {
+            this.$messagebox.alert(res.data.message);
+            this.$router.push({
+              path: "/single-order-success"
+            });
+          }
+        }).catch(error => {
           this.showDisabled = false;
           Toast(error.response.data.message);
           this.showDisabled = true;
         });
-      },
-      //计算发票金额
-      calculatedAmount() {
-        if (this.outOrder !== null) {
-          this.amountOfMoney = this.outOrder.price.toFixed(2);
-        }
       },
       //获取备注
       getSpecifications() {
@@ -719,12 +680,6 @@
       } else if (this.outOrderNo === "") {
         Toast("outOrderNo不能为空！");
       }
-      if (this.$route.query.returnUrl) {
-        localStorage.setItem("returnUrl", this.$route.query.returnUrl);
-        this.accessToken = localStorage.getItem("returnUrl");
-      } else if (this.returnUrl === "") {
-        Toast("returnUrl不能为空！");
-      }
       this.accessToken = localStorage.getItem("accessToken");
       this.taxNumber = localStorage.getItem("taxNumber");
       this.username = localStorage.getItem("username");
@@ -738,14 +693,13 @@
     },
     activated() {
       this.getDefaultCompany();
-      this.seletedOrder();
     },
     mounted() {
       this.getEmailInfo();
       this.getDefaultCompany();
       this.getSpecifications();
       this.getInvoicingService();
-      this.getOutOrder();
+      this.getShopOrder()
     }
   };
 </script>
