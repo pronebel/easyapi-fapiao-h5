@@ -1,25 +1,20 @@
 <template>
   <div style="padding: 0 10px;height: 100%;">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <div class="no-record-con" v-show="checkItem.length==0">
+    <div class="no-record-con" v-show="checkItem==null">
       <p><img src="../../assets/images/no-record_03.png" alt=""/></p>
       <p class="record-text">暂时还没有记录！</p>
     </div>
-    <div class="page-checklist header-d" style="margin-top: 10px;height: 100%;overflow:scroll!important; ">
+    <div class="page-checklist header-d">
       <div
-        v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="loading"
-        infinite-scroll-distance="200"
+        class="mint-checklist page-part"
+        v-for="(item, index) in checkItem"
+        :key="index"
       >
-        <div
-          class="mint-checklist page-part"
-          v-for="(item, index) in checkItem"
-          :key="index"
-        >
-          <a class="mint-cell">
-            <div class="mint-cell-wrapper order-con">
-              <div class="mint-cell-title order-left">
-                <label class="mint-checklist-label">
+        <a class="mint-cell">
+          <div class="mint-cell-wrapper order-con">
+            <div class="mint-cell-title order-left">
+              <label class="mint-checklist-label">
                   <span class="mint-checkbox">
                     <input
                       type="checkbox"
@@ -30,31 +25,31 @@
                     />
                     <span class="mint-checkbox-core"></span>
                   </span>
-                </label>
-              </div>
-
-              <div class="order-right" @click="checked(index)">
-                <p class="num">
-                  <span>订单号：</span>
-                  <span>{{ item.no }}</span>
-                </p>
-                <p class="name">
-                  <span v-if="item.fields">{{Object.values(JSON.parse(item.fields))[0]}}</span>
-                </p>
-                <p>
-                  <span class="time">{{ item.orderTime }}</span>
-                  <span class="price">￥{{ item.price }}</span>
-                </p>
-              </div>
+              </label>
             </div>
-          </a>
-        </div>
-        <div class="page-infinite-loading">
-          <p>{{ loadMoreText }}</p>
-        </div>
+
+            <div class="order-right" @click="checked(index)">
+              <p class="num">
+                <span>订单号：</span>
+                <span>{{ item.no }}</span>
+              </p>
+              <p class="name">
+                <span v-if="item.fields">{{Object.values(JSON.parse(item.fields))[0]}}</span>
+              </p>
+              <p>
+                <span class="time">{{ item.orderTime }}</span>
+                <span class="price">￥{{ item.price }}</span>
+              </p>
+            </div>
+          </div>
+        </a>
       </div>
+      <div class="page-infinite-loading">
+        <p>{{ loadMoreText }}</p>
+      </div>
+
     </div>
-    <div class="mint-footer" v-show="checkItem.length>0">
+    <div class="mint-footer" v-show="checkItem!=null">
       <label class="mint-checklist-label" style="margin-left: 12px;">
         <div style="display: inline">
           <span class="mint-checkbox">
@@ -80,6 +75,12 @@
           >
         </div>
       </label>
+    </div>
+    <div
+      v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="loading"
+      infinite-scroll-distance="0"
+    >
     </div>
   </div>
 </template>
@@ -110,7 +111,7 @@
         arr: [],
         invoiceList: [],
         selectList: [],
-        checkItem: [],
+        checkItem: null,
         allCheck: false,
         accessToken: ""
       };
@@ -132,7 +133,6 @@
         this.selectList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
       },
       getOutOrderList() {
-        this.loading = true;
         this.$ajax.get("/out-orders", {
           params: {
             size: this.page.size,
@@ -149,8 +149,14 @@
             for (let v of data) {
               v.satus = false;
             }
-            this.checkItem = this.checkItem.concat(data)
+            if (this.checkItem == null) {
+              this.checkItem = data;
+            }
+            else {
+              this.checkItem = this.checkItem.concat(data)
+            }
           } else {
+            this.checkItem = []
             this.loadMoreText = "";
           }
           this.loading = false;
@@ -161,11 +167,13 @@
       },
       //上拉加载
       loadMore() {
+        this.loading = true;
         this.allCheck = false;
         if (this.page.total != 0 && this.page.page > 0 && this.page.page >= this.page.total) {
           this.loadMoreText = "没有更多数据了";
           return;
         }
+        console.log(this.page.total, this.page.page)
         this.getOutOrderList();
         this.page.page++;
       },
@@ -204,6 +212,9 @@
       //计算总价
       totalPrice: function () {
         let totalPrice = 0;
+        if (this.checkItem == null) {
+          return totalPrice;
+        }
         for (let i = 0; i < this.checkItem.length; i++) {
           let item = this.checkItem[i];
           if (item.satus === true) {
