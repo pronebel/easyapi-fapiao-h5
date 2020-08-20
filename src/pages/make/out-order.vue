@@ -1,13 +1,15 @@
 <template>
   <div style="padding: 0 10px;height: 100%;">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <div class="no-record-con" v-show="isNull">
+    <div class="no-record-con" v-show="checkItem.length==0">
       <p><img src="../../assets/images/no-record_03.png" alt=""/></p>
       <p class="record-text">暂时还没有记录！</p>
     </div>
     <div class="page-checklist header-d" style="margin-top: 10px;height: 100%;overflow:scroll!important; ">
-      <van-list
-        v-model="loading"
+      <div
+        v-infinite-scroll="loadMore"
+        infinite-scroll-disabled="loading"
+        infinite-scroll-distance="200"
       >
         <div
           class="mint-checklist page-part"
@@ -33,11 +35,10 @@
 
               <div class="order-right" @click="checked(index)">
                 <p class="num">
-                  <span>订单编号：</span>
+                  <span>订单号：</span>
                   <span>{{ item.no }}</span>
                 </p>
                 <p class="name">
-                  <!-- <span>产品名称：</span> -->
                   <span v-if="item.fields">{{Object.values(JSON.parse(item.fields))[0]}}</span>
                 </p>
                 <p>
@@ -48,13 +49,12 @@
             </div>
           </a>
         </div>
-      </van-list>
-      <div class="page-infinite-loading">
-        <p v-if="loading">{{ loadMoreText }}</p>
-        <p v-if="noMore">没有更多数据了</p>
+        <div class="page-infinite-loading">
+          <p>{{ loadMoreText }}</p>
+        </div>
       </div>
     </div>
-    <div class="mint-footer" v-show="isNull == false">
+    <div class="mint-footer" v-show="checkItem.length>0">
       <label class="mint-checklist-label" style="margin-left: 12px;">
         <div style="display: inline">
           <span class="mint-checkbox">
@@ -69,7 +69,6 @@
           <span style="margin-left: 9px;">本页全选</span>
           <span style="margin-left:15%">合计：</span>
           <span class="price">￥{{ totalPrice }}</span>
-          <!--<p style="position: relative;top: 0;left: 0">开票金额不得低于90元</p>-->
         </div>
         <div style="display: inline;height: 50px;width: 50px">
           <mt-button
@@ -86,10 +85,11 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
+  import {mapGetters} from "vuex";
   import Header from "../../components/header.vue";
   import Vue from 'vue';
-  import { List } from 'vant';
+  import {List} from 'vant';
+
   Vue.use(List);
 
   export default {
@@ -99,14 +99,13 @@
     },
     data() {
       return {
-        totalPages: "",
         loadMoreText: "加载中...",
-        busy: false, //下拉加载
         loading: false, //下拉加载
-        isNull: false,
-        noMore: false,
-        page: 0,
-        size: 10,
+        page: {
+          page: 0,
+          size: 10,
+          total: 0,
+        },
         headerTitle: "开票",
         arr: [],
         invoiceList: [],
@@ -127,71 +126,53 @@
         } else {
           this.checkItem[index].satus = true;
         }
-        this.selectList = this.checkItem.filter(function(satus, index, checkItem) {
+        this.selectList = this.checkItem.filter(function (satus, index, checkItem) {
           return checkItem[index].satus === true;
         });
         this.selectList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
       },
       getOutOrderList() {
-        this.busy = true;
+        this.loading = true;
         this.$ajax.get("/out-orders", {
           params: {
-            size: this.size,
-            page: this.page,
+            size: this.page.size,
+            page: this.page.page,
             accessToken: this.accessToken,
             username: this.$store.state.username,
-            state: 0
+            state: 0,
+            sort: "addTime,desc"
           }
         }).then(res => {
-          this.totalPages = res.data.totalPages;
-          if (res.data.code !== 0) {
+          if (res.data.code === 1) {
             let data = res.data.content;
-            this.isNull = false;
-            for (var v of data) {
+            this.page.total = res.data.totalPages;
+            for (let v of data) {
               v.satus = false;
             }
-            console.log(this.page);
-            this.checkItem = data;
-            console.log(data);
+            this.checkItem = this.checkItem.concat(data)
           } else {
             this.loadMoreText = "";
-            this.noMore = true;
           }
+          this.loading = false;
         }).catch(error => {
+          this.loading = false;
           console.log(error);
         });
-        this.loading = false;
-        this.busy = false;
       },
       //上拉加载
       loadMore() {
-        console.log("我被执行了")
-        this.busy = true;
-        this.loading = true;
-        this.noMore = false;
-        this.page += 1;
         this.allCheck = false;
-        console.log(this.page);
-        if (this.page <= this.totalPages) {
-          this.loading = true;
-          this.busy = false;
-          this.checkItem = this.checkItem.concat();
-          console.log(this.checkItem);
-        } else {
-          this.loadMoreText = "";
-          this.loading = true;
-          this.loading = false;
-          this.noMore = true;
+        if (this.page.total != 0 && this.page.page > 0 && this.page.page >= this.page.total) {
+          this.loadMoreText = "没有更多数据了";
+          return;
         }
-        // for (var i = 0; i < this.arr.length; i++) {
-        //   this.checkItem.push(this.arr[i]);
-        // }
         this.getOutOrderList();
+        this.page.page++;
       },
       //全选
-      change: function() {
+      change: function () {
         let _this = this;
-        _this.checkItem.forEach(function(v) {
+        _this.checkItem.forEach(function (v) {
           return (v.satus = _this.allCheck);
         });
         if (_this.allCheck === true) {
@@ -201,8 +182,8 @@
         }
       },
       //单选勾住后全选
-      itemChange: function() {
-        this.selectList = this.checkItem.filter(function(v) {
+      itemChange: function () {
+        this.selectList = this.checkItem.filter(function (v) {
           return v.satus === true;
         });
         this.selectList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
@@ -210,7 +191,7 @@
       goElectronicInvoice() {
         localStorage.setItem("tot", this.totalPrice);
         localStorage.setItem("seleted", JSON.stringify(this.selectList));
-        this.$router.push({ path: "/merge-order" });
+        this.$router.push({path: "/merge-order"});
       }
     },
     computed: {
@@ -221,7 +202,7 @@
         "sidebar"
       ]),
       //计算总价
-      totalPrice: function() {
+      totalPrice: function () {
         let totalPrice = 0;
         for (let i = 0; i < this.checkItem.length; i++) {
           let item = this.checkItem[i];
@@ -237,7 +218,6 @@
       this.accessToken = localStorage.getItem("accessToken");
     },
     mounted() {
-      this.getOutOrderList();
     },
   };
 </script>
