@@ -23,11 +23,11 @@
 
 .bottom .submit_delete {
   width: 100%;
-  background: #e5e5e5;
+  background: #EF4F4F;
   border: none;
   height: 50px;
   border-radius: 10px;
-  color: #999;
+  color: #fff;
   margin-top: 20px;
 }
 
