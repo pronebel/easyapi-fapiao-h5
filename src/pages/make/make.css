@@ -394,6 +394,10 @@
   color: #fff;
 }
 
+.clear{
+  clear: both;
+}
+
 .mint-footer .mint-checklist-label {
   padding-right: 0 !important;
 }
