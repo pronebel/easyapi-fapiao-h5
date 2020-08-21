@@ -65,7 +65,6 @@
           <span style="margin-left: 9px;">本页全选</span>
           <span style="margin-left:15%">合计：</span>
           <span class="price">￥{{ totalPrice }}</span>
-          <div class="clear"></div>
         </div>
         <div style="display: inline;height: 50px;width: 50px">
           <mt-button
