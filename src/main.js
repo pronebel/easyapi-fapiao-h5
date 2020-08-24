@@ -4,6 +4,8 @@ import router from "./router";
 import Vuex from "vuex";
 import Mint from "mint-ui";
 import "mint-ui/lib/style.css";
+import Vant from 'vant';
+import 'vant/lib/index.css';
 import "./assets/css/common.css";
 import store from "./store/store";
 import MintUI from 'mint-ui'
@@ -16,6 +18,7 @@ Vue.prototype.$ajax = axios
 
 Vue.use(InfiniteScroll);
 Vue.use(MintUI);
+Vue.use(Vant);
 Vue.prototype.clipboard = clipboard;
 
 Vue.config.productionTip = false;
