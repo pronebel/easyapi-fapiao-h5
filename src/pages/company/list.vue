@@ -159,14 +159,14 @@
     },
     mounted() {
       this.getCompanyList();
-    },
-    beforeRouteLeave(to, from, next) {
-      if (to.name === 'EditCompany' && this.id === "") {
-        next({name: 'index'});
-      } else {
-        next();
-      }
     }
+    // beforeRouteLeave(to, from, next) {
+    //   if (to.name === 'EditCompany' && this.id === "") {
+    //     next({name: 'index'});
+    //   } else {
+    //     next();
+    //   }
+    // }
   };
 </script>
 
