@@ -143,6 +143,10 @@
       setTimeout(function () {
         that.getInvoiceType();
       }, 1000);
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', function () {
+        history.pushState(null, null, document.URL);
+      });
     }
   };
 </script>

@@ -16,7 +16,7 @@
             <div class="mint-cell-value">
               <input
                 v-model="name"
-                placeholder="输入关键词支持模糊搜索"
+                placeholder="请输入公司名称"
                 type="text"
                 class="mint-field-core s-search-text"
                 @keyup="searchRiseList"
@@ -196,8 +196,8 @@
 </template>
 <script>
   import Header from "../../components/header.vue";
-  import { MessageBox } from "mint-ui";
-  import { Toast } from "mint-ui";
+  import {MessageBox} from "mint-ui";
+  import {Toast} from "mint-ui";
 
   export default {
     name: "addAddress",
@@ -265,7 +265,7 @@
             }).then(res => {
               if (res.data.code === 1) {
                 this.$messagebox.alert(res.data.message);
-                this.$router.push({ path: "/company/" });
+                this.$router.push({path: "/company/"});
               }
             }).catch(error => {
               console.log(error);
@@ -277,13 +277,12 @@
         if (this.name.length < 4) {
           return;
         }
-        this.$ajax
-          .get("/company/codes", {
-            params: {
-              accessToken: this.accessToken,
-              name: this.name
-            }
-          }).then(res => {
+        this.$ajax.get("/company/codes", {
+          params: {
+            accessToken: this.accessToken,
+            name: this.name
+          }
+        }).then(res => {
           this.searchList = res.data.content;
         }).catch(error => {
           console.log(error);
