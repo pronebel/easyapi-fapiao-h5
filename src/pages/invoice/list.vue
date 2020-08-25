@@ -50,7 +50,7 @@
   import Header from "../../components/header.vue";
 
   export default {
-    name: "record",
+    name: "Record",
     components: {
       Header
     },

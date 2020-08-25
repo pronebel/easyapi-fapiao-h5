@@ -80,7 +80,7 @@
   import {MessageBox} from "mint-ui";
 
   export default {
-    name: "product",
+    name: "Product",
     components: {
       Header
     },

@@ -40,7 +40,7 @@
   import Header from "../../components/header.vue";
 
   export default {
-    name: "out-order",
+    name: "OutOrder",
     components: {
       Header
     },

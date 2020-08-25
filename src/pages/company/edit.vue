@@ -200,7 +200,7 @@
   import {Toast} from "mint-ui";
 
   export default {
-    name: "addAddress",
+    name: "EditCompany",
     components: {
       Header
     },
@@ -325,7 +325,7 @@
                   } else {
                     this.$router.push({
                       path: "/company/",
-                      name: "company",
+                      name: "Company",
                       params: {
                         id: this.id
                       }
@@ -349,7 +349,7 @@
                   } else {
                     this.$router.push({
                       path: "/company/",
-                      name: "company",
+                      name: "Company",
                       params: {
                         id: id
                       }

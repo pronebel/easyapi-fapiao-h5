@@ -279,7 +279,7 @@
   import Clipboard from "clipboard";
 
   export default {
-    name: "invoiceDetail",
+    name: "InvoiceDetail",
     components: {
       Header
     },

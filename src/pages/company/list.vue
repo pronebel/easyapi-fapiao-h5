@@ -85,7 +85,7 @@
   import {setTimeout} from "timers";
 
   export default {
-    name: "chooseCompany",
+    name: "Company",
     components: {
       Header
     },
@@ -94,11 +94,10 @@
         loadingList: true,
         headerTitle: "抬头管理",
         companyList: [],
-        id: "",
         isNull: false,
         accessToken: "",
-        companyId: "",
-        from: "make"
+        from: "make",
+        back: false//是否可以后退
       };
     },
     methods: {
@@ -137,12 +136,16 @@
         });
       },
       gotoEditCompany() {
-        this.id = 0;
+        this.back = true;
         this.$router.push({name: "EditCompany", path: "/company/edit"});
       },
       edit(index) {
-        this.id = this.companyList[index].companyId;
-        this.$router.push({name: "EditCompany", path: "/company/edit", params: {id: this.id}});
+        this.back = true;
+        this.$router.push({
+          name: "EditCompany",
+          path: "/company/edit",
+          params: {id: this.companyList[index].companyId}
+        });
       }
     },
     computed: {
@@ -153,7 +156,6 @@
     created() {
       this.accessToken = localStorage.getItem("accessToken");
       this.from = this.$route.params.from;
-      this.beforeRouteEnter;
     },
     activated() {
       this.getCompanyList();
@@ -162,8 +164,10 @@
       this.getCompanyList();
     },
     beforeRouteLeave(to, from, next) {
-      if (to.name === 'EditCompany' && this.id === "") {
-        next({name: 'index'});
+      console.log(to.name)
+      console.log(this.back)
+      if (to.name === 'EditCompany' && !this.back) {
+        next({name: 'Index'});
       } else {
         next();
       }

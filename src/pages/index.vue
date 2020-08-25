@@ -49,7 +49,7 @@
   import {getShopSupport} from "../api/shop";
 
   export default {
-    name: "App",
+    name: "Index",
     data() {
       return {
         username: "",
@@ -93,7 +93,7 @@
       gotoCompany() {
         this.$router.push({
           path: "/company/",
-          name: "company",
+          name: "Company",
           params: {
             from: "index"
           }
@@ -143,10 +143,13 @@
       setTimeout(function () {
         that.getInvoiceType();
       }, 1000);
-      history.pushState(null, null, document.URL);
-      window.addEventListener('popstate', function () {
-        history.pushState(null, null, document.URL);
-      });
+    },
+    beforeRouteLeave(to, from, next) {
+      if (to.name === 'EditCompany') {
+        next({name: 'Index'});
+      } else {
+        next();
+      }
     }
   };
 </script>
