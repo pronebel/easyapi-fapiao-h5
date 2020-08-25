@@ -164,7 +164,10 @@
       this.getCompanyList();
     },
     beforeRouteLeave(to, from, next) {
+      console.log(to.name)
       if (to.name === 'EditCompany' && !this.back) {
+        next({name: 'Index'});
+      } else if (to.name === 'Company') {
         next({name: 'Index'});
       } else {
         next();

@@ -265,7 +265,7 @@
             }).then(res => {
               if (res.data.code === 1) {
                 this.$messagebox.alert(res.data.message);
-                this.$router.push({path: "/company/"});
+                this.$router.go(-1)
               }
             }).catch(error => {
               console.log(error);
@@ -304,7 +304,7 @@
         this.companyForm.name = this.name;
         this.$messagebox({
           title: "提示",
-          message: "是否保存本次编辑结果",
+          message: "确定提交吗？",
           showCancelButton: true
         }).then(action => {
           if (action === "confirm") {
@@ -319,18 +319,7 @@
                 data: this.companyForm
               }).then(res => {
                 if (res.data.code === 1) {
-                  this.$messagebox.alert(res.data.message);
-                  if (this.$route.params.companyLists === "companyLists") {
-                    this.$router.push(`/company/`);
-                  } else {
-                    this.$router.push({
-                      path: "/company/",
-                      name: "Company",
-                      params: {
-                        id: this.id
-                      }
-                    });
-                  }
+                  this.$router.go(-1)
                 }
               }).catch(error => {
                 this.$messagebox.alert(error.response.data.message);
@@ -342,19 +331,7 @@
                 data: this.companyForm
               }).then(res => {
                 if (res.data.code === 1) {
-                  this.$messagebox.alert(res.data.message);
-                  let id = res.data.content.companyId;
-                  if (this.$route.params.companyLists) {
-                    this.$router.push(`/company/`);
-                  } else {
-                    this.$router.push({
-                      path: "/company/",
-                      name: "Company",
-                      params: {
-                        id: id
-                      }
-                    });
-                  }
+                  this.$router.go(-1)
                 }
               }).catch(error => {
                 this.$messagebox.alert(error.response.data.message);
