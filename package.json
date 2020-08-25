@@ -22,7 +22,8 @@
     "vue-router": "^3.4.3",
     "vue-wechat-title": "^2.0.7",
     "vuex": "^3.5.1",
-    "vuex-persistedstate": "^3.1.0"
+    "vuex-persistedstate": "^3.1.0",
+    "vue-prevent-browser-back": "^1.0.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.4",

@@ -47,9 +47,11 @@
   import {Toast} from "mint-ui";
   import {getOrderTypeList} from "../api/api";
   import {getShopSupport} from "../api/shop";
+  import preventBack from 'vue-prevent-browser-back';
 
   export default {
     name: "Index",
+    mixins: [preventBack],
     data() {
       return {
         username: "",
@@ -143,13 +145,6 @@
       setTimeout(function () {
         that.getInvoiceType();
       }, 1000);
-    },
-    beforeRouteLeave(to, from, next) {
-      if (to.name === 'EditCompany') {
-        next({name: 'Index'});
-      } else {
-        next();
-      }
     }
   };
 </script>
