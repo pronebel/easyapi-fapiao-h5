@@ -137,6 +137,7 @@
         });
       },
       gotoEditCompany() {
+        this.id = 0;
         this.$router.push({name: "EditCompany", path: "/company/edit"});
       },
       edit(index) {
@@ -159,14 +160,14 @@
     },
     mounted() {
       this.getCompanyList();
+    },
+    beforeRouteLeave(to, from, next) {
+      if (to.name === 'EditCompany' && this.id === "") {
+        next({name: 'index'});
+      } else {
+        next();
+      }
     }
-    // beforeRouteLeave(to, from, next) {
-    //   if (to.name === 'EditCompany' && this.id === "") {
-    //     next({name: 'index'});
-    //   } else {
-    //     next();
-    //   }
-    // }
   };
 </script>
 
