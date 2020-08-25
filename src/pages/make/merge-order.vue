@@ -15,10 +15,10 @@
           <p style="font-size: 16px">电子发票</p>
           <p style="font-size: 12px">最快1分钟开具</p>
         </mt-tab-item>
-        <mt-tab-item id="2">
-          <p style="font-size: 16px;">纸质发票</p>
-          <p style="font-size: 12px;">预计一周送达</p>
-        </mt-tab-item>
+        <!--<mt-tab-item id="2">-->
+        <!--<p style="font-size: 16px;">纸质发票</p>-->
+        <!--<p style="font-size: 12px;">预计一周送达</p>-->
+        <!--</mt-tab-item>-->
       </mt-navbar>
     </div>
     <mt-tab-container v-model="selected">
