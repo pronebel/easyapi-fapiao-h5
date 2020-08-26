@@ -590,8 +590,9 @@
             taxNumber: this.taxNumber
           }
         }).then(res => {
-          (this.loadingList = false), (this.email = res.data.content.email);
-          this.contactInformation = res.data.content.mobile;
+          this.loadingList = false;
+          this.email = res.data.content.email ? res.data.content.email : "";
+          this.contactInformation = res.data.content.mobile ? res.data.content.mobile : "";
         })
       },
       goInvoiceSuccess() {
@@ -642,8 +643,7 @@
         this.$ajax({
           method: "POST",
           url: 'https://fapiao-api.easyapi.com/merge-make',
-          params: this.invoiceForm,
-          headers: {"Content-Type": "application/x-www-form-urlencoded"}
+          data: this.invoiceForm
         })
           .then(res => {
             if (res.data.code === 1) {
