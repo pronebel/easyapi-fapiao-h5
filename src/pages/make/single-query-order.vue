@@ -1,6 +1,5 @@
 <template>
   <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;">
-    <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
     <div class="nav">
       <div id="loading">
         <mt-spinner
@@ -15,10 +14,10 @@
           <p style="font-size: 16px">电子发票</p>
           <p style="font-size: 12px">最快1分钟开具</p>
         </mt-tab-item>
-        <mt-tab-item id="2">
-          <p style="font-size: 16px;">纸质发票</p>
-          <p style="font-size: 12px;">预计一周送达</p>
-        </mt-tab-item>
+        <!--<mt-tab-item id="2">-->
+        <!--<p style="font-size: 16px;">纸质发票</p>-->
+        <!--<p style="font-size: 12px;">预计一周送达</p>-->
+        <!--</mt-tab-item>-->
       </mt-navbar>
     </div>
     <mt-tab-container v-model="selected">
@@ -37,7 +36,6 @@
                     style="font-size: 15px;color:#333"
                   >抬头类型</span
                   >
-
                 </div>
                 <div class="mint-cell-value">
                   <input
@@ -450,16 +448,13 @@
 <script>
   import {getDefaultCompany} from "../../api/company";
   import {queryShopOrder} from "../../api/query";
-  import Header from "../../components/header.vue";
   import {Navbar, TabItem} from "mint-ui";
   import {Toast} from "mint-ui";
   import {MessageBox} from "mint-ui";
   import Isemail from "isemail";
+
   export default {
     name: "singleOrder",
-    components: {
-      Header
-    },
     data() {
       return {
         active: '商品明细',
@@ -559,7 +554,6 @@
             this.outOrder = res.data.content;
             this.amountOfMoney = res.data.content.price;
           }
-          this.calculatedAmount();
         });
       },
       getEmailInfo() {
@@ -570,8 +564,9 @@
             taxNumber: this.taxNumber
           }
         }).then(res => {
-          (this.loadingList = false), (this.email = res.data.content.email);
-          this.contactInformation = res.data.content.mobile;
+          this.loadingList = false;
+          this.email = res.data.content.email ? res.data.content.email : "";
+          this.contactInformation = res.data.content.mobile ? res.data.content.mobile : "";
         });
       },
       makeInvoice() {
@@ -624,7 +619,7 @@
         this.$ajax({
           method: "POST",
           url: "https://fapiao-api.easyapi.com/invoice/make",
-          params: this.invoiceForm
+          data: this.invoiceForm
         }).then(res => {
           if (res.data.code === 1) {
             this.$messagebox.alert(res.data.message);
