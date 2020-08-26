@@ -14,7 +14,6 @@ import clipboard from 'clipboard';
 import { InfiniteScroll } from 'mint-ui';
 import VueWechatTitle from 'vue-wechat-title'
 
-
 import axios from './api/request'
 Vue.prototype.$ajax = axios
 
