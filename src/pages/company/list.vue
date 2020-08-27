@@ -24,6 +24,7 @@
         <div class="address-top">
           <p>
             <span class="rise-text">{{ item.name }}</span>
+            <van-tag plain type="warning" v-if="item.ifDefault">默认</van-tag>
             <span class="edit" @click="edit(index)">编辑</span>
           </p>
         </div>

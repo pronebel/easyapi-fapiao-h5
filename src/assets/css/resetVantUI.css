@@ -29,3 +29,7 @@
 .address-bottom .van-cell {
     /* padding: 5px 3px; */
 }
+
+.address-top .van-tag {
+    margin-left: 10px;
+}
