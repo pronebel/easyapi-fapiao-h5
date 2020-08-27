@@ -11,3 +11,21 @@
 .address-bottom .van-cell__title{
     flex:1
 }
+
+.address-bottom .van-cell--required::before{
+    left: 63px;
+}
+
+.van-field__label{
+    color: #323233;
+    margin-right: 0;
+}
+
+.van-field__control{
+    color: #777;
+    font-size: 14px
+}
+
+.address-bottom .van-cell {
+    /* padding: 5px 3px; */
+}

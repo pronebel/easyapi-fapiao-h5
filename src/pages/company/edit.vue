@@ -1,185 +1,29 @@
 <template>
-  <div>
+  <div class="add-con">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <div class="page-part">
+    <div class="page-part address-con">
       <form action ref="companyForm" :model="companyForm">
-        <a class="mint-cell mint-field">
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-              <span class="mint-cell-text">
-                <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">名称</font>
-                </font>
-              </span>
+        <div class="address-bottom" @click="select(item)">
+          <van-cell-group :border="false">
+            <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" :border="false" required @keyup="searchRiseList"/>
+            <div class="rise-list" v-if="searchList !== ''">
+              <ul>
+                <li
+                  v-for="(item, index) in searchList"
+                  :key="index"
+                  @click="chooseRise(index)"
+                >
+                  {{ item.name }}
+                </li>
+              </ul>
             </div>
-            <div class="mint-cell-value">
-              <input
-                v-model="name"
-                placeholder="请输入公司名称"
-                type="text"
-                class="mint-field-core s-search-text"
-                @keyup="searchRiseList"
-              />
-            </div>
-          </div>
-          <div class="mint-cell-right"></div>
-        </a>
-        <div class="rise-list" v-if="searchList !== ''">
-          <ul>
-            <li
-              v-for="(item, index) in searchList"
-              :key="index"
-              @click="chooseRise(index)"
-            >
-              {{ item.name }}
-            </li>
-          </ul>
+            <van-field label="公司税号" v-model="companyForm.taxNumber" placeholder="请输入纳税人识别号（必填）" :border="false" required/>
+            <van-field label="注册地址" v-model="companyForm.address" placeholder="请输入地址（非必填信息）" :border="false"/>
+            <van-field label="注册电话" v-model="companyForm.phone" placeholder="请输入电话（非必填信息）" :border="false"/>
+            <van-field label="开户银行" v-model="companyForm.bank" placeholder="请输入开户行（非必填信息）" :border="false"/>
+            <van-field label="银行账号" v-model="companyForm.bankAccount" placeholder="请输入开户行账号（非必填信息）" :border="false"/>
+        </van-cell-group>
         </div>
-        <a class="mint-cell mint-field">
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-              <span class="mint-cell-text">
-                <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">税号</font>
-                </font>
-              </span>
-            </div>
-            <div class="mint-cell-value">
-              <input
-                placeholder="请输入纳税人识别号（必填）"
-                type="text"
-                class="mint-field-core"
-                v-model="companyForm.taxNumber"
-              />
-              <div class="mint-field-clear" style="display: none;">
-                <i class="mintui mintui-field-error"></i>
-              </div>
-              <span class="mint-field-state is-default">
-                <i class="mintui mintui-field-default"></i>
-              </span>
-              <div class="mint-field-other"></div>
-            </div>
-          </div>
-          <div class="mint-cell-right"></div>
-        </a>
-        <a class="mint-cell mint-field">
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-              <span class="mint-cell-text">
-                <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">地址</font>
-                </font>
-              </span>
-            </div>
-            <div class="mint-cell-value">
-              <input
-                placeholder="请输入地址（非必填信息）"
-                type="text"
-                class="mint-field-core"
-                v-model="companyForm.address"
-              />
-              <div class="mint-field-clear" style="display: none;">
-                <i class="mintui mintui-field-error"></i>
-              </div>
-              <span class="mint-field-state is-default">
-                <i class="mintui mintui-field-default"></i>
-              </span>
-              <div class="mint-field-other"></div>
-            </div>
-          </div>
-          <div class="mint-cell-right"></div>
-        </a>
-        <a class="mint-cell mint-field">
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-              <span class="mint-cell-text">
-                <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">电话</font>
-                </font>
-              </span>
-            </div>
-            <div class="mint-cell-value">
-              <input
-                placeholder="请输入电话（非必填信息）"
-                type="tel"
-                class="mint-field-core"
-                v-model="companyForm.phone"
-              />
-              <div class="mint-field-clear" style="display: none;">
-                <i class="mintui mintui-field-error"></i>
-              </div>
-              <span class="mint-field-state is-default">
-                <i class="mintui mintui-field-default"></i>
-              </span>
-              <div class="mint-field-other"></div>
-            </div>
-          </div>
-          <div class="mint-cell-right"></div>
-        </a>
-        <a class="mint-cell mint-field">
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-              <span class="mint-cell-text">
-                <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px"
-                  >开户银行</font
-                  >
-                </font>
-              </span>
-            </div>
-            <div class="mint-cell-value">
-              <input
-                placeholder="请输入开户行（非必填信息）"
-                type="text"
-                class="mint-field-core"
-                v-model="companyForm.bank"
-              />
-              <div class="mint-field-clear" style="display: none;">
-                <i class="mintui mintui-field-error"></i>
-              </div>
-              <span class="mint-field-state is-default">
-                <i class="mintui mintui-field-default"></i>
-              </span>
-              <div class="mint-field-other"></div>
-            </div>
-          </div>
-          <div class="mint-cell-right"></div>
-        </a>
-        <a class="mint-cell mint-field">
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-              <span class="mint-cell-text">
-                <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px"
-                  >银行账号</font
-                  >
-                </font>
-              </span>
-            </div>
-            <div class="mint-cell-value">
-              <input
-                placeholder="请输入开户行账号（非必填信息）"
-                type="text"
-                class="mint-field-core"
-                v-model="companyForm.bankAccount"
-              />
-              <div class="mint-field-clear" style="display: none;">
-                <i class="mintui mintui-field-error"></i>
-              </div>
-              <span class="mint-field-state is-default">
-                <i class="mintui mintui-field-default"></i>
-              </span>
-              <div class="mint-field-other"></div>
-            </div>
-          </div>
-          <div class="mint-cell-right"></div>
-        </a>
       </form>
     </div>
     <div class="bottom">
