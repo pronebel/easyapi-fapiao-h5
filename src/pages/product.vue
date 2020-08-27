@@ -2,73 +2,61 @@
   <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;">
     <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
     <div class="addContent">
-      <ul class="classification">
-        <li>
-          <span class="classification-name">发票类型 </span>
-          <span>商品明细</span>
-        </li>
-        <li>
-          <span class="classification-name">商品名称</span>
-          <span>
-            <select v-model="productId" @change="choice" class="Drop-down-box">
-              <option
-                v-for="(item,index) in productList"
-                :value="item.productId"
-                :key="index">{{ item.name }} {{ item.specification }}</option>
-            </select>
-          </span>
-        </li>
-        <li>
-          <span class="classification-name">规格类型</span>
-          <span class="classification-input">
-            <input
-              type="text"
-              disabled
-              v-model="specification"
-              placeholder="规格类型"
-              class="mint-field-core"
-            />
-          </span>
-        </li>
-        <li>
-          <span class="classification-name">单位</span>
-          <span class="classification-input">
-            <input
-              type="text"
-              disabled
-              v-model="unit"
-              placeholder="单位"
-              class="mint-field-core"
-            />
-          </span>
-        </li>
-        <li>
-          <span class="classification-name">数量</span>
-          <span class="classification-input">
-            <input
-              placeholder="需要手动输入数量"
-              v-model="number"
-              type="tel"
-              class="mint-field-core"
-            />
-          </span>
-        </li>
-        <li>
-          <span class="classification-name">单价</span>
-          <span class="classification-input">
-            <input
-              type="number"
-              step="0.01"
-              v-model="price"
-              placeholder="可输入"
-              style="color:#ff4848;"
-              class="mint-field-core"
-            />
-          </span>
-        </li>
-      </ul>
-      <div class="btn">
-        <mt-button class="submit-btn" @click="addTo"> 添加</mt-button>
+      <van-field
+        label="发票类型"
+        value="商品明细"
+        readonly
+        label-width='8em'
+      />
+      <van-field
+        readonly
+        clickable
+        name="picker"
+        :value="value"
+        label="商品名称"
+        placeholder="点击选择商品"
+        @click="showPicker = true"
+        label-width='8em'
+      />
+      <van-popup v-model="showPicker" position="bottom">
+        <van-picker
+          show-toolbar
+          :columns="productListColumns"
+          @confirm="onConfirm"
+          @cancel="showPicker = false"
+        />
+      </van-popup>
+      <van-field
+        label="规格类型"
+        :value="specification"
+        placeholder="规格类型"
+        readonly
+        label-width='8em'
+      />
+      <van-field
+        label="单位"
+        :value="unit"
+        placeholder="单位"
+        readonly
+        label-width='8em'
+      />
+      <van-field
+        label="数量"
+        v-model="number"
+        placeholder="需要手动输入数量"
+        label-width='8em'
+      />
+      <van-field
+        label="单价"
+        placeholder="可输入"
+        label-width='8em'
+      >
+        <template #input>
+          <van-stepper v-model="price" step="0.01" :decimal-length="2" allow-empty min="0" id="redPrice"/>
+        </template>
+      </van-field>
+      <div class="mint-btn">
+        <div @click="addTo"> 添加</div>
       </div>
     </div>
   </div>
@@ -94,6 +82,9 @@
         price: "",
         number: "",
         productList: [],
+        productListColumns: [],
+        value: '',
+        showPicker: false
       };
     },
 
@@ -104,17 +95,10 @@
       getProductList() {
         getProductList().then(res => {
           this.productList = res.data.content;
-        });
-      },
-      choice(name) {
-        for (var i = 0; i < this.productList.length; i++) {
-          if (this.productId === this.productList[i].productId) {
-            this.specification = this.productList[i].specification;
-            this.unit = this.productList[i].unit;
-            this.price = this.productList[i].price;
-            this.name = this.productList[i].name;
+          for(var i = 0; i < this.productList.length; i++){
+            this.productListColumns[i] = this.productList[i].name + ' ' + this.productList[i].specification
           }
-        }
+        });
       },
       addTo() {
         let obj = {};
@@ -142,7 +126,20 @@
         } else {
           MessageBox("提示", "单价不能为空");
         }
-      }
+      },
+      onConfirm(value) {
+        this.value = value;
+        for (var i = 0; i < this.productList.length; i++) {
+          if (this.value === this.productList[i].name + ' ' + this.productList[i].specification) {
+            this.productId = this.productList[i].productId
+            this.specification = this.productList[i].specification;
+            this.unit = this.productList[i].unit;
+            this.price = this.productList[i].price;
+            this.name = this.productList[i].name;
+          }
+        }
+        this.showPicker = false;
+      },
     },
     mounted() {
       this.getProductList();
@@ -156,25 +153,6 @@
 <style scoped>
   .addContent {
     margin-top: 63px;
-  }
-
-  .classification {
-    list-style: none;
-    background-color: #fff;
-  }
-
-  .classification li {
-    padding: 0px 10px;
-    height: 40px;
-    line-height: 40px;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    color: #666;
-  }
-
-  .classification li span:first-child {
-    display: block;
-    width: 30%;
   }
 
   .btn {
@@ -217,5 +195,17 @@
   .classification-input {
     color: #bbbbbb;
     font-size: 15px;
+  }
+
+  .mint-btn div {
+    margin: 20px;
+    height: 44px;
+    background-color: #52c9f5;
+    border-radius: 8px;
+    box-shadow: 0px 3px 15px 0px rgba(12, 143, 192, 0.23);
+    color: #fff;
+    text-align: center;
+    line-height: 44px;
+    font-size: 16px;
   }
 </style>

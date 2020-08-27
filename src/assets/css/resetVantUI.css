@@ -54,3 +54,8 @@
 .defaultBnt .van-cell__value{
      top:3px
 }
+
+#redPrice input {
+    color: red;
+    width: 60px;
+}
