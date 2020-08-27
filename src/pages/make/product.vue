@@ -426,6 +426,7 @@
             <div class="mint-cell-right"></div>
           </a>
           <a class="mint-cell mint-field"
+             style="margin-bottom: 55px;"
           >
             <div class="mint-cell-left"></div>
             <div class="mint-cell-wrapper">
@@ -461,7 +462,7 @@
             </div>
             <div class="mint-cell-right"></div>
           </a>
-          <div class="bottom">
+          <div class="bottom" style="position: fixed;bottom: -20px;left: -10px;width: 100%;">
             <mt-button
               class="submit"
               @click="goInvoiceSuccess"

@@ -1,10 +1,9 @@
 <template>
   <div
     class="add-con"
-    style="position: fixed;top: 0;bottom: 0;left: 0;right: 0; overflow: auto;z-index: 99;"
   >
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <div style="margin-top: 10px">
+    <div style="margin-top: 10px;margin-bottom: 35px;">
       <div id="loading">
         <mt-spinner
           color="#56cbf6"

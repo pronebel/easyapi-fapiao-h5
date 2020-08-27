@@ -209,7 +209,7 @@
             </div>
             <div class="mint-cell-right"></div>
           </a>
-          <a class="mint-cell mint-field">
+          <a class="mint-cell mint-field" style="margin-bottom: 55px">
 
             <div class="mint-cell-left"></div>
             <div class="mint-cell-wrapper">
@@ -306,7 +306,8 @@
         remark: "",
         priceSplicing: "",
         invoiceForm: {
-          type: ""
+          type: "",
+          purchaserName:""
         }
       };
     },
