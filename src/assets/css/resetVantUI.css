@@ -59,3 +59,7 @@
     color: red;
     width: 60px;
 }
+
+.addContent .van-cell {
+    border-bottom: solid 1px #f4f4f4;
+}

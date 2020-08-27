@@ -7,6 +7,7 @@
         value="商品明细"
         readonly
         label-width='8em'
+        :border="false"
       />
       <van-field
         readonly
@@ -17,6 +18,7 @@
         placeholder="点击选择商品"
         @click="showPicker = true"
         label-width='8em'
+        :border="false"
       />
       <van-popup v-model="showPicker" position="bottom">
         <van-picker
@@ -32,6 +34,7 @@
         placeholder="规格类型"
         readonly
         label-width='8em'
+        :border="false"
       />
       <van-field
         label="单位"
@@ -39,17 +42,20 @@
         placeholder="单位"
         readonly
         label-width='8em'
+        :border="false"
       />
       <van-field
         label="数量"
         v-model="number"
         placeholder="需要手动输入数量"
         label-width='8em'
+        :border="false"
       />
       <van-field
         label="单价"
         placeholder="可输入"
         label-width='8em'
+        :border="false"
       >
         <template #input>
           <van-stepper v-model="price" step="0.01" :decimal-length="2" allow-empty min="0" id="redPrice"/>
