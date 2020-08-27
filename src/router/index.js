@@ -10,25 +10,25 @@ export default new Router({
       path: "/",
       name: "Index",
       component: resolve => require(["../pages/index.vue"], resolve),
-      meta: {title: "发票管理",keepAlive:true}
+      meta: {title: "发票管理", keepAlive: true}
     },
     {
       path: "/out-order",
       name: "OutOrder",
       component: resolve => require(["../pages/make/out-order.vue"], resolve),
-      meta: {title: "开具发票",keepAlive:false}
+      meta: {title: "开具发票", keepAlive: false}
     },
     {
       path: "/record",
       name: "Record",
       component: resolve => require(["../pages/invoice/list.vue"], resolve),
-      meta: {title: "开票记录",keepAlive:false}
+      meta: {title: "开票记录", keepAlive: false}
     },
     {
       path: "/company/",
       name: "Company",
       component: resolve => require(["../pages/company/list.vue"], resolve),
-      meta: {title: "抬头管理",keepAlive:false}
+      meta: {title: "抬头管理", keepAlive: false}
     },
     {
       path: "/company/edit",
@@ -39,7 +39,7 @@ export default new Router({
       path: "/rule",
       name: "Rule",
       component: resolve => require(["../pages/rule.vue"], resolve),
-      meta: {title: "开票规则",keepAlive:false}
+      meta: {title: "开票规则", keepAlive: false}
     },
     {
       path: "/make/success",
@@ -90,12 +90,14 @@ export default new Router({
     {
       path: "/product",
       name: "Product",
-      component: resolve => require(["../pages/make/product.vue"], resolve)
+      component: resolve => require(["../pages/make/product.vue"], resolve),
+      meta: {title: "选择商品", keepAlive: false}
     },
     {
       path: "/merge-order",
       name: "MergeOrder",
-      component: resolve => require(["../pages/make/merge-order.vue"], resolve)
+      component: resolve => require(["../pages/make/merge-order.vue"], resolve),
+      meta: {title: "开具发票", keepAlive: false}
     }
   ]
 });

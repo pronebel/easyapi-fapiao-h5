@@ -43,254 +43,44 @@
               </div>
             </a>
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '个人'">
-
-              <div class="mint-cell-left"></div>
-              <div class="mint-cell-wrapper">
-                <div class="mint-cell-title">
-
-                  <span class="mint-cell-text">
-                    <font style="vertical-align: inherit;">
-                      <font
-                        style="vertical-align: inherit;font-size: 15px;color:#333"
-                      >姓名/事业单位</font
-                      >
-                    </font>
-                  </span>
-
-                </div>
-                <div class="mint-cell-value">
-                  <input
-                    placeholder=""
-                    type="text"
-                    class="mint-field-core"
-                    v-model="invoiceForm.purchaserName"
-                    value="个人"
-                  />
-                  <div class="mint-field-clear" style="display: none;">
-                    <i class="mintui mintui-field-error"></i>
-                  </div>
-                  <span class="mint-field-state is-default">
-                    <i class="mintui mintui-field-default"></i>
-                  </span>
-                  <div class="mint-field-other"></div>
-                </div>
-
-              </div>
-              <div class="mint-cell-right"></div>
+              <van-field label="发票抬头" placeholder="请输入姓名/事业单位" v-model="invoiceForm.purchaserName"/>
             </a>
             <a
               class="mint-cell mint-field"
               @click="gotoCompany"
               v-if="invoiceForm.type === '企业'"
             >
-              <div class="mint-cell-left"></div>
-              <div class="mint-cell-wrapper">
-                <div class="mint-cell-title">
-                  <span
-                    class="mint-cell-text"
-                    style="font-size: 15px;color:#333"
-                  >发票抬头</span
-                  >
-                </div>
-                <div class="mint-cell-value">
-                  <span style="font-size: 15px;color:#333">{{
-                    company.name
-                  }}</span>
-                  <div class="mint-field-clear" style="display: none;">
-                    <i class="mintui mintui-field-error"></i>
-                  </div>
-                  <span class="mint-field-state is-default">
-                    <i class="mintui mintui-field-default"></i>
-                  </span>
-                  <div class="mint-field-other"></div>
-                </div>
-
-                <i class="mint-cell-allow-right"></i>
-              </div>
-              <div class="mint-cell-right"></div>
+              <van-field label="发票抬头" readonly right-icon="arrow" placeholder="请选择发票抬头" v-model="company.name"/>
             </a>
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
-
-              <div class="mint-cell-left"></div>
-              <div class="mint-cell-wrapper">
-                <div class="mint-cell-title">
-
-                  <span class="mint-cell-text">
-                    <font style="vertical-align: inherit;">
-                      <font
-                        style="vertical-align: inherit;font-size: 15px;color:#333"
-                      >税号</font
-                      >
-                    </font>
-                  </span>
-
-                </div>
-                <div class="mint-cell-value">
-                  <!--<input placeholder="" type="tel" class="mint-field-core" v-model="invoiceForm.purchaserTaxpayerNumber" disabled>-->
-                  <span style="font-size: 15px;color:#333">{{
-                    company.taxNumber
-                  }}</span>
-                  <div class="mint-field-clear" style="display: none;">
-                    <i class="mintui mintui-field-error"></i>
-                  </div>
-                  <span class="mint-field-state is-default">
-                    <i class="mintui mintui-field-default"></i>
-                  </span>
-                  <div class="mint-field-other"></div>
-                </div>
-
-              </div>
-              <div class="mint-cell-right"></div>
+              <van-field label="税号" value="" readonly v-model="company.taxNumber"/>
             </a>
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
-
-              <div class="mint-cell-left"></div>
-              <div class="mint-cell-wrapper">
-                <div class="mint-cell-title">
-
-                  <span class="mint-cell-text">
-                    <font style="vertical-align: inherit;">
-                      <font
-                        style="vertical-align: inherit;font-size: 15px;color:#333"
-                      >地址</font
-                      >
-                    </font>
-                  </span>
-
-                </div>
-                <div class="mint-cell-value" style="display: block">
-                  <!--<input placeholder="非必填信息" type="tel" class="mint-field-core" v-model="invoiceForm.purchaserAddress" disabled>-->
-                  <span style="font-size: 15px;color:#333">{{
-                    company.address
-                  }}</span>
-                  <div class="mint-field-clear" style="display: none;">
-                    <i class="mintui mintui-field-error"></i>
-                  </div>
-                  <span class="mint-field-state is-default">
-                    <i class="mintui mintui-field-default"></i>
-                  </span>
-                  <div class="mint-field-other"></div>
-                </div>
-
-              </div>
-              <div class="mint-cell-right"></div>
+              <van-field label="地址" value="" readonly v-model="company.address"/>
             </a>
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
-
-              <div class="mint-cell-left"></div>
-              <div class="mint-cell-wrapper">
-                <div class="mint-cell-title">
-
-                  <span class="mint-cell-text">
-                    <font style="vertical-align: inherit;">
-                      <font
-                        style="vertical-align: inherit;font-size: 15px;color:#333"
-                      >电话</font
-                      >
-                    </font>
-                  </span>
-
-                </div>
-                <div class="mint-cell-value" style="display: block">
-                  <!--<input placeholder="非必填信息" type="tel" class="mint-field-core" v-model="invoiceForm.purchaserAddress" disabled>-->
-                  <span style="font-size: 15px;color:#333">{{
-                    company.phone
-                  }}</span>
-                  <div class="mint-field-clear" style="display: none;">
-                    <i class="mintui mintui-field-error"></i>
-                  </div>
-                  <span class="mint-field-state is-default">
-                    <i class="mintui mintui-field-default"></i>
-                  </span>
-                  <div class="mint-field-other"></div>
-                </div>
-
-              </div>
-              <div class="mint-cell-right"></div>
+              <van-field label="电话" value="" readonly v-model="company.phone"/>
             </a>
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
-
-              <div class="mint-cell-left"></div>
-              <div class="mint-cell-wrapper">
-                <div class="mint-cell-title">
-
-                  <span class="mint-cell-text">
-                    <font style="vertical-align: inherit;">
-                      <font
-                        style="vertical-align: inherit;font-size: 15px;color:#333"
-                      >开户行</font
-                      >
-                    </font>
-                  </span>
-
-                </div>
-                <div class="mint-cell-value">
-                  <!--<input placeholder="非必填信息" type="tel" class="mint-field-core" v-model="invoiceForm.purchaserBank" disabled>-->
-                  <span style="font-size: 15px;color:#333">{{
-                    company.bank
-                  }}</span>
-                  <div class="mint-field-clear" style="display: none;">
-                    <i class="mintui mintui-field-error"></i>
-                  </div>
-                  <span class="mint-field-state is-default">
-                    <i class="mintui mintui-field-default"></i>
-                  </span>
-                  <div class="mint-field-other"></div>
-                </div>
-
-              </div>
-              <div class="mint-cell-right"></div>
+              <van-field label="开户行" value="" readonly v-model="company.bank"/>
             </a>
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
-
-              <div class="mint-cell-left"></div>
-              <div class="mint-cell-wrapper">
-                <div class="mint-cell-title">
-
-                  <span class="mint-cell-text">
-                    <font style="vertical-align: inherit;">
-                      <font
-                        style="vertical-align: inherit;font-size: 15px;color:#333"
-                      >开户行账号</font
-                      >
-                    </font>
-                  </span>
-
-                </div>
-                <div class="mint-cell-value">
-                  <span style="font-size: 15px;color:#333">{{
-                    company.bankAccount
-                  }}</span>
-                  <div class="mint-field-clear" style="display: none;">
-                    <i class="mintui mintui-field-error"></i>
-                  </div>
-                  <span class="mint-field-state is-default">
-                    <i class="mintui mintui-field-default"></i>
-                  </span>
-                  <div class="mint-field-other"></div>
-                </div>
-
-              </div>
-              <div class="mint-cell-right"></div>
+              <van-field label="银行账号" value="" readonly v-model="company.bankAccount"/>
             </a>
             <a
               class="mint-cell mint-field"
               v-if="invoiceForm.type === '企业' && make === 'false'"
             >
-
               <div class="mint-cell-left"></div>
               <div class="mint-cell-wrapper">
                 <div class="mint-cell-title">
-
                   <span class="mint-cell-text">
                     <font style="vertical-align: inherit;">
                       <font style="vertical-align: inherit;">发票内容</font>
                     </font>
                   </span>
-
                 </div>
                 <div class="mint-cell-value">
-                  <!--<input placeholder="" type="tel" class="mint-field-core" v-model="invoiceForm.mergeName" disabled>-->
                   <span>{{ invoiceForm.mergeName }}</span>
                   <div class="mint-field-clear" style="display: none;">
                     <i class="mintui mintui-field-error"></i>
@@ -477,11 +267,11 @@
 </template>
 
 <script>
-  import { getDefaultCompany } from "../../api/company";
+  import {getDefaultCompany} from "../../api/company";
   import Header from "../../components/header.vue";
-  import { Navbar, TabItem } from "mint-ui";
-  import { Toast } from "mint-ui";
-  import { MessageBox } from "mint-ui";
+  import {Navbar, TabItem} from "mint-ui";
+  import {Toast} from "mint-ui";
+  import {MessageBox} from "mint-ui";
 
   export default {
     name: "MergeOrder",
@@ -520,7 +310,7 @@
         }
       };
     },
-    computed:{
+    computed: {
       show() {
         return this.$store.state.ifShowH5NavBar;
       },
@@ -543,7 +333,7 @@
           this.invoiceForm.purchaserBankAccount = "";
           this.invoiceForm.companyId = "";
         }
-        console.log(this.invoiceForm.purchaserName);
+        console.log(this.invoiceForm);
 
       },
       selectCompany() {
@@ -672,8 +462,10 @@
         });
       },
 
-      //获取备注
-      getSpecifications() {
+      /**
+       * 获取发票备注填写说明
+       */
+      getInvoiceRemark() {
         this.$ajax.get("/api/invoice/rule", {
           params: {
             accessToken: this.accessToken
@@ -683,7 +475,7 @@
         });
       },
 
-      getInvoicingService() {
+      getInvoiceSupport() {
         this.$ajax.get("/api/shop/0/support", {
           params: {
             accessToken: this.accessToken
@@ -713,8 +505,8 @@
       this.getDefaultCompany();
       this.getOrder();
       this.getEmailInfo();
-      this.getSpecifications();
-      this.getInvoicingService();
+      this.getInvoiceRemark();
+      this.getInvoiceSupport();
     }
   };
 </script>
