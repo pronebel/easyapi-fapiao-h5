@@ -623,9 +623,7 @@
         }).then(res => {
           if (res.data.code === 1) {
             this.$messagebox.alert(res.data.message);
-            this.$router.push({
-              path: "/single-order-success"
-            });
+            this.$router.go(0)
           }
         }).catch(error => {
           this.showDisabled = false;
