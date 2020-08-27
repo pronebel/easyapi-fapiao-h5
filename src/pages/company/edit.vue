@@ -159,7 +159,6 @@
           if (action === "confirm") {
             this.companyForm.accessToken = this.accessToken;
             this.companyForm.username = this.$store.state.username;
-            this.companyForm.ifDefault = true;
             this.id = this.$route.params.id;
             if (this.title === "edit") {
               this.$ajax({
