@@ -49,32 +49,13 @@
 
     </div>
     <div class="mint-footer" v-show="outOrderList.length>0">
-      <label class="mint-checklist-label" style="margin-left: 12px;">
-        <div style="display: inline">
-          <span class="mint-checkbox">
-          <input
-            type="checkbox"
-            class="mint-checkbox-input"
-            @change="change()"
-            v-model="allCheck"
-          />
-          <span class="mint-checkbox-core"></span>
-        </span>
-          <span style="margin-left: 9px;">本页全选</span>
-          <span style="margin-left:15%">合计：</span>
-          <span class="price">￥{{ totalPrice }}</span>
-        </div>
-        <div style="display: inline;height: 50px;width: 50px">
-          <mt-button
-            class="next-button next-button-to"
-            @click="goElectronicInvoice"
-            :disabled="selectList.length < 1"
-          >下一步
-          </mt-button
-          >
-          <div class="clear"></div>
-        </div>
-      </label>
+      <van-submit-bar :price="totalPrice*100" button-text="下一步" :disabled="selectList.length < 1"
+                      button-color="#52c9f5" @submit="goElectronicInvoice">
+        <van-checkbox @change="change()" v-model="allCheck">本页全选</van-checkbox>
+        <template #tip>
+          最低开票金额{{minPrice}}元
+        </template>
+      </van-submit-bar>
     </div>
     <div class="clear"></div>
     <div
@@ -92,6 +73,7 @@
   import Vue from 'vue';
   import {List} from 'vant';
   import {getOutOrderList} from "../../api/out-order";
+  import {getShop} from "../../api/shop";
 
   Vue.use(List);
 
@@ -114,6 +96,7 @@
         selectList: [],
         outOrderList: [],//外部订单列表
         allCheck: false,//全部选择
+        minPrice: 10000,//最大开票金额
         accessToken: ""
       };
     },
@@ -195,6 +178,14 @@
         localStorage.setItem("tot", this.totalPrice);
         localStorage.setItem("seleted", JSON.stringify(this.selectList));
         this.$router.push({path: "/merge-order"});
+      },
+      //获取发票类型
+      getShop() {
+        getShop().then(res => {
+          this.minPrice = res.data.content.minPrice;
+        }).catch(error => {
+          console.log(error);
+        });
       }
     },
     computed: {
@@ -207,7 +198,7 @@
       //计算总价
       totalPrice: function () {
         let totalPrice = 0;
-        if (this.outOrderList == null) {
+        if (this.outOrderList.length == 0) {
           return totalPrice;
         }
         for (let i = 0; i < this.outOrderList.length; i++) {
@@ -216,7 +207,6 @@
             totalPrice += item.price;
           }
         }
-        //千位分隔符正则
         return totalPrice.toFixed(2);
       }
     },
@@ -224,6 +214,7 @@
       this.accessToken = localStorage.getItem("accessToken");
     },
     mounted() {
+      this.getShop();
     },
   };
 </script>
