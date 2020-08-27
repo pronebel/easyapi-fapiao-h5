@@ -5,13 +5,13 @@
       <div class="page-part address-con">
         <div class="address-bottom" @click="select(item)">
           <van-cell-group :border="false">
-            <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" :border="false" required @keyup="searchRiseList"/>
-            <div class="rise-list" v-if="searchList !== ''">
+            <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" :border="false" required @keyup="searchRiseList" @focus="listShow = true" @blur="inputBlur"/>
+            <div class="rise-list" v-if="listShow && searchList !== ''">
               <ul>
                 <li
                   v-for="(item, index) in searchList"
                   :key="index"
-                  @click="chooseRise(index)"
+                  @mousedown="chooseRise(index)"
                 >
                   {{ item.name }}
                 </li>
@@ -61,7 +61,8 @@
         title: "",
         accessToken: "",
         searchList: [],
-        name: ""
+        name: "",
+        listShow: false
       };
     },
 
@@ -144,7 +145,7 @@
         this.companyForm.bankAccount = this.searchList[index].bankAccount;
         this.companyForm.address = this.searchList[index].address;
         this.companyForm.phone = this.searchList[index].phone;
-        this.searchList = [];
+        this.listShow = false
       },
       confirm() {
         if (!this.name && !this.companyForm.taxNumber) {
@@ -159,6 +160,7 @@
           if (action === "confirm") {
             this.companyForm.accessToken = this.accessToken;
             this.companyForm.username = this.$store.state.username;
+            // this.companyForm.ifDefault = true;
             this.id = this.$route.params.id;
             if (this.title === "edit") {
               this.$ajax({
@@ -187,6 +189,23 @@
             }
           }
         });
+      },
+      inputBlur(){
+        this.listShow = false
+        var has;
+        has = false;
+        for(var i = 0; i < this.searchList.length; i++){
+          if(this.searchList[i].name === this.name){
+            has = true;
+          }
+        };
+        if(!has){
+          this.companyForm.taxNumber = '';
+          this.companyForm.address = '';
+          this.companyForm.phone = '';
+          this.companyForm.bank = '';
+          this.companyForm.bankAccount = '';
+        }
       }
     },
     computed: {
