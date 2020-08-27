@@ -7,9 +7,8 @@ import {baseUrl} from "./request";
  *
  * @see https://www.easyai.com
  */
-export const getProductList = (params) => axios.get(`${baseUrl}/products`, {
+export const getRule = () => axios.get(`${baseUrl}/api/invoice/rule`, {
   params: {
-    params,
     accessToken: localStorage.getItem("accessToken")
   }
 });
