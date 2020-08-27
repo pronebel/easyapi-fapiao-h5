@@ -1,0 +1,13 @@
+.address-bottom .van-cell__value{
+    color: #777;
+    text-align: left;
+    flex:2
+}
+
+.address-bottom .van-cell{
+    padding: 3px;
+}
+
+.address-bottom .van-cell__title{
+    flex:1
+}
