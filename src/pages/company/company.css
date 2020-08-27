@@ -191,3 +191,7 @@
 .formClass .address-con {
   border-radius: 0px;
 }
+
+.formClass {
+  margin-top: 10px;
+}
