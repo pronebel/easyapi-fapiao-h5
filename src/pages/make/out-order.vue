@@ -97,7 +97,7 @@
   Vue.use(List);
 
   export default {
-    name: "out-order",
+    name: "InvoiceOutOrder",
     components: {
       Header: Header
     },

@@ -542,9 +542,8 @@
         console.log(this.invoiceForm.purchaserName)
 
       },
-      selectCompany(item) {
+      selectCompany() {
         this.loadingList = false;
-        this.company = item;
       },
       getOrder() {
         this.orderType = localStorage.getItem("orderType");
