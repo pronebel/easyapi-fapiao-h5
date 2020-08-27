@@ -1,8 +1,8 @@
 <template>
   <div class="add-con">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <div class="page-part address-con">
-      <form action ref="companyForm" :model="companyForm">
+    <form action ref="companyForm" :model="companyForm">
+      <div class="page-part address-con">
         <div class="address-bottom" @click="select(item)">
           <van-cell-group :border="false">
             <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" :border="false" required @keyup="searchRiseList"/>
@@ -22,10 +22,15 @@
             <van-field label="注册电话" v-model="companyForm.phone" placeholder="请输入电话（非必填信息）" :border="false"/>
             <van-field label="开户银行" v-model="companyForm.bank" placeholder="请输入开户行（非必填信息）" :border="false"/>
             <van-field label="银行账号" v-model="companyForm.bankAccount" placeholder="请输入开户行账号（非必填信息）" :border="false"/>
-        </van-cell-group>
+          </van-cell-group>
         </div>
-      </form>
-    </div>
+      </div>
+      <div class="page-part address-con defaultBnt">
+        <van-cell center title="设置为默认抬头">
+          <van-switch v-model="companyForm.ifDefault" active-color="#FFC2A8" size="24px" />
+        </van-cell>
+      </div>
+    </form>
     <div class="bottom">
       <mt-button class="submit" @click="confirm">保存</mt-button>
       <mt-button

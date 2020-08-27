@@ -1,27 +1,27 @@
-.address-bottom .van-cell__value{
+.address-bottom .van-cell__value {
     color: #777;
     text-align: left;
     flex:2
 }
 
-.address-bottom .van-cell{
+.address-bottom .van-cell {
     padding: 3px;
 }
 
-.address-bottom .van-cell__title{
+.address-bottom .van-cell__title {
     flex:1
 }
 
-.address-bottom .van-cell--required::before{
+.address-bottom .van-cell--required::before {
     left: 63px;
 }
 
-.van-field__label{
+.van-field__label {
     color: #323233;
     margin-right: 0;
 }
 
-.van-field__control{
+.van-field__control {
     color: #777;
     font-size: 14px
 }
@@ -32,4 +32,20 @@
 
 .address-top .van-tag {
     margin-left: 10px;
+}
+
+.defaultBnt .van-cell {
+    padding: 0;
+}
+
+.defaultBnt {
+    padding: 15px!important
+}
+
+.defaultBnt .van-switch__node {
+    font-size: 24px;
+}
+
+.defaultBnt .van-cell__value{
+     top:3px
 }
