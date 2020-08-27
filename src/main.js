@@ -13,6 +13,7 @@ import 'mint-ui/lib/style.css';
 import clipboard from 'clipboard';
 import {InfiniteScroll} from 'mint-ui';
 import VueWechatTitle from 'vue-wechat-title'
+import './assets/css/resetVantUI.css'
 
 import axios from './api/request'
 

@@ -28,48 +28,13 @@
           </p>
         </div>
         <div class="address-bottom" @click="select(item)">
-          <table>
-            <tr class="address-bottom-title">
-              <td class="">
-                <div class="address-bottom-name">税号</div>
-              </td>
-              <td>
-                <div class="address-bottom-con">{{ item.taxNumber }}</div>
-              </td>
-            </tr>
-            <tr class="address-bottom-title">
-              <td>
-                <div class="address-bottom-name">地址</div>
-              </td>
-              <td>
-                <div class="address-bottom-con">{{ item.address }}</div>
-              </td>
-            </tr>
-            <tr class="address-bottom-title">
-              <td style="padding-top:10px">
-                <div class="address-bottom-name">电话</div>
-              </td>
-              <td style="padding-top:10px">
-                <div class="address-bottom-con">{{ item.phone }}</div>
-              </td>
-            </tr>
-            <tr class="address-bottom-title">
-              <td style="padding-top:10px">
-                <div class="address-bottom-name">开户行</div>
-              </td>
-              <td style="padding-top:10px">
-                <div class="address-bottom-con">{{ item.bank }}</div>
-              </td>
-            </tr>
-            <tr class="address-bottom-title">
-              <td style="padding-top:10px">
-                <div class="address-bottom-name">开户行账号</div>
-              </td>
-              <td style="padding-top:10px">
-                <div class="address-bottom-con">{{ item.bankAccount }}</div>
-              </td>
-            </tr>
-          </table>
+          <van-cell-group :border="false">
+          <van-cell title="税号" :value="item.taxNumber" :border="false"/>
+          <van-cell title="地址" :value="item.address" :border="false"/>
+          <van-cell title="电话" :value="item.phone" :border="false"/>
+          <van-cell title="开户行" :value="item.bank" :border="false"/>
+          <van-cell title="开户行账号" :value="item.bankAccount" :border="false"/>
+        </van-cell-group>
         </div>
       </div>
     </div>
