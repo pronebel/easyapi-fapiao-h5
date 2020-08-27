@@ -38,7 +38,7 @@ new Vue({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
-    document.title = to.meta.title === undefined ? "开具发票" : to.meta.title;
+    document.title = to.meta.title === undefined ? "发票管理" : to.meta.title;
   }
   next();
 });

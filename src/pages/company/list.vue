@@ -12,8 +12,7 @@
         ></mt-spinner>
       </div>
       <div class="no-record-con" v-show="isNull">
-        <p><img src="../../assets/images/no-record_03.png" alt=""/></p>
-        <p class="record-text">暂时还没有记录！</p>
+        <van-empty image="search" description="暂无数据"/>
       </div>
       <div
         class="address-con header-d"
@@ -29,12 +28,12 @@
         </div>
         <div class="address-bottom" @click="select(item)">
           <van-cell-group :border="false">
-          <van-cell title="公司税号" :value="item.taxNumber" :border="false"/>
-          <van-cell title="注册地址" :value="item.address" :border="false"/>
-          <van-cell title="注册电话" :value="item.phone" :border="false"/>
-          <van-cell title="开户银行" :value="item.bank" :border="false"/>
-          <van-cell title="银行账号" :value="item.bankAccount" :border="false"/>
-        </van-cell-group>
+            <van-cell title="公司税号" :value="item.taxNumber" :border="false"/>
+            <van-cell title="注册地址" :value="item.address" :border="false"/>
+            <van-cell title="注册电话" :value="item.phone" :border="false"/>
+            <van-cell title="开户银行" :value="item.bank" :border="false"/>
+            <van-cell title="银行账号" :value="item.bankAccount" :border="false"/>
+          </van-cell-group>
         </div>
       </div>
     </div>

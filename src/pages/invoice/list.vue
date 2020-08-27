@@ -1,16 +1,12 @@
 <template>
   <div class="invoice-record-con">
-    <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <div class="no-record-con" v-show="invoiceRecordList==null">
-      <p>
-        <img src="../../assets/images/no-record_03.png" alt/>
-      </p>
-      <p class="record-text">暂时还没有记录!</p>
+    <div v-show="invoiceList.length === 0">
+      <van-empty image="search" description="暂时还没有开票记录"/>
     </div>
     <div style="margin-top: 10px">
       <div
         class="record-con parking-order header-d"
-        v-for="(item, index) in invoiceRecordList"
+        v-for="(item, index) in invoiceList"
         :key="index"
         @click="goInvoiceDetail(item.invoiceId)"
       >
@@ -47,14 +43,10 @@
 </template>
 
 <script>
-  import { getInvoiceList } from "../../api/invoice";
-  import Header from "../../components/header.vue";
+  import {getInvoiceList} from "../../api/invoice";
 
   export default {
-    name: "Record",
-    components: {
-      Header
-    },
+    name: "Invoice",
     data() {
       return {
         loadMoreText: "加载中...",
@@ -65,16 +57,10 @@
           size: 10,
           total: 0
         },
-        invoiceRecordList: null,
-        loadingList: true,
-        id: "",
-        isNull: false
+        invoiceList: [],
       };
     },
     methods: {
-      goBack() {
-        history.go(-1);
-      },
       getInvoiceList() {
         let params = {
           size: this.page.size,
@@ -86,15 +72,14 @@
           if (res.data.code === 1) {
             let data = res.data.content;
             this.page.total = res.data.totalPages;
-            if (this.invoiceRecordList == null) {
-              this.invoiceRecordList = data;
+            if (this.invoiceList == null) {
+              this.invoiceList = data;
             } else {
-              this.invoiceRecordList = this.invoiceRecordList.concat(data);
+              this.invoiceList = this.invoiceList.concat(data);
             }
-            this.loadingList = false;
             this.loading = false;
           } else {
-            this.invoiceRecordList = [];
+            this.invoiceList = [];
             this.loadMoreText = "";
           }
         });
@@ -102,7 +87,6 @@
       //上拉加载
       loadMore() {
         this.loading = true;
-        // this.allCheck = false;
         if (this.page.total != 0 && this.page.page > 0 && this.page.page >= this.page.total) {
           this.loadMoreText = "没有更多数据了";
           return;
@@ -111,12 +95,7 @@
         this.page.page++;
       },
       goInvoiceDetail(id) {
-        this.$router.push({ path: "/invoice/detail", query: { id: id } });
-      }
-    },
-    computed: {
-      show() {
-        return this.$store.state.ifShowH5NavBar;
+        this.$router.push({path: "/invoice/detail", query: {id: id}});
       }
     },
     created() {
@@ -146,11 +125,6 @@
 
   .no-record-con img {
     width: 100%;
-  }
-
-  .record-text {
-    margin-top: 20px;
-    color: #ccc;
   }
 
   .record-con {

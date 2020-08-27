@@ -2,7 +2,7 @@
   <div class="body">
     <div class="page-cell">
       <div v-if="order === true" style="margin-top:10px;">
-        <div style="border-bottom:1px solid #f4f4f4;" v-for="(type, index) in typeList" :key="index">
+        <div style="border-bottom:1px solid #f4f4f4;" v-for="(type, index) in orderTypeList" :key="index">
           <div class="mint-cell router-link">
             <div class="mint-cell-wrapper">
               <div class="mint-cell-title" @click="goMakeInvoice('order', type.name)">
@@ -53,14 +53,11 @@
     data() {
       return {
         username: "",
-        checkItem: [],
-        invoiceRecordList: [],
-        addressList: [],
         accessToken: "",
         make: "",
         order: "",
         appKey: "",
-        typeList: ""
+        orderTypeList: ""
       };
     },
     methods: {
@@ -68,7 +65,7 @@
       getOrderTypeList() {
         getOrderTypeList(this.username).then(res => {
           if (res.status === 200) {
-            this.typeList = res.data.content;
+            this.orderTypeList = res.data.content;
             setTimeout(function () {
               Indicator.close();
             }, 1500);
@@ -88,7 +85,7 @@
         }
       },
       goInvoiceRecord() {
-        this.$router.push("/record");
+        this.$router.push("/invoice/");
       },
       gotoRule() {
         this.$router.push("/rule")

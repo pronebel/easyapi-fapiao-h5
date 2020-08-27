@@ -34,7 +34,7 @@
         history.go(-1);
       },
       gotoInvoiceRecord() {
-        this.$router.push(`/record`);
+        this.$router.push(`/invoice/`);
       },
       gotoInvoice() {
         this.$router.push({

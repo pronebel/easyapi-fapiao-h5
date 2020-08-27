@@ -177,6 +177,11 @@
   margin-left: 10px;
 }
 
+.bottom-button {
+  width: 160px;
+  height: 40px;
+}
+
 #loading {
   position: absolute;
   top: 50%;

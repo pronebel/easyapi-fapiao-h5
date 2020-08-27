@@ -19,8 +19,8 @@ export default new Router({
       meta: {title: "开具发票", keepAlive: false}
     },
     {
-      path: "/record",
-      name: "Record",
+      path: "/invoice/",
+      name: "Invoice",
       component: resolve => require(["../pages/invoice/list.vue"], resolve),
       meta: {title: "开票记录", keepAlive: false}
     },
@@ -33,7 +33,8 @@ export default new Router({
     {
       path: "/company/edit",
       name: "EditCompany",
-      component: resolve => require(["../pages/company/edit.vue"], resolve)
+      component: resolve => require(["../pages/company/edit.vue"], resolve),
+      meta: {title: "编辑抬头", keepAlive: false}
     },
     {
       path: "/rule",
@@ -50,49 +51,57 @@ export default new Router({
     {
       path: "/invoice/detail",
       name: "InvoiceDetail",
-      component: resolve => require(["../pages/invoice/detail.vue"], resolve)
+      component: resolve => require(["../pages/invoice/detail.vue"], resolve),
+      meta: {title: "发票详情", keepAlive: false}
     },
     {
       path: "/invoice/out-order",
       name: "InvoiceOutOrder",
-      component: resolve => require(["../pages/invoice/out-order.vue"], resolve)
+      component: resolve => require(["../pages/invoice/out-order.vue"], resolve),
+      meta: {title: "开具发票", keepAlive: false}
     },
     {
       path: "/error",
       name: "Error",
-      component: resolve => require(["../pages/error.vue"], resolve)
+      component: resolve => require(["../pages/error.vue"], resolve),
+      meta: {title: "抬头管理", keepAlive: false}
     },
     {
       path: "/addProduct",
       name: "AddProduct",
-      component: resolve => require(["../pages/product.vue"], resolve)
+      component: resolve => require(["../pages/product.vue"], resolve),
+      meta: {title: "选择商品", keepAlive: false}
     },
     {
       path: "/single-order",
       name: "SingleOrder",
-      component: resolve => require(["../pages/make/single-order.vue"], resolve)
+      component: resolve => require(["../pages/make/single-order.vue"], resolve),
+      meta: {title: "开具发票", keepAlive: false}
     },
     {
       path: "/single-query-order",
       name: "SingleQueryOrder",
-      component: resolve => require(["../pages/make/single-query-order.vue"], resolve)
+      component: resolve => require(["../pages/make/single-query-order.vue"], resolve),
+      meta: {title: "开具发票", keepAlive: false}
     },
     {
       path: "/single-order-success",
       name: "singleOrderSuccess",
       component: resolve =>
-        require(["../pages/make/single-order-success.vue"], resolve)
+        require(["../pages/make/single-order-success.vue"], resolve),
+      meta: {title: "提交成功", keepAlive: false}
     },
     {
       path: "/category",
       name: "Category",
-      component: resolve => require(["../pages/make/category.vue"], resolve)
+      component: resolve => require(["../pages/make/category.vue"], resolve),
+      meta: {title: "开具发票", keepAlive: false}
     },
     {
       path: "/product",
       name: "Product",
       component: resolve => require(["../pages/make/product.vue"], resolve),
-      meta: {title: "选择商品", keepAlive: false}
+      meta: {title: "开具发票", keepAlive: false}
     },
     {
       path: "/merge-order",

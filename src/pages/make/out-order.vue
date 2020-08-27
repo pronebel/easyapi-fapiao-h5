@@ -2,8 +2,7 @@
   <div style="padding: 0 10px;height: 100%;">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <div class="no-record-con" v-show="checkItem==null">
-      <p><img src="../../assets/images/no-record_03.png" alt=""/></p>
-      <p class="record-text">暂时还没有记录！</p>
+      <van-empty image="search" description="暂无订单数据"/>
     </div>
     <div class="page-checklist header-d">
       <div
@@ -27,7 +26,6 @@
                   </span>
               </label>
             </div>
-
             <div class="order-right" @click="checked(index)">
               <p class="num">
                 <span>订单号：</span>
