@@ -1,21 +1,13 @@
 <template>
   <div class="invoice-record-con">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <div class="no-record-con" v-show="isNull">
+    <div class="no-record-con" v-show="invoiceRecordList==null">
       <p>
         <img src="../../assets/images/no-record_03.png" alt/>
       </p>
       <p class="record-text">暂时还没有记录!</p>
     </div>
     <div style="margin-top: 10px">
-      <div id="loading">
-        <mt-spinner
-          color="#56cbf6"
-          v-show="loadingList"
-          type="fading-circle"
-        ></mt-spinner>
-      </div>
-
       <div
         class="record-con parking-order header-d"
         v-for="(item, index) in invoiceRecordList"
@@ -41,12 +33,21 @@
           </p>
         </div>
       </div>
+      <div class="page-infinite-loading">
+        <p>{{ loadMoreText }}</p>
+      </div>
+    </div>
+    <div
+      v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="loading"
+      infinite-scroll-distance="0"
+    >
     </div>
   </div>
 </template>
 
 <script>
-  import {getInvoiceList} from "../../api/invoice";
+  import { getInvoiceList } from "../../api/invoice";
   import Header from "../../components/header.vue";
 
   export default {
@@ -56,8 +57,15 @@
     },
     data() {
       return {
+        loadMoreText: "加载中...",
+        loading: false, //下拉加载
         headerTitle: "开票记录",
-        invoiceRecordList: [],
+        page: {
+          page: 0,
+          size: 10,
+          total: 0
+        },
+        invoiceRecordList: null,
         loadingList: true,
         id: "",
         isNull: false
@@ -69,24 +77,45 @@
       },
       getInvoiceList() {
         let params = {
-          size: 10
+          size: this.page.size,
+          page: this.page.page,
+          state: 0
         };
         params.username = localStorage.getItem("username");
         getInvoiceList(params).then(res => {
-          if (res.data.code !== 0) {
-            this.isNull = false;
-            setTimeout(() => {
-              this.loadingList = false;
-              this.invoiceRecordList = res.data.content;
-            }, 2000);
-          } else {
-            this.isNull = true;
+          console.log(res);
+          if (res.data.code === 1) {
+            let data = res.data.content;
+            console.log(data);
+            this.page.total = res.data.totalPages;
+            if (this.invoiceRecordList == null) {
+              this.invoiceRecordList = data;
+              console.log(this.invoiceRecordList);
+            } else {
+              this.invoiceRecordList = this.invoiceRecordList.concat(data);
+              console.log(this.invoiceRecordList);
+            }
             this.loadingList = false;
+            this.loading = false;
+          } else {
+            this.invoiceRecordList = [];
+            this.loadMoreText = "";
           }
         });
       },
+      //上拉加载
+      loadMore() {
+        this.loading = true;
+        // this.allCheck = false;
+        if (this.page.total != 0 && this.page.page > 0 && this.page.page >= this.page.total) {
+          this.loadMoreText = "没有更多数据了";
+          return;
+        }
+        this.getInvoiceList();
+        this.page.page++;
+      },
       goInvoiceDetail(id) {
-        this.$router.push({path: "/invoice/detail", query: {id: id}});
+        this.$router.push({ path: "/invoice/detail", query: { id: id } });
       }
     },
     computed: {
@@ -103,6 +132,12 @@
 </script>
 
 <style scoped>
+  .page-infinite-loading {
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+  }
+
   .no-record-con {
     margin-top: 80px;
     padding: 60px;

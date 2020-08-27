@@ -1,13 +1,14 @@
 <template>
   <div id="app">
-    <transition>
-      <keep-alive>
-        <router-view v-wechat-title="$route.meta.title" v-if="$route.meta.keepAlive"/>
-      </keep-alive>
-    </transition>
-    <transition>
-      <router-view v-wechat-title="$route.meta.title" v-if="!$route.meta.keepAlive"/>
-    </transition>
+    <!--<transition>-->
+      <!--<keep-alive>-->
+        <!--<router-view v-wechat-title="$route.meta.title" v-if="$route.meta.keepAlive"/>-->
+      <!--</keep-alive>-->
+    <!--</transition>-->
+    <!--<transition>-->
+      <!--<router-view v-wechat-title="$route.meta.title" v-if="!$route.meta.keepAlive"/>-->
+    <!--</transition>-->
+    <router-view v-wechat-title="$route.meta.title"/>
   </div>
 </template>
 
