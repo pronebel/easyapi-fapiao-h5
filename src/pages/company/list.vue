@@ -7,11 +7,11 @@
       <div id="loading">
         <mt-spinner
           color="#56cbf6"
-          v-show="loadingList"
+          v-show="loading"
           type="fading-circle"
         ></mt-spinner>
       </div>
-      <div class="no-record-con" v-show="isNull">
+      <div class="no-record-con" v-show="companyList.length ==0 && !loading">
         <van-empty image="search" description="暂无数据"/>
       </div>
       <div
@@ -54,10 +54,9 @@
     },
     data() {
       return {
-        loadingList: true,
+        loading: true,
         headerTitle: "抬头管理",
         companyList: [],
-        isNull: false,
         accessToken: "",
         from: "make",
         back: false//是否可以后退
@@ -70,15 +69,15 @@
       getCompanyList() {
         getCompanyList({username: localStorage.getItem("username")}).then(res => {
           if (res.data.code !== 0) {
-            this.loadingList = false;
+            this.loading = false;
             this.companyList = res.data.content;
           } else {
             this.isNull = true;
-            this.loadingList = false;
+            this.loading = false;
           }
         }).catch(error => {
           console.log(error);
-          this.loadingList = false;
+          this.loading = false;
         });
       },
       select(item) {

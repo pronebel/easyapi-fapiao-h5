@@ -1,13 +1,13 @@
 <template>
   <div style="padding: 0 10px;height: 100%;">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <div class="no-record-con" v-show="checkItem==null">
+    <div class="no-record-con" v-show="outOrderList.length==0">
       <van-empty image="search" description="暂无订单数据"/>
     </div>
     <div class="page-checklist header-d">
       <div
         class="mint-checklist page-part"
-        v-for="(item, index) in checkItem"
+        v-for="(item, index) in outOrderList"
         :key="index"
       >
         <a class="mint-cell">
@@ -48,7 +48,7 @@
       </div>
 
     </div>
-    <div class="mint-footer" v-show="checkItem!=null">
+    <div class="mint-footer" v-show="outOrderList.length>0">
       <label class="mint-checklist-label" style="margin-left: 12px;">
         <div style="display: inline">
           <span class="mint-checkbox">
@@ -109,11 +109,9 @@
           total: 0,
         },
         headerTitle: "开票",
-        arr: [],
-        invoiceList: [],
         selectList: [],
-        checkItem: null,
-        allCheck: false,
+        outOrderList: [],//外部订单列表
+        allCheck: false,//全部选择
         accessToken: ""
       };
     },
@@ -123,17 +121,18 @@
         history.go(-1);
       },
       checked(index) {
-        if (this.checkItem[index].satus === true) {
-          this.checkItem[index].satus = false;
+        if (this.outOrderList[index].satus === true) {
+          this.outOrderList[index].satus = false;
         } else {
-          this.checkItem[index].satus = true;
+          this.outOrderList[index].satus = true;
         }
-        this.selectList = this.checkItem.filter(function (satus, index, checkItem) {
-          return checkItem[index].satus === true;
+        this.selectList = this.outOrderList.filter(function (satus, index, outOrderList) {
+          return outOrderList[index].satus === true;
         });
-        this.selectList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
+        this.selectList.length === this.outOrderList.length ? (this.allCheck = true) : (this.allCheck = false);
       },
       getOutOrderList() {
+        this.loading = true
         this.$ajax.get("/out-orders", {
           params: {
             size: this.page.size,
@@ -150,17 +149,18 @@
             for (let v of data) {
               v.satus = false;
             }
-            if (this.checkItem == null) {
-              this.checkItem = data;
+            if (this.outOrderList == null) {
+              this.outOrderList = data;
             }
             else {
-              this.checkItem = this.checkItem.concat(data)
+              this.outOrderList = this.outOrderList.concat(data)
             }
+            this.loading = false;
           } else {
-            this.checkItem = []
+            this.loading = true
+            this.outOrderList = []
             this.loadMoreText = "";
           }
-          this.loading = false;
         }).catch(error => {
           this.loading = false;
           console.log(error);
@@ -168,7 +168,6 @@
       },
       //上拉加载
       loadMore() {
-        this.loading = true;
         this.allCheck = false;
         if (this.page.total != 0 && this.page.page > 0 && this.page.page >= this.page.total) {
           this.loadMoreText = "没有更多数据了";
@@ -180,21 +179,21 @@
       //全选
       change: function () {
         let _this = this;
-        _this.checkItem.forEach(function (v) {
+        _this.outOrderList.forEach(function (v) {
           return (v.satus = _this.allCheck);
         });
         if (_this.allCheck === true) {
-          this.selectList = _this.checkItem;
+          this.selectList = _this.outOrderList;
         } else {
           this.selectList = [];
         }
       },
       //单选勾住后全选
       itemChange: function () {
-        this.selectList = this.checkItem.filter(function (v) {
+        this.selectList = this.outOrderList.filter(function (v) {
           return v.satus === true;
         });
-        this.selectList.length === this.checkItem.length ? (this.allCheck = true) : (this.allCheck = false);
+        this.selectList.length === this.outOrderList.length ? (this.allCheck = true) : (this.allCheck = false);
       },
       goElectronicInvoice() {
         localStorage.setItem("tot", this.totalPrice);
@@ -212,11 +211,11 @@
       //计算总价
       totalPrice: function () {
         let totalPrice = 0;
-        if (this.checkItem == null) {
+        if (this.outOrderList == null) {
           return totalPrice;
         }
-        for (let i = 0; i < this.checkItem.length; i++) {
-          let item = this.checkItem[i];
+        for (let i = 0; i < this.outOrderList.length; i++) {
+          let item = this.outOrderList[i];
           if (item.satus === true) {
             totalPrice += item.price;
           }
