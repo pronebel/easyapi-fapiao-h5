@@ -2,9 +2,7 @@
   <div class="con">
     <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
     <div class="success-con">
-      <div>
-        <p><img src="../../assets/images/success.png" alt=""/></p>
-      </div>
+      <van-icon name="checked" color="#19be6b" size="120"/>
       <div class="success-button">
         <div>
           <span @click="gotoInvoice" class="button">返回首页</span>

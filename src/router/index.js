@@ -44,7 +44,8 @@ export default new Router({
     {
       path: "/make/success",
       name: "MakeSuccess",
-      component: resolve => require(["../pages/make/success.vue"], resolve)
+      component: resolve => require(["../pages/make/success.vue"], resolve),
+      meta: {title: "提交成功", keepAlive: false}
     },
     {
       path: "/invoice/detail",
