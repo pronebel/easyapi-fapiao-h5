@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 0 10px;height: 100%;">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <div class="no-record-con" v-show="outOrderList.length==0">
+    <div class="no-record-con" v-show="empty">
       <van-empty image="search" description="暂无订单数据"/>
     </div>
     <div class="page-checklist header-d">
@@ -91,6 +91,7 @@
   import Header from "../../components/header.vue";
   import Vue from 'vue';
   import {List} from 'vant';
+  import {getOutOrderList} from "../../api/out-order";
 
   Vue.use(List);
 
@@ -103,6 +104,7 @@
       return {
         loadMoreText: "加载中...",
         loading: false, //下拉加载
+        empty: false,//是否显示空页面
         page: {
           page: 0,
           size: 10,
@@ -133,16 +135,9 @@
       },
       getOutOrderList() {
         this.loading = true
-        this.$ajax.get("/out-orders", {
-          params: {
-            size: this.page.size,
-            page: this.page.page,
-            accessToken: this.accessToken,
-            username: this.$store.state.username,
-            state: 0,
-            sort: "orderTime,desc"
-          }
-        }).then(res => {
+        let params = {};
+        params.username = this.$store.state.username
+        getOutOrderList(params, this.page).then(res => {
           if (res.data.code === 1) {
             let data = res.data.content;
             this.page.total = res.data.totalPages;
@@ -157,6 +152,7 @@
             }
             this.loading = false;
           } else {
+            this.empty = true;
             this.loading = true
             this.outOrderList = []
             this.loadMoreText = "";

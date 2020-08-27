@@ -1,10 +1,8 @@
 <template>
-  <div class="con">
-    <div class="success-con">
-      <van-icon name="checked" color="#19be6b" size="120"/>
-      <div>
-        <van-button type="default" block @click="back">返 回</van-button>
-      </div>
+  <div class="success">
+    <van-icon name="checked" color="#19be6b" size="120"/>
+    <div class="success-button">
+      <van-button type="default" plain block round @click="back">返 回</van-button>
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="invoice-record-con">
-    <div v-show="invoiceList.length === 0">
+    <div v-show="empty">
       <van-empty image="search" description="暂时还没有开票记录"/>
     </div>
     <div style="margin-top: 10px">
@@ -51,6 +51,7 @@
       return {
         loadMoreText: "加载中...",
         loading: false, //下拉加载
+        empty: false,//是否显示空页面
         headerTitle: "开票记录",
         page: {
           page: 0,
@@ -79,6 +80,7 @@
             }
             this.loading = false;
           } else {
+            this.empty = true;
             this.invoiceList = [];
             this.loadMoreText = "";
           }

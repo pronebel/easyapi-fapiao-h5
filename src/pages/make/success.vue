@@ -1,43 +1,23 @@
 <template>
-  <div class="con">
-    <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
-    <div class="success-con">
-      <van-icon name="checked" color="#19be6b" size="120"/>
-      <div class="success-button">
-        <div>
-          <span @click="gotoInvoice" class="button">返回首页</span>
-        </div>
-        <div>
-          <mt-button @click="gotoInvoiceRecord" class="button1">开票记录</mt-button>
-        </div>
-      </div>
+  <div class="success">
+    <van-icon name="checked" color="#19be6b" size="120"/>
+    <div class="success-button">
+      <van-button type="default" plain block round @click="gotoIndex">返回首页</van-button>
+      <van-divider hairline/>
+      <van-button type="default" plain block round @click="gotoInvoiceList">开票记录</van-button>
     </div>
   </div>
 </template>
 
 <script>
-  import Header from "../../components/header.vue";
-
   export default {
-    name: "make-success",
-    components: {
-      Header: Header
-    },
-    data() {
-      return {
-        headerTitle: "提交成功",
-      };
-    },
-
+    name: "MakeSuccess",
     methods: {
-      goBack() {
-        history.go(-1);
+      gotoInvoiceList() {
+        this.$router.replace(`/invoice/`);
       },
-      gotoInvoiceRecord() {
-        this.$router.push(`/invoice/`);
-      },
-      gotoInvoice() {
-        this.$router.push({
+      gotoIndex() {
+        this.$router.replace({
           path: "/",
           query: {
             username: localStorage.getItem("username"),
