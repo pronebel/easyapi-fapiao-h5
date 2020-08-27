@@ -1,7 +1,7 @@
 <template>
   <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;">
-    <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
-    <div class="nav">
+    <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
+    <div class="nav" style="margin-top: 10px">
       <div id="loading">
         <mt-spinner
           color="#56cbf6"
@@ -477,11 +477,11 @@
 </template>
 
 <script>
-  import {getDefaultCompany} from "../../api/company";
+  import { getDefaultCompany } from "../../api/company";
   import Header from "../../components/header.vue";
-  import {Navbar, TabItem} from "mint-ui";
-  import {Toast} from "mint-ui";
-  import {MessageBox} from "mint-ui";
+  import { Navbar, TabItem } from "mint-ui";
+  import { Toast } from "mint-ui";
+  import { MessageBox } from "mint-ui";
 
   export default {
     name: "MergeOrder",
@@ -520,13 +520,17 @@
         }
       };
     },
-
+    computed:{
+      show() {
+        return this.$store.state.ifShowH5NavBar;
+      },
+    },
     methods: {
       goBack() {
         history.go(-1);
       },
       selectType() {
-        console.log(this.invoiceForm.type)
+        console.log(this.invoiceForm.type);
         localStorage.setItem("type", this.invoiceForm.type);
         if (this.invoiceForm.type === "企业") {
           this.getDefaultCompany();
@@ -539,7 +543,7 @@
           this.invoiceForm.purchaserBankAccount = "";
           this.invoiceForm.companyId = "";
         }
-        console.log(this.invoiceForm.purchaserName)
+        console.log(this.invoiceForm.purchaserName);
 
       },
       selectCompany() {
@@ -601,7 +605,7 @@
             invoiceForm: this.invoiceForm
           }
         }).then(res => {
-          this.loadingList = false
+          this.loadingList = false;
           this.email = res.data.content.email ? res.data.content.email : "";
           this.contactInformation = res.data.content.mobile ? res.data.content.mobile : "";
         });
@@ -654,7 +658,7 @@
               this.invoiceForm.accessToken = this.accessToken;
               this.invoiceForm.addrMobile = this.contactInformation;
               this.invoiceForm.email = this.email;
-              this.$ajax.post('/merge-make', this.invoiceForm, {}).then(res => {
+              this.$ajax.post("/merge-make", this.invoiceForm, {}).then(res => {
                 if (res.data.code === 1) {
                   this.$router.push(`/make/success`);
                 }
@@ -676,7 +680,7 @@
           }
         }).then(res => {
           this.remark = res.data.content.remark ? res.data.content.remark : "";
-        })
+        });
       },
 
       getInvoicingService() {
@@ -687,7 +691,7 @@
         }).then(res => {
           this.NeedMobile = res.data.content.ifNeedMobile;
           this.NeedEmail = res.data.content.ifNeedEmail;
-        })
+        });
       }
     },
     watch: {},
