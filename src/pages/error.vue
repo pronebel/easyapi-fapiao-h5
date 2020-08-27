@@ -1,9 +1,7 @@
 <template>
   <div class="error">
-    <div class="error-con">
-      <p>
-        <img src="../../static/images/error.png" alt/>
-      </p>
+    <div>
+      <van-icon name="clear" color="#ed4014" size="120"/>
       <div class="text">
         <p style="font-size: 14px">信息错误</p>
         <p style="color: #666;">请重新进入</p>
@@ -24,15 +22,12 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-  }
-
-  .error-con {
     flex: 0;
     margin-top: 200px;
   }
 
   .text {
+    margin-top: 10px;
     text-align: center;
-    margin-left: -20px;
   }
 </style>
