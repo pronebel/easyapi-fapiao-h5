@@ -192,20 +192,20 @@
       },
       inputBlur(){
         this.listShow = false
-        var has;
-        has = false;
-        for(var i = 0; i < this.searchList.length; i++){
-          if(this.searchList[i].name === this.name){
-            has = true;
-          }
-        };
-        if(!has){
-          this.companyForm.taxNumber = '';
-          this.companyForm.address = '';
-          this.companyForm.phone = '';
-          this.companyForm.bank = '';
-          this.companyForm.bankAccount = '';
-        }
+        // var has;
+        // has = false;
+        // for(var i = 0; i < this.searchList.length; i++){
+        //   if(this.searchList[i].name === this.name){
+        //     has = true;
+        //   }
+        // };
+        // if(!has){
+        //   this.companyForm.taxNumber = '';
+        //   this.companyForm.address = '';
+        //   this.companyForm.phone = '';
+        //   this.companyForm.bank = '';
+        //   this.companyForm.bankAccount = '';
+        // }
       }
     },
     computed: {
