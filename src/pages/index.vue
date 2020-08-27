@@ -1,18 +1,18 @@
 <template>
   <div class="body">
     <div class="page-cell">
-        <div v-if="order === true" style="margin-top:10px;">
-          <div style="border-bottom:1px solid #f4f4f4;" v-for="(type, index) in typeList" :key="index">
-            <div class="mint-cell router-link">
-              <div class="mint-cell-wrapper">
-                <div class="mint-cell-title" @click="goMakeInvoice('order', type.name)">
-                  <span class="mint-cell-text">{{ type.name }}</span>
-                </div>
-                <i class="mint-cell-allow-right"></i>
+      <div v-if="order === true" style="margin-top:10px;">
+        <div style="border-bottom:1px solid #f4f4f4;" v-for="(type, index) in typeList" :key="index">
+          <div class="mint-cell router-link">
+            <div class="mint-cell-wrapper">
+              <div class="mint-cell-title" @click="goMakeInvoice('order', type.name)">
+                <span class="mint-cell-text">{{ type.name }}</span>
               </div>
+              <i class="mint-cell-allow-right"></i>
             </div>
           </div>
         </div>
+      </div>
 
       <div class="invoice-record" style="margin-top:10px;">
         <a @click="goInvoiceRecord" class="mint-cell">
@@ -69,7 +69,6 @@
         getOrderTypeList(this.username).then(res => {
           if (res.status === 200) {
             this.typeList = res.data.content;
-            console.log(this.typeList)
             setTimeout(function () {
               Indicator.close();
             }, 1500);
@@ -91,7 +90,7 @@
       goInvoiceRecord() {
         this.$router.push("/record");
       },
-      gotoRule(){
+      gotoRule() {
         this.$router.push("/rule")
       },
       gotoCompany() {

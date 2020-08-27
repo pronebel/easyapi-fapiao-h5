@@ -36,29 +36,10 @@
                   >抬头类型</span
                   >
                 </div>
-                <div class="mint-cell-value">
-                  <input
-                    type="radio"
-                    id="radio-1-1"
-                    name="radio-1-set"
-                    class="regular-radio big-radio"
-                    value="企业"
-                    checked
-                    v-model="invoiceForm.type"
-                    @click="SaveType('企业')"
-                  />
-                  <label for="radio-1-1" @click="SaveType('企业')">企业</label>
-                  <input
-                    type="radio"
-                    id="radio-1-2"
-                    name="radio-1-set"
-                    class="regular-radio big-radio"
-                    v-model="invoiceForm.type"
-                    value="个人"
-                    @click="SaveType('个人')"
-                  />
-                  <label for="radio-1-2" @click="SaveType('个人')">个人</label>
-                </div>
+                <van-radio-group v-model="invoiceForm.type" direction="horizontal" @change="selectType">
+                  <van-radio name="企业">企业</van-radio>
+                  <van-radio name="个人">个人</van-radio>
+                </van-radio-group>
               </div>
             </a>
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '个人'">
@@ -452,7 +433,6 @@
                     >
                   </font>
                 </span>
-
               </div>
               <div class="mint-cell-value">
                 <input
@@ -491,7 +471,7 @@
       </mt-tab-container-item>
     </mt-tab-container>
     <div>
-      <router-view @seletedOrder="seletedOrder"></router-view>
+      <router-view @selectCompany="selectCompany"></router-view>
     </div>
   </div>
 </template>
@@ -502,10 +482,9 @@
   import {Navbar, TabItem} from "mint-ui";
   import {Toast} from "mint-ui";
   import {MessageBox} from "mint-ui";
-  import qs from 'qs';
 
   export default {
-    name: "make",
+    name: "MergeOrder",
     components: {
       Header
     },
@@ -528,7 +507,7 @@
         company: {},
         outOrderIds: "",
         email: "",
-        seletedOrderList: [],
+        selectCompanyList: [],
         sum: 0,
         item: {},
         mergeTax: 0,
@@ -546,11 +525,12 @@
       goBack() {
         history.go(-1);
       },
-      SaveType(type) {
-        localStorage.setItem("type", type);
-        if (type == "企业") {
+      selectType() {
+        console.log(this.invoiceForm.type)
+        localStorage.setItem("type", this.invoiceForm.type);
+        if (this.invoiceForm.type === "企业") {
           this.getDefaultCompany();
-        } else if (type == "个人") {
+        } else if (this.invoiceForm.type === "个人") {
           this.invoiceForm.purchaserName = "个人";
           this.invoiceForm.purchaserTaxpayerNumber = "";
           this.invoiceForm.address = "";
@@ -559,16 +539,18 @@
           this.invoiceForm.purchaserBankAccount = "";
           this.invoiceForm.companyId = "";
         }
+        console.log(this.invoiceForm.purchaserName)
+
       },
-      seletedOrder(item) {
+      selectCompany(item) {
         this.loadingList = false;
-        this.company = order;
+        this.company = item;
       },
       getOrder() {
         this.orderType = localStorage.getItem("orderType");
         this.invoiceForm.mergeSum = localStorage.getItem("tot");
         this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
-        for (var i = 0; i < this.seletedOutOrderList.length; i++) {
+        for (let i = 0; i < this.seletedOutOrderList.length; i++) {
           this.outOrderIds += this.seletedOutOrderList[i].outOrderId + ",";
           this.invoiceForm.outOrderIds = this.outOrderIds;
           this.invoiceForm.category = "增值税电子普通发票";
@@ -579,9 +561,7 @@
 
       getDefaultCompany() {
         getDefaultCompany(this.$store.state.username).then(res => {
-          if (res.data.code === 0) {
-            this.company = [];
-          } else {
+          if (res.data.code === 1) {
             this.company = res.data.content;
             this.invoiceForm.purchaserName = this.company.name;
             this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
@@ -594,21 +574,21 @@
         });
       },
       gotoCompany() {
-        if (this.company.length === 0) {
+        if (this.company) {
           this.$router.push({
             path: "/company/",
-            name: "company",
+            name: "Company",
             params: {
-              id: "",
+              id: this.company.companyId,
               from: "make"
             }
           });
         } else {
           this.$router.push({
             path: "/company/",
-            name: "company",
+            name: "Company",
             params: {
-              id: this.company.companyId,
+              id: "",
               from: "make"
             }
           });
@@ -623,8 +603,8 @@
           }
         }).then(res => {
           this.loadingList = false
-          this.email = res.data.content.email;
-          this.contactInformation = res.data.content.mobile;
+          this.email = res.data.content.email ? res.data.content.email : "";
+          this.contactInformation = res.data.content.mobile ? res.data.content.mobile : "";
         });
       },
       goInvoiceSuccess() {
@@ -696,7 +676,7 @@
             accessToken: this.accessToken
           }
         }).then(res => {
-          this.remark = res.data.content.remark;
+          this.remark = res.data.content.remark ? res.data.content.remark : "";
         })
       },
 
@@ -724,7 +704,7 @@
       }
     },
     activated() {
-      this.seletedOrder();
+      this.selectCompany();
     },
     mounted() {
       this.getDefaultCompany();

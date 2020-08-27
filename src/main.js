@@ -11,10 +11,11 @@ import store from "./store/store";
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css';
 import clipboard from 'clipboard';
-import { InfiniteScroll } from 'mint-ui';
+import {InfiniteScroll} from 'mint-ui';
 import VueWechatTitle from 'vue-wechat-title'
 
 import axios from './api/request'
+
 Vue.prototype.$ajax = axios
 
 Vue.use(InfiniteScroll);

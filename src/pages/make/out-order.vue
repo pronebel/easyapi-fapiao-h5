@@ -143,7 +143,7 @@
             accessToken: this.accessToken,
             username: this.$store.state.username,
             state: 0,
-            sort: "addTime,desc"
+            sort: "orderTime,desc"
           }
         }).then(res => {
           if (res.data.code === 1) {
@@ -176,7 +176,6 @@
           this.loadMoreText = "没有更多数据了";
           return;
         }
-        console.log(this.page.total, this.page.page)
         this.getOutOrderList();
         this.page.page++;
       },

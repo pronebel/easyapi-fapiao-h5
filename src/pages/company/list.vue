@@ -27,7 +27,7 @@
             <span class="edit" @click="edit(index)">编辑</span>
           </p>
         </div>
-        <div class="address-bottom" @click="selectCompany(item)">
+        <div class="address-bottom" @click="select(item)">
           <table>
             <tr class="address-bottom-title">
               <td class="">
@@ -82,7 +82,6 @@
 <script>
   import Header from "../../components/header.vue";
   import {defaultCompany, getCompanyList} from "../../api/company";
-  import {setTimeout} from "timers";
 
   export default {
     name: "Company",
@@ -118,15 +117,13 @@
           this.loadingList = false;
         });
       },
-      selectCompany(item) {
+      select(item) {
         if (this.from != 'make') {
           return;
         }
         this.defaultCompany(item.companyId);
-        this.$emit("seletedOrder", item);
-        setTimeout(() => {
-          this.$router.back(-1);
-        }, 500);
+        this.$emit("selectCompany", item);
+        this.$router.back(-1);
       },
       //设置默认值
       defaultCompany(companyId) {
@@ -164,7 +161,6 @@
       this.getCompanyList();
     },
     beforeRouteLeave(to, from, next) {
-      console.log(to.name)
       if (to.name === 'EditCompany' && !this.back) {
         next({name: 'Index'});
       } else if (to.name === 'Company') {

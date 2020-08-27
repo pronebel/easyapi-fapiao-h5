@@ -150,9 +150,6 @@
     created() {
       this.accessToken = localStorage.getItem("accessToken");
     },
-    activated() {
-    },
-    watch: {}
   };
 </script>
 

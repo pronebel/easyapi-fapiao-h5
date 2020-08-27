@@ -545,7 +545,7 @@
         if (this.company.length === 0) {
           this.$router.push({
             path: "/company/",
-            name: "company",
+            name: "Company",
             params: {
               id: ""
             }
@@ -553,7 +553,7 @@
         } else {
           this.$router.push({
             path: "/company/",
-            name: "company",
+            name: "Company",
             params: {
               id: this.company.companyId
             }

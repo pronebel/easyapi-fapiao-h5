@@ -9,7 +9,7 @@ const store = new Vuex.Store({
     author: "我是store里的内容",
     userType: null,
     username: localStorage.getItem("username"),
-    ifShowH5NavBar:false //是否隐藏顶部
+    ifShowH5NavBar: false //是否隐藏顶部
   },
   //改变转台操作
   mutations: {

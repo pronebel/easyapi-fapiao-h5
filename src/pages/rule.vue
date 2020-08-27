@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <div class="rule-con">
       <div v-html="content">{{ content }}</div>
     </div>
@@ -8,23 +7,14 @@
 </template>
 
 <script>
-  import Header from "../components/header.vue";
-
   export default {
     name: "Rule",
-    components: {
-      Header
-    },
     data() {
       return {
-        headerTitle: "开票规则",
         content: ""
       };
     },
     methods: {
-      goBack() {
-        history.go(-1);
-      },
       getInfo() {
         this.$ajax.get("/api/invoice/rule", {
           params: {
@@ -37,12 +27,6 @@
         });
       }
     },
-    computed: {
-      show() {
-        return this.$store.state.ifShowH5NavBar
-      },
-    },
-    watch: {},
     mounted() {
       this.getInfo();
     },

@@ -2,14 +2,15 @@ import Vue from "vue";
 import Router from "vue-router";
 
 Vue.use(Router);
+
 export default new Router({
   mode: "history",
-  // base: "./",
   routes: [
     {
       path: "/",
       name: "Index",
-      component: resolve => require(["../pages/index.vue"], resolve)
+      component: resolve => require(["../pages/index.vue"], resolve),
+      meta: {title: "发票管理"}
     },
     {
       path: "/out-order",

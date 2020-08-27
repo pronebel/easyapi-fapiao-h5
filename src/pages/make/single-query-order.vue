@@ -1,5 +1,5 @@
 <template>
-  <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;">
+  <div>
     <div class="nav">
       <div id="loading">
         <mt-spinner
@@ -533,7 +533,7 @@
         if (this.company.length === 0) {
           this.$router.push({
             path: "/company/",
-            name: "company",
+            name: "Company",
             params: {
               from: "make"
             }
@@ -541,7 +541,7 @@
         } else {
           this.$router.push({
             path: "/company/",
-            name: "company",
+            name: "Company",
             params: {
               id: this.company.companyId
             }
