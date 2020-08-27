@@ -13,3 +13,10 @@ export const queryShopOrder = (outOrderNo, username) => axios.get(`${baseUrl}/sh
     username: username
   }
 });
+
+export const getState = (outOrderNo, username) => axios.get(`${baseUrl}/invoice/state`, {
+  params: {
+    accessToken: localStorage.getItem("accessToken"),
+    username: username
+  }
+});

@@ -83,17 +83,13 @@
         };
         params.username = localStorage.getItem("username");
         getInvoiceList(params).then(res => {
-          console.log(res);
           if (res.data.code === 1) {
             let data = res.data.content;
-            console.log(data);
             this.page.total = res.data.totalPages;
             if (this.invoiceRecordList == null) {
               this.invoiceRecordList = data;
-              console.log(this.invoiceRecordList);
             } else {
               this.invoiceRecordList = this.invoiceRecordList.concat(data);
-              console.log(this.invoiceRecordList);
             }
             this.loadingList = false;
             this.loading = false;
