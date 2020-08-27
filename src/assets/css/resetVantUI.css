@@ -12,8 +12,8 @@
     flex:1
 }
 
-.address-bottom .van-cell--required::before {
-    left: 63px;
+.address-bottom2 .van-cell--required::before {
+    left: 69px;
 }
 
 .van-field__label {
@@ -27,7 +27,12 @@
 }
 
 .address-bottom .van-cell {
-    /* padding: 5px 3px; */
+    padding: 5px 3px
+}
+
+.address-bottom2 .van-cell {
+    padding: 12px 10px;
+    border-bottom: 1px solid #f4f4f4;
 }
 
 .address-top .van-tag {
@@ -39,7 +44,7 @@
 }
 
 .defaultBnt {
-    padding: 15px!important
+    padding: 10px!important
 }
 
 .defaultBnt .van-switch__node {

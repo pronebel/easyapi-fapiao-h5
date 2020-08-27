@@ -187,3 +187,7 @@
   text-align: center;
   z-index: 999;
 }
+
+.formClass .address-con {
+  border-radius: 0px;
+}

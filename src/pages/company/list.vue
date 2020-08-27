@@ -29,7 +29,7 @@
         </div>
         <div class="address-bottom" @click="select(item)">
           <van-cell-group :border="false">
-          <van-cell title="公司税号" :value="item.taxNumber" :border="false" required/>
+          <van-cell title="公司税号" :value="item.taxNumber" :border="false"/>
           <van-cell title="注册地址" :value="item.address" :border="false"/>
           <van-cell title="注册电话" :value="item.phone" :border="false"/>
           <van-cell title="开户银行" :value="item.bank" :border="false"/>

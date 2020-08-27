@@ -1,9 +1,9 @@
 <template>
-  <div class="add-con">
+  <div class="">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <form action ref="companyForm" :model="companyForm">
-      <div class="page-part address-con">
-        <div class="address-bottom" @click="select(item)">
+    <form action ref="companyForm" :model="companyForm" class="formClass">
+      <div class="">
+        <div class="address-bottom2" @click="select(item)">
           <van-cell-group :border="false">
             <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" :border="false" required @keyup="searchRiseList" @focus="listShow = true" @blur="inputBlur"/>
             <div class="rise-list" v-if="listShow && searchList !== ''">
