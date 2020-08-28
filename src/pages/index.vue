@@ -85,14 +85,14 @@
         }
       },
       goInvoiceRecord() {
-        this.$router.push("/invoice/");
+        this.$router.push("/invoice/company");
       },
       gotoRule() {
         this.$router.push("/rule")
       },
       gotoCompany() {
         this.$router.push({
-          path: "/company/",
+          path: "/company",
           name: "Company",
           params: {
             from: "index"

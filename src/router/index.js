@@ -19,13 +19,13 @@ export default new Router({
       meta: {title: "开具发票", keepAlive: false}
     },
     {
-      path: "/invoice/",
+      path: "/invoice/company",
       name: "Invoice",
       component: resolve => require(["../pages/invoice/list.vue"], resolve),
       meta: {title: "开票记录", keepAlive: false}
     },
     {
-      path: "/company/",
+      path: "/company",
       name: "Company",
       component: resolve => require(["../pages/company/list.vue"], resolve),
       meta: {title: "抬头管理", keepAlive: false}
