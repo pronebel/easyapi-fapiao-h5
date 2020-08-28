@@ -338,7 +338,8 @@
             path: "/company/",
             name: "Company",
             params: {
-              id: ""
+              id: "",
+              from: "make"
             }
           });
         } else {
@@ -346,7 +347,8 @@
             path: "/company/",
             name: "Company",
             params: {
-              id: this.company.companyId
+              id: this.company.companyId,
+              from: "make"
             }
           });
         }
