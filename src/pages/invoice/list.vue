@@ -102,7 +102,6 @@
     created() {
     },
     mounted() {
-      this.getInvoiceList();
     }
   };
 </script>
