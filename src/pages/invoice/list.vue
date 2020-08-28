@@ -65,8 +65,7 @@
       getInvoiceList() {
         let params = {
           size: this.page.size,
-          page: this.page.page,
-          state: 0
+          page: this.page.page
         };
         params.username = localStorage.getItem("username");
         getInvoiceList(params).then(res => {
