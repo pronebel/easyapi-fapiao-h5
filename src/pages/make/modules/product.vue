@@ -37,7 +37,7 @@
           @load="onLoad"
         >
           <van-radio-group v-model="radio">
-            <van-cell v-for="item in productList" :key="item.productId">
+            <van-cell v-for="item in productList" :key="item.productId" @click="chooseRadio(item.productId)">
               <van-row type="flex" align="center">
                 <van-col span="6">
                   <van-image width="60" height="60" :src="item.img" />
@@ -47,7 +47,7 @@
                   <span>商品价格：{{ item.price }} 元</span >
                 </van-col>
                 <van-col span="3">
-                  <van-radio :name="item.productId" @click="chooseRadio"/>
+                  <van-radio :name="item.productId"/>
                 </van-col>
               </van-row>
             </van-cell>
@@ -149,7 +149,7 @@
               let oldList = JSON.parse(localStorage.getItem("productList")) || [];
               oldList.push(obj);
               localStorage.setItem("productList", JSON.stringify(oldList));
-              this.$router.push({path: "/product"});
+              this.$router.push({path: "/make/product"});
             } else {
               MessageBox("提示", "数量,单价不能为0");
             }
@@ -165,7 +165,8 @@
         this.searchValue = ''
         this.getProductList()
       },
-      chooseRadio(){
+      chooseRadio(id){
+        this.radio = id
         for (var i = 0; i < this.productList.length; i++) {
           if (this.radio === this.productList[i].productId) {
             this.productId = this.productList[i].productId
