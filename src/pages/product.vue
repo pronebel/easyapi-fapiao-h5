@@ -12,21 +12,46 @@
       <van-field
         readonly
         clickable
-        name="picker"
-        :value="value"
+        :value="name"
         label="商品名称"
         placeholder="点击选择商品"
-        @click="showPicker = true"
+        @click="showSearchPopup"
         label-width='8em'
         :border="false"
       />
-      <van-popup v-model="showPicker" position="bottom">
-        <van-picker
-          show-toolbar
-          :columns="productListColumns"
-          @confirm="onConfirm"
-          @cancel="showPicker = false"
+      <van-popup
+        v-model="showPopup"
+        position="bottom"
+        style="height: 75%; padding-top: 4px;"
+      >
+        <van-search
+          v-model="searchValue"
+          placeholder="请输入搜索关键词"
+          @input="onSearch"
         />
+        <van-list
+          v-model="loading"
+          :finished="true"
+          finished-text="没有更多了"
+          @load="onLoad"
+        >
+          <van-radio-group v-model="radio">
+            <van-cell v-for="item in productList" :key="item.productId">
+              <van-row type="flex" align="center">
+                <van-col span="6">
+                  <van-image width="60" height="60" :src="item.img" />
+                </van-col>
+                <van-col span="15">
+                  <span style="display: block">商品名称：{{ item.name }}</span >
+                  <span>商品价格：{{ item.price }} 元</span >
+                </van-col>
+                <van-col span="3">
+                  <van-radio :name="item.productId" @click="chooseRadio"/>
+                </van-col>
+              </van-row>
+            </van-cell>
+          </van-radio-group>
+        </van-list>
       </van-popup>
       <van-field
         label="规格类型"
@@ -89,8 +114,9 @@
         number: "",
         productList: [],
         productListColumns: [],
-        value: '',
-        showPicker: false
+        searchValue: '',
+        showPopup: false,
+        radio: null
       };
     },
 
@@ -98,8 +124,8 @@
       goBack() {
         history.go(-1);
       },
-      getProductList() {
-        getProductList().then(res => {
+      getProductList(params) {
+        getProductList(params).then(res => {
           this.productList = res.data.content;
           for(var i = 0; i < this.productList.length; i++){
             this.productListColumns[i] = this.productList[i].name + ' ' + this.productList[i].specification
@@ -133,10 +159,14 @@
           MessageBox("提示", "单价不能为空");
         }
       },
-      onConfirm(value) {
-        this.value = value;
+      showSearchPopup(){
+        this.showPopup = true
+        this.searchValue = ''
+        this.getProductList()
+      },
+      chooseRadio(){
         for (var i = 0; i < this.productList.length; i++) {
-          if (this.value === this.productList[i].name + ' ' + this.productList[i].specification) {
+          if (this.radio === this.productList[i].productId) {
             this.productId = this.productList[i].productId
             this.specification = this.productList[i].specification;
             this.unit = this.productList[i].unit;
@@ -144,7 +174,11 @@
             this.name = this.productList[i].name;
           }
         }
-        this.showPicker = false;
+        this.showPopup = false
+      },
+      onSearch() {
+        var searchVal = {name: this.searchValue}
+        this.getProductList(searchVal)
       },
     },
     mounted() {

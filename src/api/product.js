@@ -7,8 +7,8 @@ import {baseUrl} from "./request";
  *
  * @see https://www.easyai.com
  */
-export const getProductList = () => {
-  let params = {};
+export const getProductList = (searchParams) => {
+  let params = {...searchParams};
   params.size = 100
   params.accessToken = localStorage.getItem("accessToken")
   return axios.get(`${baseUrl}/products`, {
