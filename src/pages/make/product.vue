@@ -156,7 +156,7 @@
             </li>
           </ul>
           <div class="btn">
-            <mt-button class="submit-btn" @click="addContent">
+            <mt-button class="submit-btn" @click="showSearchPopup">
               +添加发票内容
             </mt-button
             >
@@ -322,10 +322,53 @@
     <div>
       <router-view @seletedOrder="seletedOrder"></router-view>
     </div>
+    <p>---------------------------------</p>
+    <van-popup
+      class="popupClass"
+      v-model="showPopup"
+      position="bottom"
+      style="height: 75%; padding-top: 4px;"
+    >
+      <van-search
+        v-model="searchValue"
+        placeholder="请输入搜索关键词"
+        @input="onSearch"
+      />
+      <van-list
+        v-model="loading"
+        :finished="true"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <van-radio-group v-model="radio">
+          <van-cell v-for="item in productListAll" :key="item.productId">
+            <van-row type="flex" align="center">
+              <van-col span="6">
+                <van-image width="60" height="60" :src="item.img" />
+              </van-col>
+              <van-col span="11">
+                <span style="display: block">{{ item.name }}</span >
+                <span style="display: block; font-size: 12px; color: #888">{{ item.specification }}</span >
+                <span>￥</span>
+                <input style="width: 40px; text-align: center; border:none;" v-model=" item.price " @change="calcTotalPrice"/>
+                <span> 元 / {{ item.unit }}</span >
+              </van-col>
+              <van-col span="7">
+                <van-stepper v-model="item.number" integer min="0" max="99" default-value="0" @change="calcTotalPrice"/>
+              </van-col>
+            </van-row>
+          </van-cell>
+        </van-radio-group>
+      </van-list>
+      <van-submit-bar :price="totalPrice" button-text="添加商品" @submit="addTo" button-color="#56CBF6"/>
+    </van-popup>
+
+
   </div>
 </template>
 
 <script>
+  import {getProductList} from "../../api/product";
   import Header from "../../components/header.vue";
   import {Navbar, TabItem} from "mint-ui";
   import {Toast} from "mint-ui";
@@ -363,7 +406,20 @@
         remark: "",
         invoiceForm: {
           type: ""
-        }
+        },
+
+        // productId: "",
+        // specification: "",
+        // unit: "",
+        // price: "",
+        // number: "",
+        productListAll: [],
+        calcProductList: [],
+        searchValue: '',
+        showPopup: false,
+        radio: null,
+        totalPrice: 0,
+
       };
     },
 
@@ -551,20 +607,119 @@
       //跳转添加内容
       addContent() {
         this.$router.push(`/addProduct`);
+      },
+      getProductList(params) {
+        getProductList(params).then(res => {
+          this.productListAll = res.data.content;
+        });
+      },
+      addTo() {
+        let obj = {}
+        for (var i = 0; i < this.productListAll.length; i++) {
+          console.log(this.productListAll[i],33333)
+          if (this.productListAll[i].number > 0 ) {
+            obj = {
+                productId: this.productListAll[i].productId,
+                specification: this.productListAll[i].specification,
+                unit: this.productListAll[i].unit,
+                price: this.productListAll[i].price,
+                name: this.productListAll[i].name,
+                number: this.productListAll[i].number
+            };
+            let oldList = JSON.parse(localStorage.getItem("productList")) || []
+            oldList.push(obj)
+            localStorage.setItem("productList", JSON.stringify(oldList))
+          }
+
+        }
+        // calcProductList
+
+
+
+
+        // let obj = {};
+        // if (this.price !== "") {
+        //   if (this.number !== "") {
+        //     if (this.number !== "0" && this.price !== 0) {
+        //       obj = {
+        //         productId: this.productId,
+        //         specification: this.specification,
+        //         unit: this.unit,
+        //         price: this.price,
+        //         name: this.name,
+        //         number: this.number
+        //       };
+        //       let oldList = JSON.parse(localStorage.getItem("productList")) || [];
+        //       oldList.push(obj);
+        //       localStorage.setItem("productList", JSON.stringify(oldList));
+        //       this.$router.push({path: "/make/product"});
+        //     } else {
+        //       Toast.fail("数量,单价不能为0");
+        //       // return true
+        //     }
+        //   } else {
+        //     Toast.fail("数量不能为空");
+        //     // return true
+        //   }
+        // } else {
+        //   Toast.fail("单价不能为空");
+        //   // return true
+        // }
+        this.resetPage()
+        this.showPopup = false
+        this.totalPrice = 0
+      },
+      showSearchPopup(){
+        console.log(this.totalPrice,333333)
+        this.totalPrice = 0
+        this.showPopup = true
+        this.searchValue = ''
+        this.getProductList()
+      },
+      chooseRadio(id){
+        this.radio = id
+        for (var i = 0; i < this.productListAll.length; i++) {
+          if (this.radio === this.productListAll[i].productId) {
+            this.productId = this.productListAll[i].productId
+            this.specification = this.productListAll[i].specification;
+            this.unit = this.productListAll[i].unit;
+            this.price = this.productListAll[i].price;
+            this.name = this.productListAll[i].name;
+          }
+        }
+      },
+      onSearch() {
+        var searchVal = {name: this.searchValue}
+        this.getProductList(searchVal)
+      },
+      calcTotalPrice(){
+        let total = 0;
+        if (this.productListAll !== null) {
+          for (var i = 0; i < this.productListAll.length; i++) {
+            total += this.productListAll[i].price * this.productListAll[i].number;
+          }
+          this.totalPrice = total*100;
+        }
+      },
+      resetPage(){
+        this.make = localStorage.getItem("make");
+        this.order = localStorage.getItem("order");
+        this.accessToken = localStorage.getItem("accessToken");
+        this.productList = JSON.parse(localStorage.getItem("productList"));
+        this.invoiceForm.type = localStorage.getItem("type");
+        if (this.invoiceForm.type) {
+          this.invoiceForm.type = localStorage.getItem("type");
+        } else {
+          this.invoiceForm.type = "企业";
+        }
       }
     },
     watch: {},
+    mounted() {
+      this.getProductList();
+    },
     created() {
-      this.make = localStorage.getItem("make");
-      this.order = localStorage.getItem("order");
-      this.accessToken = localStorage.getItem("accessToken");
-      this.productList = JSON.parse(localStorage.getItem("productList"));
-      this.invoiceForm.type = localStorage.getItem("type");
-      if (this.invoiceForm.type) {
-        this.invoiceForm.type = localStorage.getItem("type");
-      } else {
-        this.invoiceForm.type = "企业";
-      }
+      this.resetPage()
     },
     activated() {
       this.seletedOrder();
@@ -581,4 +736,17 @@
 
 <style scoped>
   @import 'make.css';
+
+  .mint-btn div {
+    margin: 20px;
+    height: 44px;
+    background-color: #52c9f5;
+    border-radius: 8px;
+    box-shadow: 0px 3px 15px 0px rgba(12, 143, 192, 0.23);
+    color: #fff;
+    text-align: center;
+    line-height: 44px;
+    font-size: 16px;
+  };
+
 </style>
