@@ -18,6 +18,7 @@
         @click="showSearchPopup"
         label-width='8em'
         :border="false"
+        right-icon="arrow"
       />
       <van-popup
         v-model="showPopup"
