@@ -24,3 +24,17 @@ export const getInvoice = (id) => {
     params: params
   });
 }
+
+
+/**
+ * 查询发票信息
+ *
+ * @see https://www.easyai.com
+ */
+export const queryInvoice = (outOrderNo) => {
+  let params = {};
+  params.accessToken = localStorage.getItem("accessToken")
+  return axios.get(`${baseUrl}/invoice/${outOrderNo}/query`, {
+    params: params
+  });
+}

@@ -447,7 +447,7 @@
 
 <script>
   import {getDefaultCompany} from "../../api/company";
-  import {queryShopOrder,getState} from "../../api/query";
+  import {queryShopOrder, getState} from "../../api/query";
   import {Navbar, TabItem} from "mint-ui";
   import {Toast} from "mint-ui";
   import {MessageBox} from "mint-ui";
@@ -550,10 +550,9 @@
         }
       },
       getShopOrder() {
-        getState(this.outOrderNo, localStorage.getItem("username")).then(res=>{
-          console.log(res)
-          if (res.data.content!=null){
-            this.$router.push({ path: "/invoice/detail", query: { id: res.data.content[0].invoiceId } });
+        getState(this.outOrderNo, localStorage.getItem("username")).then(res => {
+          if (res.data.content != null) {
+            this.$router.push({path: "/invoice/detail", query: {id: res.data.content[0].invoiceId}});
           }
         })
         queryShopOrder(this.outOrderNo, localStorage.getItem("username")).then(res => {

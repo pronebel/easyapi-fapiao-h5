@@ -16,6 +16,7 @@ export const queryShopOrder = (outOrderNo, username) => axios.get(`${baseUrl}/sh
 
 export const getState = (outOrderNo, username) => axios.get(`${baseUrl}/invoice/state`, {
   params: {
+    outOrderNos: outOrderNo,
     accessToken: localStorage.getItem("accessToken"),
     username: username
   }
