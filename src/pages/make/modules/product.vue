@@ -95,8 +95,8 @@
 </template>
 
 <script>
-  import {getProductList} from "../api/product";
-  import Header from "../components/header.vue";
+  import {getProductList} from "../../../api/product";
+  import Header from "../../../components/header.vue";
   import {MessageBox} from "mint-ui";
 
   export default {

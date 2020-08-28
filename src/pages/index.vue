@@ -78,21 +78,21 @@
       },
       goMakeInvoice(pl, orderType) {
         if (pl === "product") {
-          this.$router.push({path: "/product"});
+          this.$router.push({path: "/make/product"});
         } else if (pl === "order") {
           localStorage.setItem("orderType", orderType);
-          this.$router.push("/out-order");
+          this.$router.push("/make/out-order");
         }
       },
       goInvoiceRecord() {
-        this.$router.push("/invoice/company");
+        this.$router.push("/invoice/");
       },
       gotoRule() {
         this.$router.push("/rule")
       },
       gotoCompany() {
         this.$router.push({
-          path: "/company",
+          path: "/company/",
           name: "Company",
           params: {
             from: "index"

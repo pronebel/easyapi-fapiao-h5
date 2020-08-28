@@ -335,7 +335,7 @@
   import {getDefaultCompany} from "../../api/company";
 
   export default {
-    name: "make",
+    name: "MakeProduct",
     components: {
       Header
     },
