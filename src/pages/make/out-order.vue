@@ -97,7 +97,8 @@
         outOrderList: [],//外部订单列表
         allCheck: false,//全部选择
         minPrice: 10000,//最大开票金额
-        accessToken: ""
+        accessToken: "",
+        orderType: ""
       };
     },
 
@@ -120,6 +121,7 @@
         this.loading = true
         let params = {};
         params.username = this.$store.state.username
+        params.orderType = this.orderType
         getOutOrderList(params, this.page).then(res => {
           if (res.data.code === 1) {
             let data = res.data.content;
@@ -177,7 +179,7 @@
       goElectronicInvoice() {
         localStorage.setItem("tot", this.totalPrice);
         localStorage.setItem("seleted", JSON.stringify(this.selectList));
-        this.$router.push({path: "/merge-order"});
+        this.$router.push({path: "/make/merge-order"});
       },
       //获取发票类型
       getShop() {
@@ -212,6 +214,8 @@
     },
     created() {
       this.accessToken = localStorage.getItem("accessToken");
+      this.orderType = this.$route.query.orderType;
+      localStorage.setItem("orderType", this.orderType);
     },
     mounted() {
       this.getShop();

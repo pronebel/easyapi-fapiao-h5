@@ -520,8 +520,8 @@
             if (localStorage.getItem("type") == "企业") {
               this.invoiceForm.purchaserName = this.company.name;
               this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
-              this.invoiceForm.address = this.company.address;
-              this.invoiceForm.phone = this.company.phone;
+              this.invoiceForm.purchaserAddress = this.company.address;
+              this.invoiceForm.purchaserPhone = this.company.phone;
               this.invoiceForm.purchaserBank = this.company.bank;
               this.invoiceForm.purchaserBankAccount = this.company.bankAccount;
               this.invoiceForm.companyId = this.company.companyId;
@@ -551,8 +551,8 @@
       },
       getShopOrder() {
         getState(this.outOrderNo, localStorage.getItem("username")).then(res => {
-          if (res.data.content != null) {
-            this.$router.push({path: "/invoice/detail", query: {id: res.data.content[0].invoiceId}});
+          if (res.data.code === 1 && res.data.content) {
+            this.$router.replace({path: "/invoice/detail", query: {id: res.data.content[0].invoiceId}});
           }
         })
         queryShopOrder(this.outOrderNo, localStorage.getItem("username")).then(res => {
@@ -576,65 +576,72 @@
         });
       },
       makeInvoice() {
-        this.showDisabled = false;
-        //验证邮箱
-        if (this.ifNeedEmail === true) {
-          if (this.email === "") {
-            this.showDisabled = true;
-            return Toast("请输入邮箱");
-          } else if (!Isemail.validate(this.email)) {
-            this.showDisabled = true;
-            return Toast("邮箱格式不正确");
-          }
-        } else {
-          if (this.email) {
-            if (!Isemail.validate(this.email)) {
-              this.showDisabled = true;
-              return Toast("邮箱格式不正确");
+        MessageBox({
+          title: "提示",
+          message: "确认抬头正确并开票吗？",
+          showCancelButton: true
+        }).then(action => {
+          if (action === "confirm") {
+            this.showDisabled = false;
+            //验证邮箱
+            if (this.ifNeedEmail === true) {
+              if (this.email === "") {
+                this.showDisabled = true;
+                return Toast("请输入邮箱");
+              } else if (!Isemail.validate(this.email)) {
+                this.showDisabled = true;
+                return Toast("邮箱格式不正确");
+              }
+            } else {
+              if (this.email) {
+                if (!Isemail.validate(this.email)) {
+                  this.showDisabled = true;
+                  return Toast("邮箱格式不正确");
+                }
+              }
             }
-          }
-        }
-        //手机号验证
-        let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-        if (this.ifNeedMobile === true) {
-          if (this.contactInformation === "") {
-            this.showDisabled = true;
-            return Toast("请输入手机号码");
-          } else if (!reg.test(this.contactInformation)) {
-            this.showDisabled = true;
-            return Toast("手机格式不正确");
-          }
-        } else {
-          if (this.contactInformation) {
-            if (!reg.test(this.contactInformation)) {
-              this.showDisabled = true;
-              return Toast("手机格式不正确");
+            //手机号验证
+            let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+            if (this.ifNeedMobile === true) {
+              if (this.contactInformation === "") {
+                this.showDisabled = true;
+                return Toast("请输入手机号码");
+              } else if (!reg.test(this.contactInformation)) {
+                this.showDisabled = true;
+                return Toast("手机格式不正确");
+              }
+            } else {
+              if (this.contactInformation) {
+                if (!reg.test(this.contactInformation)) {
+                  this.showDisabled = true;
+                  return Toast("手机格式不正确");
+                }
+              }
             }
+            this.invoiceForm.accessToken = this.accessToken;
+            this.invoiceForm.addrMobile = this.contactInformation;
+            this.invoiceForm.email = this.email;
+            this.invoiceForm.username = this.username;
+            this.invoiceForm.type = this.invoiceForm.type;
+            this.invoiceForm.category = "增值税电子普通发票";
+            this.invoiceForm.property = "电子";
+            this.invoiceForm.outOrderNo = this.outOrder.outOrderNo;
+            this.invoiceForm.items = this.outOrder.items;
+            this.$ajax({
+              method: "POST",
+              url: "https://fapiao-api.easyapi.com/invoice/make",
+              data: this.invoiceForm
+            }).then(res => {
+              if (res.data.code === 1) {
+                this.$messagebox.alert(res.data.message);
+                this.$router.go(0)
+              }
+            }).catch(error => {
+              this.showDisabled = false;
+              Toast(error.response.data.message);
+              this.showDisabled = true;
+            });
           }
-        }
-        this.invoiceForm.accessToken = this.accessToken;
-        this.invoiceForm.addrMobile = this.contactInformation;
-        this.invoiceForm.email = this.email;
-        this.invoiceForm.username = this.username;
-        this.invoiceForm.type = this.invoiceForm.type;
-        this.invoiceForm.category = "增值税电子普通发票";
-        this.invoiceForm.property = "电子";
-        this.invoiceForm.price = this.amountOfMoney;
-        this.invoiceForm.outOrderNo = this.outOrder.outOrderNo;
-        this.invoiceForm.items = this.outOrder.items;
-        this.$ajax({
-          method: "POST",
-          url: "https://fapiao-api.easyapi.com/invoice/make",
-          data: this.invoiceForm
-        }).then(res => {
-          if (res.data.code === 1) {
-            this.$messagebox.alert(res.data.message);
-            this.$router.go(0)
-          }
-        }).catch(error => {
-          this.showDisabled = false;
-          Toast(error.response.data.message);
-          this.showDisabled = true;
         });
       },
       //获取备注
@@ -687,6 +694,7 @@
         this.invoiceForm.type = localStorage.getItem("type");
       } else {
         this.invoiceForm.type = "企业";
+        localStorage.setItem("type", "企业");
       }
     },
     activated() {
