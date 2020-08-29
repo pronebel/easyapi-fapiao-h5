@@ -121,7 +121,7 @@
         this.loading = true
         let params = {};
         params.username = this.$store.state.username
-        params.orderType = this.orderType
+        params.type = this.orderType
         getOutOrderList(params, this.page).then(res => {
           if (res.data.code === 1) {
             let data = res.data.content;
