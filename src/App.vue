@@ -25,4 +25,7 @@
     -moz-osx-font-smoothing: grayscale;
     padding: 0 !important;
   }
+  .top-toast {
+    z-index: 9999 !important;
+  }
 </style>

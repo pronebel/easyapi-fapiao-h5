@@ -338,10 +338,10 @@
         let _this = this;
         let clipboard = new this.clipboard(".copyPdfUrl");
         clipboard.on('success', function () {
-          _this.$toast("复制成功")
+          _this.$toast({message:"复制成功", className: 'top-toast'})
         });
         clipboard.on('error', function () {
-          _this.$toast("复制失败")
+          _this.$toast({message:"复制失败", className: 'top-toast'})
         });
       }
     },
