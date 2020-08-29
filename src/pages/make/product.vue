@@ -360,7 +360,7 @@
           </van-cell>
         </van-radio-group>
       </van-list>
-      <van-submit-bar :price="totalPrice" button-text="添加商品" @submit="addTo" button-color="#56CBF6"/>
+      <van-submit-bar :price="totalPrice*100" button-text="添加商品" @submit="addTo" button-color="#56CBF6"/>
     </van-popup>
 
 
@@ -667,7 +667,6 @@
         // }
         this.resetPage()
         this.showPopup = false
-        this.totalPrice = 0
       },
       showSearchPopup(){
         console.log(this.totalPrice,333333)
@@ -696,9 +695,9 @@
         let total = 0;
         if (this.productListAll !== null) {
           for (var i = 0; i < this.productListAll.length; i++) {
-            total += this.productListAll[i].price * this.productListAll[i].number;
+            total += this.productListAll[i].price * (this.productListAll[i].number || 0);
           }
-          this.totalPrice = total*100;
+          this.totalPrice = total;
         }
       },
       resetPage(){
