@@ -260,9 +260,14 @@
       <p style="fontSize:17px">发票预览</p>
       <img :src="imgUrl" alt="" style="width:350px">
       <div style="margin-bottom:20px">
-        <mt-button type="primary" size="small" data-clipboard-action="copy" class="copyPdfUrl"
-                   :data-clipboard-text="url" @click="copyLink">复制发票下载地址
-        </mt-button>
+        <van-button
+          type="primary"
+          data-clipboard-action="copy"
+          class="copyPdfUrl submit"
+          :data-clipboard-text="url"
+          @click="copyLink"
+        >复制发票下载地址
+        </van-button>
       </div>
       <div style="width:200px,fontSize:12px">
         <textarea :value="url" style="width:300px"/>
@@ -388,4 +393,18 @@
   .mint-cell-wrapper {
     background: none !important;
   }
+  .submit{
+    background: #56cbf6;
+    border: none;
+    height: 40px;
+    border-radius: 5px;
+    color: #fff;
+  }
+
+  .van-button__text {
+    font-size: 15px;
+    font-weight: 500;
+    /* letter-spacing:2px;
+    text-indent: 2px */
+}
 </style>
