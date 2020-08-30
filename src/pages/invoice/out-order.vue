@@ -1,37 +1,19 @@
 <template>
   <div class="associated-con">
     <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
-    <div class="order-con header-d" v-for="(item,index) in invoiceItems" :key="index">
-      <div class="page-part">
-        <a class="mint-cell">
-          <div class="mint-cell-wrapper">
-            <div class="order-right">
-              <p class="num">
-                <span>税收编码：</span><span>{{ item.no }}</span>
-              </p>
-              <p class="name">
-                <span>商品名称：</span><span>{{ item.name }}</span>
-              </p>
-              <p class="remark">
-                <span>规格：</span><span>{{ item.model }}</span>
-              </p>
-              <p class="remark">
-                <span>单位：</span><span>{{ item.unit }}</span>
-              </p>
-              <p class="remark">
-                <span>单价：</span><span>￥{{ item.price }}</span>
-              </p>
-              <p class="remark">
-                <span>数量：</span><span>{{ item.number }}</span>
-              </p>
-              <p>
-                <span class="price">￥{{ item.price * item.number }}</span
-                ><span class="time">小计</span>
-              </p>
-            </div>
-          </div>
-        </a>
-      </div>
+    <div class="order-con address-con header-d address-bottom" v-for="(item,index) in invoiceItems" :key="index">
+      <van-cell-group :border="false">
+        <van-cell title="税收编码：" :value="item.no" :border="false"/>
+        <van-cell title="商品名称：" :value="item.name" :border="false"/>
+        <van-cell title="规格：" :value="item.model" :border="false"/>
+        <van-cell title="单位：" :value="item.unit" :border="false"/>
+        <van-cell title="单价：" :value="item.price" :border="false"/>
+        <van-cell title="数量：" :value="item.number" :border="false"/>
+        <div>
+          <span class="price">￥{{ item.price * item.number }}</span>
+          <span class="time">小计</span>
+        </div>
+      </van-cell-group>
     </div>
   </div>
 </template>
