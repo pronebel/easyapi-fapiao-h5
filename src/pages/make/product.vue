@@ -334,11 +334,15 @@
         placeholder="请输入搜索关键词"
         @input="onSearch"
       />
-      <van-list
+      <!-- <van-list
         v-model="loading"
         :finished="true"
         finished-text="没有更多了"
         @load="onLoad"
+      > -->
+      <van-list
+        :finished="true"
+        finished-text="没有更多了"
       >
         <van-radio-group v-model="radio">
           <van-cell v-for="item in productListAll" :key="item.productId">
