@@ -32,14 +32,12 @@
       </div>
     </form>
     <div class="bottom">
-      <mt-button class="submit" @click="confirm">保存</mt-button>
-      <mt-button
+      <van-button class="submit" @click="confirm">保存</van-button>
+      <van-button
         v-if="this.title === 'edit'"
         class="submit_delete"
         @click="deleteDate"
-      >删除
-      </mt-button
-      >
+      >删除</van-button>
     </div>
   </div>
 </template>

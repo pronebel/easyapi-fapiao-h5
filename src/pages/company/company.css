@@ -4,31 +4,45 @@
 }
 
 .bottom {
-  padding: 0 10px;
   margin-top: 20px;
   position: fixed;
   bottom: 0;
-  left: -10px;
   width: 100%;
 }
 
 .bottom .submit {
-  width: 100%;
+  left:50%;
+  transform: translateX(-50%);
+  width: 95%;
   background: #56cbf6;
   border: none;
-  height: 50px;
-  border-radius: 10px;
+  height: 40px;
+  border-radius: 5px;
   color: #fff;
+  margin-bottom: 10px;
 }
 
 .bottom .submit_delete {
-  width: 100%;
+  left:50%;
+  transform: translateX(-50%);
+  width: 95%;
   background: #EF4F4F;
   border: none;
-  height: 50px;
-  border-radius: 10px;
+  height: 40px;
+  border-radius: 5px;
   color: #fff;
-  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.bottom .van-button__text {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing:5px;
+  text-indent: 5px
+}
+
+.bottom .list {
+  transform: translateX(-52.5%);
 }
 
 .confirm-dialog {

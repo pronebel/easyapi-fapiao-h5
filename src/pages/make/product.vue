@@ -620,7 +620,7 @@
       addTo() {
         let obj = {}
         for (var i = 0; i < this.productListAll.length; i++) {
-          console.log(this.productListAll[i],33333)
+          // console.log(this.productListAll[i],33333)
           if (this.productListAll[i].number > 0 ) {
             obj = {
                 productId: this.productListAll[i].productId,
@@ -673,7 +673,7 @@
         this.showPopup = false
       },
       showSearchPopup(){
-        console.log(this.totalPrice,333333)
+        // console.log(this.totalPrice,333333)
         this.totalPrice = 0
         this.showPopup = true
         this.searchValue = ''

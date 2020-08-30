@@ -15,8 +15,8 @@
       </van-cell-group>
     </div>
 
-    <div v-if="make === true" class="block button">
-      <van-button type="info" block to="/make/product">我要开票</van-button>
+    <div v-if="make === true" class="bottom">
+      <van-button type="info" class="submit" block to="/make/product">我要开票</van-button>
     </div>
   </div>
 </template>
@@ -107,7 +107,30 @@
     margin: 10px 0 0 0;
   }
 
-  .button {
-    padding: 5px 20px;
+  .bottom {
+    margin-top: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .bottom .submit {
+    left:50%;
+    transform: translateX(-50%);
+    width: 95%;
+    background: #56cbf6;
+    border: none;
+    height: 40px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .bottom .van-button__text {
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing:5px;
+    text-indent: 5px
   }
 </style>
