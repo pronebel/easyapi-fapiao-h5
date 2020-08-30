@@ -360,9 +360,8 @@
   color: #a1a1a1;
 }
 
-.order-right .price {
-  color: #ff4848;
-  float: right;
+.order-right .van-cell {
+  padding: 3px 10px;
 }
 
 .mint-footer {
@@ -686,4 +685,8 @@
   left: 50%;
   text-align: center;
   z-index: 999;
+}
+
+.price .van-cell__value {
+  color: #ff4848 ;
 }

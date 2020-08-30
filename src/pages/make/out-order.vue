@@ -27,17 +27,11 @@
               </label>
             </div>
             <div class="order-right" @click="checked(index)">
-              <p class="num">
-                <span>订单号：</span>
-                <span>{{ item.no }}</span>
-              </p>
-              <p class="name">
-                <span v-if="item.fields">{{Object.values(JSON.parse(item.fields))[0]}}</span>
-              </p>
-              <p>
-                <span class="time">{{ item.orderTime }}</span>
-                <span class="price">￥{{ item.price }}</span>
-              </p>
+              <van-cell-group :border="false">
+                <van-cell :title="'订单号：' + item.no" :border="false"/>
+                <van-cell v-if="item.fields" :title="Object.values(JSON.parse(item.fields))[0]" :value="item.noY" :border="false"/>
+                <van-cell :title="item.orderTime" class="price" :value="'￥' + item.price" :border="false"/>
+              </van-cell-group>
             </div>
             <div class="clear"></div>
           </div>
