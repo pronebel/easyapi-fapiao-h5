@@ -74,22 +74,29 @@
 }
 
 .bottom {
-  padding: 0 10px;
   margin-top: 20px;
   position: fixed;
-  bottom:-20px;
-  left: -10px;
-  width: 100%
+  bottom: 0;
+  width: 100%;
 }
 
 .bottom .submit {
-  width: 100%;
+  left:50%;
+  transform: translateX(-50%);
+  width: 95%;
   background: #56cbf6;
   border: none;
-  height: 50px;
-  border-radius: 10px;
+  height: 40px;
+  border-radius: 5px;
   color: #fff;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+}
+
+.bottom .van-button__text {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing:5px;
+  text-indent: 5px
 }
 
 .paper-capacitor {
@@ -256,25 +263,6 @@
 
 #radio-1-2 {
   margin-left: 30px;
-}
-
-.bottom {
-  padding: 0 10px;
-  margin-top: 20px;
-  position: fixed;
-  bottom:-20px;
-  left: -10px;
-  width: 100%
-}
-
-.bottom .submit {
-  width: 100%;
-  background: #56cbf6;
-  border: none;
-  height: 50px;
-  border-radius: 10px;
-  color: #fff;
-  margin-bottom: 20px;
 }
 
 .paper-capacitor {
@@ -481,25 +469,6 @@
   margin-left: 30px;
 }
 
-.bottom {
-  padding: 0 10px;
-  margin-top: 20px;
-  position: fixed;
-  bottom:-20px;
-  left: -10px;
-  width: 100%
-}
-
-.bottom .submit {
-  width: 100%;
-  background: #56cbf6;
-  border: none;
-  height: 50px;
-  border-radius: 10px;
-  color: #fff;
-  margin-bottom: 20px;
-}
-
 .paper-capacitor {
   text-align: center;
   padding: 40px 0;
@@ -637,25 +606,6 @@
 
 #radio-1-2 {
   margin-left: 30px;
-}
-
-.bottom {
-  padding: 0 10px;
-  margin-top: 20px;
-  position: fixed;
-  bottom:-20px;
-  left: -10px;
-  width: 100%
-}
-
-.bottom .submit {
-  width: 100%;
-  background: #56cbf6;
-  border: none;
-  height: 50px;
-  border-radius: 10px;
-  color: #fff;
-  margin-bottom: 20px;
 }
 
 .paper-capacitor {

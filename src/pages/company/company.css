@@ -41,10 +41,6 @@
   text-indent: 5px
 }
 
-.bottom .list {
-  transform: translateX(-52.5%);
-}
-
 .confirm-dialog {
   position: fixed;
   top: 0;

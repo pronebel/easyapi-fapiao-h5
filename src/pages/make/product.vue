@@ -265,7 +265,7 @@
             <div class="mint-cell-right"></div>
           </a>
           <a class="mint-cell mint-field"
-             style="margin-bottom: 55px;"
+             style="margin-bottom:60px;"
           >
             <div class="mint-cell-left"></div>
             <div class="mint-cell-wrapper">
@@ -301,15 +301,14 @@
             </div>
             <div class="mint-cell-right"></div>
           </a>
-          <div class="bottom" style="position: fixed;bottom: -20px;left: -10px;width: 100%;">
-            <mt-button
+          <div class="bottom">
+            <van-button
               class="submit"
               @click="goInvoiceSuccess"
               v-if="showDisabled"
             >提交
-            </mt-button
-            >
-            <mt-button class="submit" v-else>开票中...</mt-button>
+            </van-button>
+            <van-button class="submit" v-else>开票中...</van-button>
           </div>
         </div>
       </mt-tab-container-item>
@@ -322,7 +321,6 @@
     <div>
       <router-view @seletedOrder="seletedOrder"></router-view>
     </div>
-    <p>---------------------------------</p>
     <van-popup
       class="popupClass"
       v-model="showPopup"
