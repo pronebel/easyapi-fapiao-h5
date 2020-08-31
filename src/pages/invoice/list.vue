@@ -83,6 +83,7 @@
         params.username = localStorage.getItem("username");
         getInvoiceList(params).then(res => {
           if (res.data.code === 1) {
+            this.empty = false;
             let data = res.data.content;
             this.page.total = res.data.totalPages;
             if (this.invoiceList == null) {
@@ -124,6 +125,7 @@
         this.page.page = 0;
         this.invoiceList = [];
         this.loadMoreText = "加载中..."
+        this.empty = false;
         this.loadMore()
       },
     },
