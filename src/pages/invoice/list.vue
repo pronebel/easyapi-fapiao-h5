@@ -1,34 +1,34 @@
 <template>
-  <div class="invoice-record-con">
-    <div style="margin-top: 10px">
+  <div class="invoice-list">
+    <div>
       <div v-if="showDataChoose">
-        <van-cell title="发票日期" :value="date" @click="show = true" is-link arrow-direction="down" class="dataChooseCell"/>
-        <van-calendar v-model="show" type="range" color="#80d4f7" :min-date="minDate" @confirm="onConfirm" />
+        <van-cell title="发票日期" :value="date" @click="show = true" is-link arrow-direction="down"/>
+        <van-calendar v-model="show" type="range" color="#80d4f7" :min-date="minDate" @confirm="onConfirm"/>
       </div>
       <div v-show="empty">
         <van-empty image="search" description="暂时还没有开票记录"/>
       </div>
       <div
-        class="record-con parking-order header-d"
+        class="invoice-list_item"
         v-for="(item, index) in invoiceList"
         :key="index"
         @click="goInvoiceDetail(item.invoiceId)"
       >
-        <div class="record-con-top">
+        <div class="invoice-list_item_top">
           <p hidden>{{ item.invoiceId }}</p>
-          <p class="time">
-            <span style="font-size: 16px;color: #333333">电子发票</span>
-            <span class="record-status">{{ item.statements }}</span>
+          <p>
+            <van-tag v-if="item.category ==='增值税电子普通发票'" type="danger">电</van-tag>
+            <van-tag type="item.category ==='增值税普通发票'">普</van-tag>
+            <van-tag type="item.category ==='增值税专用发票'">专</van-tag>
+            <span class="status">{{ item.statements }}</span>
           </p>
         </div>
-        <div class="record-con-bottom">
-          <p class="record-invoice">
-            <span style="color: #333;font-size: 14px">商品订单</span>
+        <div class="invoice-list_item_bottom">
+          <p class="text">
+            <span>{{ item.purchaserName }}</span>
           </p>
-          <p class="record-order">
-            <span style="color: #333;font-size: 14px">{{
-              item.addTime
-            }}</span>
+          <p class="time">
+            <span>{{item.addTime}}</span>
             <span class="price">￥{{ item.price }}</span>
           </p>
         </div>
@@ -121,7 +121,7 @@
         this.show = false;
         this.date = `${this.formatDate(start)} - ${this.formatDate(end)}`;
         this.startAddTime = moment(date[0]).format('YYYY-MM-DD 00:00:00');
-        this.endAddTime =  moment(date[1]).format('YYYY-MM-DD 23:59:59');
+        this.endAddTime = moment(date[1]).format('YYYY-MM-DD 23:59:59');
         this.page.page = 0;
         this.invoiceList = [];
         this.loadMoreText = "加载中..."
@@ -143,77 +143,40 @@
     line-height: 50px;
   }
 
-  .no-record-con {
-    margin-top: 80px;
-    padding: 60px;
-    text-align: center;
+  .invoice-list {
+    padding: 10px 10px;
   }
 
-  .invoice-record-con {
-    padding: 0 10px;
-  }
-
-  .no-record-con img {
-    width: 100%;
-  }
-
-  .record-con {
+  .invoice-list_item {
     background: url("../../assets/images/record-bg.png") no-repeat center;
     background-size: 100% 100%;
     padding: 15px 24px 20px;
     margin-top: 10px;
   }
 
-  .record-con .record-con-top {
-    /*line-height: 40px;*/
-  }
-
-  .record-con .record-con-bottom {
-    margin-top: 30px;
-  }
-
-  .record-con-bottom .record-order {
-    margin-top: 10px;
-  }
-
-  .time > span:first-of-type {
-    font-size: 14px;
-  }
-
-  .record-status {
-    color: #80d4f7;
+  .invoice-list_item_top .status {
+    color: #1989fa;
     float: right;
   }
 
-  .price {
+  .invoice-list_item .invoice-list_item_bottom {
+    margin-top: 30px;
+  }
+
+  .invoice-list_item_bottom .text {
+    color: #333;
+    font-size: 14px
+  }
+
+  .invoice-list_item_bottom .time {
+    margin-top: 10px;
+    color: #666;
+    font-size: 12px
+  }
+
+  .invoice-list_item_bottom .price {
     color: #ff4848;
     float: right;
   }
 
-  #loading {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    text-align: center;
-    z-index: 999;
-  }
-
-  .dataChooseCell {
-    margin-top: 10px;
-    border-radius: 7px;
-    border: solid 1px #E1E1E1;
-    padding: 12px 24px;
-  }
-
-  .dataChooseCell .van-cell__title span {
-    font-size: 16px;
-  }
-
-  .dataChooseCell .van-cell__value {
-    flex: 2;
-  }
-
-  .dataChooseCell .van-cell__value span {
-    font-size: 16px;
-  }
 </style>

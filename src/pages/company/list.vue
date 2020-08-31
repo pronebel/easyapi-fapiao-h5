@@ -4,35 +4,35 @@
       <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
       <div style="margin-top: 10px;margin-bottom: 35px;">
         <div id="loading">
-        <mt-spinner
-          color="#56cbf6"
-          v-show="loading"
-          type="fading-circle"
-        ></mt-spinner>
+          <mt-spinner
+            color="#56cbf6"
+            v-show="loading"
+            type="fading-circle"
+          ></mt-spinner>
         </div>
         <div class="no-record-con" v-show="companyList.length ==0 && !loading">
-        <van-empty image="search" description="暂无数据"/>
+          <van-empty image="search" description="暂无数据"/>
         </div>
         <div
-        class="address-con header-d"
-        v-for="(item, index) in companyList"
-        :key="index"
+          class="address-con header-d"
+          v-for="(item, index) in companyList"
+          :key="index"
         >
           <div class="address-top">
-          <p>
-            <span class="rise-text">{{ item.name }}</span>
-            <van-tag plain type="warning" v-if="item.ifDefault">默认</van-tag>
-            <span class="edit" @click="edit(index)">编辑</span>
-          </p>
+            <p>
+              <span class="rise-text">{{ item.name }}</span>
+              <van-tag plain type="warning" v-if="item.ifDefault">默认</van-tag>
+              <span class="edit" @click="edit(index)">编辑</span>
+            </p>
           </div>
           <div class="address-bottom" @click="select(item)">
-          <van-cell-group :border="false">
-            <van-cell title="公司税号" :value="item.taxNumber" :border="false"/>
-            <van-cell title="注册地址" :value="item.address" :border="false"/>
-            <van-cell title="注册电话" :value="item.phone" :border="false"/>
-            <van-cell title="开户银行" :value="item.bank" :border="false"/>
-            <van-cell title="银行账号" :value="item.bankAccount" :border="false"/>
-          </van-cell-group>
+            <van-cell-group :border="false">
+              <van-cell title="公司税号" :value="item.taxNumber" :border="false"/>
+              <van-cell title="注册地址" :value="item.address" :border="false"/>
+              <van-cell title="注册电话" :value="item.phone" :border="false"/>
+              <van-cell title="开户银行" :value="item.bank" :border="false"/>
+              <van-cell title="银行账号" :value="item.bankAccount" :border="false"/>
+            </van-cell-group>
           </div>
         </div>
       </div>

@@ -1,65 +1,65 @@
 .address-bottom .van-cell__value {
-    color: #777;
-    text-align: left;
-    flex:2
+  color: #777;
+  text-align: left;
+  flex: 2
 }
 
 .address-bottom .van-cell {
-    padding: 3px;
+  padding: 3px;
 }
 
 .address-bottom .van-cell__title {
-    flex:1
+  flex: 1
 }
 
 .address-bottom2 .van-cell--required::before {
-    left: 69px;
+  left: 69px;
 }
 
 .van-field__label {
-    color: #323233;
-    margin-right: 0;
+  color: #323233;
+  margin-right: 0;
 }
 
 .van-field__control {
-    color: #777;
-    font-size: 14px
+  color: #777;
+  font-size: 14px
 }
 
 .address-bottom .van-cell {
-    padding: 5px 3px
+  padding: 5px 3px
 }
 
 .address-bottom2 .van-cell {
-    padding: 12px 10px;
-    border-bottom: 1px solid #f4f4f4;
+  padding: 12px 10px;
+  border-bottom: 1px solid #f4f4f4;
 }
 
 .address-top .van-tag {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .defaultBnt .van-cell {
-    padding: 0;
+  padding: 0;
 }
 
 .defaultBnt {
-    padding: 10px!important
+  padding: 10px !important
 }
 
 .defaultBnt .van-switch__node {
-    font-size: 24px;
+  font-size: 24px;
 }
 
-.defaultBnt .van-cell__value{
-     top:3px
+.defaultBnt .van-cell__value {
+  top: 3px
 }
 
 #redPrice input {
-    color: red;
-    width: 60px;
+  color: red;
+  width: 60px;
 }
 
 .addContent .van-cell {
-    border-bottom: solid 1px #f4f4f4;
+  border-bottom: solid 1px #f4f4f4;
 }
