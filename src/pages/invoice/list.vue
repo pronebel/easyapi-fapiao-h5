@@ -1,9 +1,13 @@
 <template>
   <div class="invoice-record-con">
-    <div v-show="empty">
-      <van-empty image="search" description="暂时还没有开票记录"/>
-    </div>
     <div style="margin-top: 10px">
+      <div v-if="showDataChoose">
+        <van-cell title="发票日期" :value="date" @click="show = true" is-link arrow-direction="down" class="dataChooseCell"/>
+        <van-calendar v-model="show" type="range" color="#80d4f7" :min-date="minDate" @confirm="onConfirm" />
+      </div>
+      <div v-show="empty">
+        <van-empty image="search" description="暂时还没有开票记录"/>
+      </div>
       <div
         class="record-con parking-order header-d"
         v-for="(item, index) in invoiceList"
@@ -44,6 +48,7 @@
 
 <script>
   import {getInvoiceList} from "../../api/invoice";
+  import moment from 'moment'
 
   export default {
     name: "Invoice",
@@ -58,14 +63,22 @@
           size: 10,
           total: 0
         },
+        startAddTime: '',
+        endAddTime: '',
         invoiceList: [],
+        showDataChoose: false,
+        date: '',
+        show: false,
+        minDate: new Date(2000, 0, 1)
       };
     },
     methods: {
       getInvoiceList() {
         let params = {
           size: this.page.size,
-          page: this.page.page
+          page: this.page.page,
+          startAddTime: this.startAddTime,
+          endAddTime: this.endAddTime
         };
         params.username = localStorage.getItem("username");
         getInvoiceList(params).then(res => {
@@ -78,6 +91,7 @@
               this.invoiceList = this.invoiceList.concat(data);
             }
             this.loading = false;
+            this.showDataChoose = true
           } else {
             this.empty = true;
             this.invoiceList = [];
@@ -97,7 +111,21 @@
       },
       goInvoiceDetail(id) {
         this.$router.push({path: "/invoice/detail", query: {id: id}});
-      }
+      },
+      formatDate(date) {
+        return `${date.getYear() + 1900}/${date.getMonth() + 1}/${date.getDate()}`;
+      },
+      onConfirm(date) {
+        const [start, end] = date;
+        this.show = false;
+        this.date = `${this.formatDate(start)} - ${this.formatDate(end)}`;
+        this.startAddTime = moment(date[0]).format('YYYY-MM-DD 00:00:00');
+        this.endAddTime =  moment(date[1]).format('YYYY-MM-DD 23:59:59');
+        this.page.page = 0;
+        this.invoiceList = [];
+        this.loadMoreText = "加载中..."
+        this.loadMore()
+      },
     },
     created() {
     },
@@ -166,5 +194,24 @@
     left: 50%;
     text-align: center;
     z-index: 999;
+  }
+
+  .dataChooseCell {
+    margin-top: 10px;
+    border-radius: 7px;
+    border: solid 1px #E1E1E1;
+    padding: 12px 24px;
+  }
+
+  .dataChooseCell .van-cell__title span {
+    font-size: 16px;
+  }
+
+  .dataChooseCell .van-cell__value {
+    flex: 2;
+  }
+
+  .dataChooseCell .van-cell__value span {
+    font-size: 16px;
   }
 </style>
