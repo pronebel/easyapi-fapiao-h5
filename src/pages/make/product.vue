@@ -149,7 +149,7 @@
             <li>{{ product.number }}</li>
             <li>{{ product.price }}</li>
             <li
-              style="color: #56cbf6"
+              style="color: #1989fa"
               @click="deleteContent(product.productId)"
             >
               删除
@@ -303,6 +303,7 @@
           </a>
           <div class="bottom">
             <van-button
+              type="info"
               class="submit"
               @click="goInvoiceSuccess"
               v-if="showDisabled"
@@ -362,7 +363,7 @@
           </van-cell>
         </van-radio-group>
       </van-list>
-      <van-submit-bar :price="totalPrice*100" button-text="添加商品" @submit="addTo" button-color="#56CBF6"/>
+      <van-submit-bar :price="totalPrice*100" button-text="添加商品" @submit="addTo" button-color="#1989fa"/>
     </van-popup>
 
 
@@ -741,7 +742,7 @@
   .mint-btn div {
     margin: 20px;
     height: 44px;
-    background-color: #52c9f5;
+    background-color: #1989fa;
     border-radius: 8px;
     box-shadow: 0px 3px 15px 0px rgba(12, 143, 192, 0.23);
     color: #fff;

@@ -261,7 +261,7 @@
       <img :src="imgUrl" alt="" style="width:350px">
       <div style="margin-bottom:20px">
         <van-button
-          type="primary"
+          type="info"
           data-clipboard-action="copy"
           class="copyPdfUrl submit"
           :data-clipboard-text="url"
@@ -394,7 +394,6 @@
     background: none !important;
   }
   .submit{
-    background: #56cbf6;
     border: none;
     height: 40px;
     border-radius: 5px;

@@ -32,7 +32,7 @@
       </div>
     </form>
     <div class="bottom">
-      <van-button class="submit" @click="confirm">保存</van-button>
+      <van-button type="info" class="submit" @click="confirm">保存</van-button>
       <van-button
         v-if="this.title === 'edit'"
         class="submit_delete"

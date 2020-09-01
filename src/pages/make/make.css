@@ -55,10 +55,10 @@
 }
 
 .mint-navbar .mint-tab-item.is-selected {
-  border: 1px solid #52c9f5;
+  border: 1px solid #1989fa;
   border-radius: 4px;
   margin-bottom: 0 !important;
-  color: #38b8e7 !important;
+  color: #1989fa !important;
 }
 
 .page-part a {
@@ -74,17 +74,18 @@
 }
 
 .bottom {
-  margin-top: 20px;
+  margin-top: 10px;
   position: fixed;
   bottom: 0;
   width: 100%;
+  background-color: #fff;
+  padding-top: 10px;
 }
 
 .bottom .submit {
   left:50%;
   transform: translateX(-50%);
   width: 95%;
-  background: #56cbf6;
   border: none;
   height: 40px;
   border-radius: 5px;
@@ -165,10 +166,10 @@
   width: 143px;
   height: 33px;
   background-color: #fff;
-  color: #52c9f5;
+  color: #1989fa;
   font-size: 12px;
   margin-top: 20px;
-  border: 1px solid #52c9f5;
+  border: 1px solid #1989fa;
 }
 
 #loading {
@@ -197,8 +198,8 @@
 }
 
 .active {
-  border: 1px solid  #38b8e7;
-  background: #38b8e7;
+  border: 1px solid  #1989fa;
+  background: #1989fa;
   color: white;
 }
 
@@ -247,10 +248,10 @@
 }
 
 .mint-navbar .mint-tab-item.is-selected {
-  border: 1px solid #52c9f5;
+  border: 81px solid #1989fa;
   border-radius: 4px;
   margin-bottom: 0 !important;
-  color: #38b8e7 !important;
+  color: #1989fa !important;
 }
 
 .page-part a {
@@ -450,10 +451,10 @@
 }
 
 .mint-navbar .mint-tab-item.is-selected {
-  border: 1px solid #52c9f5;
+  border: 1px solid #1989fa;
   border-radius: 4px;
   margin-bottom: 0 !important;
-  color: #38b8e7 !important;
+  color: #1989fa !important;
 }
 
 .page-part a {
@@ -534,10 +535,10 @@
   width: 143px;
   height: 33px;
   background-color: #fff;
-  color: #52c9f5;
+  color: #1989fa;
   font-size: 12px;
   margin-top: 20px;
-  border: 1px solid #52c9f5;
+  border: 1px solid #1989fa;
 }
 
 #loading {
@@ -589,10 +590,10 @@
 }
 
 .mint-navbar .mint-tab-item.is-selected {
-  border: 1px solid #52c9f5;
+  border: 1px solid #1989fa;
   border-radius: 4px;
   margin-bottom: 0 !important;
-  color: #38b8e7 !important;
+  color: #1989fa !important;
 }
 
 .page-part a {
@@ -673,10 +674,10 @@
   width: 143px;
   height: 33px;
   background-color: #fff;
-  color: #52c9f5;
+  color: #1989fa;
   font-size: 12px;
   margin-top: 20px;
-  border: 1px solid #52c9f5;
+  border: 1px solid #1989fa;
 }
 
 #loading {

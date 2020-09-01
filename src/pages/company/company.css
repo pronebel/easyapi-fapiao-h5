@@ -16,7 +16,6 @@
   left: 50%;
   transform: translateX(-50%);
   width: 95%;
-  background: #56cbf6;
   border: none;
   height: 40px;
   border-radius: 5px;
@@ -156,7 +155,7 @@
 }
 
 .edit {
-  color: #52c9f5;
+  color: #1989fa;
   margin-right: 10px;
 }
 

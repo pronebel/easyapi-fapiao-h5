@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="bottom">
-      <van-button class="submit" @click="gotoEditCompany">新增抬头</van-button>
+      <van-button type="info" class="submit" @click="gotoEditCompany">新增抬头</van-button>
     </div>
   </div>
 </template>

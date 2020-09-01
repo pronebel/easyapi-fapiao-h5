@@ -120,7 +120,6 @@
     left:50%;
     transform: translateX(-50%);
     width: 95%;
-    background: #56cbf6;
     border: none;
     height: 40px;
     border-radius: 5px;

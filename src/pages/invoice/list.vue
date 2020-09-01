@@ -3,7 +3,7 @@
     <div>
       <div v-if="showDataChoose">
         <van-cell title="发票日期" :value="date" @click="show = true" is-link arrow-direction="down"/>
-        <van-calendar v-model="show" type="range" color="#80d4f7" :min-date="minDate" @confirm="onConfirm"/>
+        <van-calendar v-model="show" type="range" color="#1989fa" :min-date="minDate" @confirm="onConfirm"/>
       </div>
       <div v-show="empty">
         <van-empty image="search" description="暂时还没有开票记录"/>

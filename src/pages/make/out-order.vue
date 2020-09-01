@@ -44,7 +44,7 @@
     </div>
     <div class="mint-footer" v-show="outOrderList.length>0">
       <van-submit-bar :price="totalPrice*100" button-text="下一步" :disabled="selectList.length < 1"
-                      button-color="#52c9f5" @submit="goElectronicInvoice">
+                      button-color="#1989fa" @submit="goElectronicInvoice">
         <van-checkbox @change="change()" v-model="allCheck">本页全选</van-checkbox>
         <template #tip>
           最低开票金额{{minPrice}}元

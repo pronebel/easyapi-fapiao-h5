@@ -242,7 +242,7 @@
   .mint-btn div {
     margin: 20px;
     height: 44px;
-    background-color: #52c9f5;
+    background-color: #1989fa;
     border-radius: 8px;
     box-shadow: 0px 3px 15px 0px rgba(12, 143, 192, 0.23);
     color: #fff;
