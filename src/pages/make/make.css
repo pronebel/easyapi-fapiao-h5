@@ -691,3 +691,15 @@
 .price .van-cell__value {
   color: #ff4848 ;
 }
+
+.order-right .orderNum .van-cell__title {
+  height: 24px;
+}
+
+.order-right .orderNum span {
+  overflow: hidden;
+  word-break: keep-all;
+  text-overflow: ellipsis;
+  width:260px;
+  display: inline-block;
+}

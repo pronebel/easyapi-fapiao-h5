@@ -28,7 +28,7 @@
             </div>
             <div class="order-right" @click="checked(index)">
               <van-cell-group :border="false">
-                <van-cell :title="'订单号：' + item.no" :border="false"/>
+                <van-cell :title="'订单号：' + item.no" :border="false" class="orderNum"/>
                 <van-cell v-if="item.fields" :title="Object.values(JSON.parse(item.fields))[0]" :value="item.noY" :border="false"/>
                 <van-cell :title="item.orderTime" class="price" :value="'￥' + item.price" :border="false"/>
               </van-cell-group>
