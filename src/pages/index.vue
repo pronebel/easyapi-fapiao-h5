@@ -108,10 +108,12 @@
   }
 
   .bottom {
-    margin-top: 20px;
+    margin-top: 10px;
     position: fixed;
     bottom: 0;
     width: 100%;
+    background-color: #fff;
+    padding-top: 10px;
   }
 
   .bottom .submit {
