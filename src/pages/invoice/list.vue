@@ -23,8 +23,9 @@
           <p hidden>{{ item.invoiceId }}</p>
           <p>
             <van-tag v-if="item.category ==='增值税电子普通发票'" type="danger">电</van-tag>
-            <van-tag type="item.category ==='增值税普通发票'">普</van-tag>
-            <van-tag type="item.category ==='增值税专用发票'">专</van-tag>
+            <van-tag v-else-if="item.category ==='增值税普通发票'" type="danger">普</van-tag>
+            <van-tag v-else-if="item.category ==='增值税专用发票'" type="danger">专</van-tag>
+            <van-tag v-else type="danger">票</van-tag>
             <span class="status">{{ item.statements }}</span>
           </p>
         </div>
