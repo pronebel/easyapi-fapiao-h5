@@ -27,7 +27,7 @@
           <p class="text">
             <span>{{ item.purchaserName }}</span>
           </p>
-          <p class="time">
+          <p class="invoice-list_item_bottom_time">
             <span>{{item.addTime}}</span>
             <span class="price">￥{{ item.price }}</span>
           </p>
@@ -168,7 +168,7 @@
     font-size: 14px
   }
 
-  .invoice-list_item_bottom .time {
+  .invoice-list_item_bottom .invoice-list_item_bottom_time {
     margin-top: 10px;
     color: #666;
     font-size: 12px
