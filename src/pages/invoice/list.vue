@@ -2,7 +2,12 @@
   <div class="invoice-list">
     <div>
       <div v-if="showDataChoose">
-        <van-cell title="发票日期" :value="date" @click="show = true" is-link arrow-direction="down"/>
+        <van-cell title="发票日期" :value="date" @click="show = true" v-show="showDown" is-link arrow-direction="down"/>
+        <van-cell title="发票日期" :value="date" @click="show = true" v-show="showCross">
+          <template #right-icon>
+            <van-icon name="cross" @click.stop="clearDate"/>
+          </template>
+        </van-cell>
         <van-calendar v-model="show" type="range" color="#1989fa" :min-date="minDate" @confirm="onConfirm"/>
       </div>
       <div v-show="empty">
@@ -69,6 +74,8 @@
         showDataChoose: false,
         date: '',
         show: false,
+        showDown: true,
+        showCross: false,
         minDate: new Date(2000, 0, 1)
       };
     },
@@ -124,10 +131,24 @@
         this.endAddTime = moment(date[1]).format('YYYY-MM-DD 23:59:59');
         this.page.page = 0;
         this.invoiceList = [];
-        this.loadMoreText = "加载中..."
+        this.loadMoreText = "加载中...";
         this.empty = false;
-        this.loadMore()
+        this.loadMore();
+        this.showDown = false;
+        this.showCross = true;
       },
+      clearDate() {
+        this.date = ''
+        this.startAddTime = '';
+        this.endAddTime = '';
+        this.page.page = 0;
+        this.invoiceList = [];
+        this.loadMoreText = "加载中...";
+        this.empty = false;
+        this.loadMore();
+        this.showDown = true;
+        this.showCross = false;
+      }
     },
     created() {
     },
@@ -177,6 +198,13 @@
   .invoice-list_item_bottom .price {
     color: #ff4848;
     float: right;
+  }
+
+  .van-cell .van-icon-cross {
+    color: #969799;
+    line-height: 24px;
+    margin-left: 4px;
+    font-size: 16px;
   }
 
 </style>
