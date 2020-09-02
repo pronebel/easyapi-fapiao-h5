@@ -1,206 +1,53 @@
 <template>
-  <div>
+  <div class="">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <div class="page-part">
-      <form action ref="companyForm" :model="companyForm">
-        <a class="mint-cell mint-field">
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-              <span class="mint-cell-text">
-                <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">名称</font>
-                </font>
-              </span>
+    <form action ref="companyForm" :model="companyForm" class="formClass">
+      <div class="">
+        <div class="address-bottom2" @click="select(item)">
+          <van-cell-group :border="false">
+            <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" :border="false" required @keyup="searchRiseList" @focus="listShow = true" @blur="inputBlur"/>
+            <div class="rise-list" v-if="listShow && searchList !== ''">
+              <ul>
+                <li
+                  v-for="(item, index) in searchList"
+                  :key="index"
+                  @mousedown="chooseRise(index)"
+                >
+                  {{ item.name }}
+                </li>
+              </ul>
             </div>
-            <div class="mint-cell-value">
-              <input
-                v-model="name"
-                placeholder="输入关键词支持模糊搜索"
-                type="text"
-                class="mint-field-core s-search-text"
-                @keyup="searchRiseList"
-              />
-            </div>
-          </div>
-          <div class="mint-cell-right"></div>
-        </a>
-        <div class="rise-list" v-if="searchList !== ''">
-          <ul>
-            <li
-              v-for="(item, index) in searchList"
-              :key="index"
-              @click="chooseRise(index)"
-            >
-              {{ item.name }}
-            </li>
-          </ul>
+            <van-field label="公司税号" v-model="companyForm.taxNumber" placeholder="请输入纳税人识别号（必填）" :border="false" required/>
+            <van-field label="注册地址" v-model="companyForm.address" placeholder="请输入地址（非必填信息）" :border="false"/>
+            <van-field label="注册电话" v-model="companyForm.phone" placeholder="请输入电话（非必填信息）" :border="false"/>
+            <van-field label="开户银行" v-model="companyForm.bank" placeholder="请输入开户行（非必填信息）" :border="false"/>
+            <van-field label="银行账号" v-model="companyForm.bankAccount" placeholder="请输入开户行账号（非必填信息）" :border="false"/>
+          </van-cell-group>
         </div>
-        <a class="mint-cell mint-field">
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-              <span class="mint-cell-text">
-                <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">税号</font>
-                </font>
-              </span>
-            </div>
-            <div class="mint-cell-value">
-              <input
-                placeholder="请输入纳税人识别号（必填）"
-                type="text"
-                class="mint-field-core"
-                v-model="companyForm.taxNumber"
-              />
-              <div class="mint-field-clear" style="display: none;">
-                <i class="mintui mintui-field-error"></i>
-              </div>
-              <span class="mint-field-state is-default">
-                <i class="mintui mintui-field-default"></i>
-              </span>
-              <div class="mint-field-other"></div>
-            </div>
-          </div>
-          <div class="mint-cell-right"></div>
-        </a>
-        <a class="mint-cell mint-field">
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-              <span class="mint-cell-text">
-                <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">地址</font>
-                </font>
-              </span>
-            </div>
-            <div class="mint-cell-value">
-              <input
-                placeholder="请输入地址（非必填信息）"
-                type="text"
-                class="mint-field-core"
-                v-model="companyForm.address"
-              />
-              <div class="mint-field-clear" style="display: none;">
-                <i class="mintui mintui-field-error"></i>
-              </div>
-              <span class="mint-field-state is-default">
-                <i class="mintui mintui-field-default"></i>
-              </span>
-              <div class="mint-field-other"></div>
-            </div>
-          </div>
-          <div class="mint-cell-right"></div>
-        </a>
-        <a class="mint-cell mint-field">
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-              <span class="mint-cell-text">
-                <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px">电话</font>
-                </font>
-              </span>
-            </div>
-            <div class="mint-cell-value">
-              <input
-                placeholder="请输入电话（非必填信息）"
-                type="tel"
-                class="mint-field-core"
-                v-model="companyForm.phone"
-              />
-              <div class="mint-field-clear" style="display: none;">
-                <i class="mintui mintui-field-error"></i>
-              </div>
-              <span class="mint-field-state is-default">
-                <i class="mintui mintui-field-default"></i>
-              </span>
-              <div class="mint-field-other"></div>
-            </div>
-          </div>
-          <div class="mint-cell-right"></div>
-        </a>
-        <a class="mint-cell mint-field">
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-              <span class="mint-cell-text">
-                <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px"
-                  >开户银行</font
-                  >
-                </font>
-              </span>
-            </div>
-            <div class="mint-cell-value">
-              <input
-                placeholder="请输入开户行（非必填信息）"
-                type="text"
-                class="mint-field-core"
-                v-model="companyForm.bank"
-              />
-              <div class="mint-field-clear" style="display: none;">
-                <i class="mintui mintui-field-error"></i>
-              </div>
-              <span class="mint-field-state is-default">
-                <i class="mintui mintui-field-default"></i>
-              </span>
-              <div class="mint-field-other"></div>
-            </div>
-          </div>
-          <div class="mint-cell-right"></div>
-        </a>
-        <a class="mint-cell mint-field">
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title">
-              <span class="mint-cell-text">
-                <font style="vertical-align: inherit;">
-                  <font style="vertical-align: inherit;font-size: 15px"
-                  >银行账号</font
-                  >
-                </font>
-              </span>
-            </div>
-            <div class="mint-cell-value">
-              <input
-                placeholder="请输入开户行账号（非必填信息）"
-                type="text"
-                class="mint-field-core"
-                v-model="companyForm.bankAccount"
-              />
-              <div class="mint-field-clear" style="display: none;">
-                <i class="mintui mintui-field-error"></i>
-              </div>
-              <span class="mint-field-state is-default">
-                <i class="mintui mintui-field-default"></i>
-              </span>
-              <div class="mint-field-other"></div>
-            </div>
-          </div>
-          <div class="mint-cell-right"></div>
-        </a>
-      </form>
-    </div>
+      </div>
+      <div class="page-part address-con defaultBnt">
+        <van-cell center title="设置为默认抬头">
+          <van-switch v-model="companyForm.ifDefault" active-color="#FFC2A8" size="24px" />
+        </van-cell>
+      </div>
+    </form>
     <div class="bottom">
-      <mt-button class="submit" @click="confirm">保存</mt-button>
-      <mt-button
+      <van-button type="info" class="submit" @click="confirm">保存</van-button>
+      <van-button
         v-if="this.title === 'edit'"
         class="submit_delete"
         @click="deleteDate"
-      >删除
-      </mt-button
-      >
+      >删除</van-button>
     </div>
   </div>
 </template>
 <script>
   import Header from "../../components/header.vue";
-  import { MessageBox } from "mint-ui";
-  import { Toast } from "mint-ui";
+  import {MessageBox} from "mint-ui";
+  import {Toast} from "mint-ui";
 
   export default {
-    name: "addAddress",
+    name: "EditAddress",
     components: {
       Header
     },
@@ -212,7 +59,8 @@
         title: "",
         accessToken: "",
         searchList: [],
-        name: ""
+        name: "",
+        listShow: false
       };
     },
 
@@ -265,7 +113,7 @@
             }).then(res => {
               if (res.data.code === 1) {
                 this.$messagebox.alert(res.data.message);
-                this.$router.push({ path: "/company/" });
+                this.$router.go(-1)
               }
             }).catch(error => {
               console.log(error);
@@ -277,13 +125,12 @@
         if (this.name.length < 4) {
           return;
         }
-        this.$ajax
-          .get("/company/codes", {
-            params: {
-              accessToken: this.accessToken,
-              name: this.name
-            }
-          }).then(res => {
+        this.$ajax.get("/company/codes", {
+          params: {
+            accessToken: this.accessToken,
+            name: this.name
+          }
+        }).then(res => {
           this.searchList = res.data.content;
         }).catch(error => {
           console.log(error);
@@ -296,7 +143,7 @@
         this.companyForm.bankAccount = this.searchList[index].bankAccount;
         this.companyForm.address = this.searchList[index].address;
         this.companyForm.phone = this.searchList[index].phone;
-        this.searchList = [];
+        this.listShow = false
       },
       confirm() {
         if (!this.name && !this.companyForm.taxNumber) {
@@ -305,13 +152,13 @@
         this.companyForm.name = this.name;
         this.$messagebox({
           title: "提示",
-          message: "是否保存本次编辑结果",
+          message: "确定提交吗？",
           showCancelButton: true
         }).then(action => {
           if (action === "confirm") {
             this.companyForm.accessToken = this.accessToken;
             this.companyForm.username = this.$store.state.username;
-            this.companyForm.ifDefault = true;
+            // this.companyForm.ifDefault = true;
             this.id = this.$route.params.id;
             if (this.title === "edit") {
               this.$ajax({
@@ -320,18 +167,7 @@
                 data: this.companyForm
               }).then(res => {
                 if (res.data.code === 1) {
-                  this.$messagebox.alert(res.data.message);
-                  if (this.$route.params.companyLists === "companyLists") {
-                    this.$router.push(`/company/`);
-                  } else {
-                    this.$router.push({
-                      path: "/company/",
-                      name: "Company",
-                      params: {
-                        id: this.id
-                      }
-                    });
-                  }
+                  this.$router.go(-1)
                 }
               }).catch(error => {
                 this.$messagebox.alert(error.response.data.message);
@@ -343,19 +179,7 @@
                 data: this.companyForm
               }).then(res => {
                 if (res.data.code === 1) {
-                  this.$messagebox.alert(res.data.message);
-                  let id = res.data.content.companyId;
-                  if (this.$route.params.companyLists) {
-                    this.$router.push(`/company/`);
-                  } else {
-                    this.$router.push({
-                      path: "/company/",
-                      name: "Company",
-                      params: {
-                        id: id
-                      }
-                    });
-                  }
+                  this.$router.go(-1)
                 }
               }).catch(error => {
                 this.$messagebox.alert(error.response.data.message);
@@ -363,6 +187,23 @@
             }
           }
         });
+      },
+      inputBlur(){
+        this.listShow = false
+        // var has;
+        // has = false;
+        // for(var i = 0; i < this.searchList.length; i++){
+        //   if(this.searchList[i].name === this.name){
+        //     has = true;
+        //   }
+        // };
+        // if(!has){
+        //   this.companyForm.taxNumber = '';
+        //   this.companyForm.address = '';
+        //   this.companyForm.phone = '';
+        //   this.companyForm.bank = '';
+        //   this.companyForm.bankAccount = '';
+        // }
       }
     },
     computed: {

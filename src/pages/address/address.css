@@ -1,38 +1,45 @@
-.page-part {
-  margin-top: 10px;
-  position: relative;
-}
 
 .page-part a {
   border-bottom: 1px solid #f4f4f4;
 }
 
 .bottom {
-  padding: 0 10px;
-  margin-top: 20px;
+  margin-top: 10px;
   position: fixed;
-  bottom:-20px;
-  left: -10px;
-  width: 100%
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  padding-top: 10px;
 }
 
 .bottom .submit {
-  width: 100%;
-  background: #56cbf6;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
   border: none;
-  height: 50px;
-  border-radius: 10px;
+  height: 40px;
+  border-radius: 5px;
   color: #fff;
+  margin-bottom: 10px;
 }
 
 .bottom .submit_delete {
-  width: 100%;
-  background: #e5e5e5;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  background: #EF4F4F;
   border: none;
-  height: 50px;
-  border-radius: 10px;
-  color: #999;
-  margin-top: 20px;
+  height: 40px;
+  border-radius: 5px;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.bottom .van-button__text {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 5px;
+  text-indent: 5px
 }
 
 .confirm-dialog {
@@ -110,7 +117,7 @@
 .address-con {
   background: #fff;
   background-size: 100% 100%;
-  padding: 10px 15px 30px;
+  padding: 10px 15px 15px;
   border-bottom: 1px solid #f4f4f4;
   margin-top: 15px;
   border-radius: 8px;
@@ -138,6 +145,7 @@
   overflow: hidden; /*内容超出后隐藏*/
   text-overflow: ellipsis; /* 超出内容显示为省略号*/
   white-space: nowrap; /*文本不进行换行*/
+  padding-left: 3px;
   font-size: 14px;
   color: #333333;
 }
@@ -180,10 +188,23 @@
   margin-left: 10px;
 }
 
+.bottom-button {
+  width: 160px;
+  height: 40px;
+}
+
 #loading {
   position: absolute;
   top: 50%;
   left: 50%;
   text-align: center;
   z-index: 999;
+}
+
+.formClass .address-con {
+  border-radius: 0px;
+}
+
+.formClass {
+  margin-top: 10px;
 }
