@@ -1,7 +1,7 @@
 <template>
   <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <div class="nav" style="margin-top: 10px">
+    <div class="nav" style="margin-top: 0px">
       <div id="loading">
         <mt-spinner
           color="#56cbf6"
@@ -15,62 +15,71 @@
           <p style="font-size: 16px">电子发票</p>
           <p style="font-size: 12px">最快1分钟开具</p>
         </mt-tab-item>
-        <!--<mt-tab-item id="2">-->
-        <!--<p style="font-size: 16px;">纸质发票</p>-->
-        <!--<p style="font-size: 12px;">预计一周送达</p>-->
-        <!--</mt-tab-item>-->
+        <mt-tab-item id="2">
+        <p style="font-size: 16px;">纸质发票</p>
+        <p style="font-size: 12px;">预计一周送达</p>
+        </mt-tab-item>
       </mt-navbar>
+    </div>
+    <div class="page-part invoice-con">
+      <p>发票详情</p>
+      <form action id="formBox" ref="invoiceForm" :model="invoiceForm">
+        <van-cell title="抬头类型" title-style="width:100px;" center>
+          <van-radio-group class="van-radio-group_type" v-model="invoiceForm.type" direction="horizontal" @change="selectType">
+            <van-radio name="企业">企业</van-radio>
+            <van-radio name="个人">个人</van-radio>
+          </van-radio-group>
+        </van-cell>
+        <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位" v-model="invoiceForm.purchaserName"/>
+        <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany" right-icon="arrow" placeholder="请选择发票抬头" v-model="company.name"/>
+        <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企业'" v-model="company.taxNumber"/>
+        <van-field  label="更多" right-icon="arrow-down" v-if="invoiceForm.type === '企业'" @click="showMore" v-show="isHide" readonly placeholder="地址、电话、开户行等"/>
+        <div v-show="isShow">
+          <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="地址" value="" readonly v-model="company.address" right-icon="arrow-up"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="电话" value="" readonly v-model="company.phone"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="开户行" value="" readonly v-model="company.bank"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="银行账号" value="" readonly v-model="company.bankAccount"/>
+        </div>
+      </form>
+    </div>
+    <div class="invoice-contents">
+      <p>发票内容</p>
+      <van-field label="发票内容" v-model="orderType" readonly ></van-field>
+      <van-field class="merge-order_price" label="发票金额" v-model="invoiceForm.mergeSum"  readonly></van-field>
+      <van-field label="备注" placeholder="请输入备注信息"></van-field>
     </div>
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="1">
-        <div class="page-part invoice-con">
-          <p>发票详情</p>
-          <form action id="formBox" ref="invoiceForm" :model="invoiceForm">
-            <van-cell title="抬头类型" title-style="width:100px;" center>
-              <van-radio-group class="van-radio-group_type" v-model="invoiceForm.type" direction="horizontal" @change="selectType">
-                <van-radio name="企业">企业</van-radio>
-                <van-radio name="个人">个人</van-radio>
-              </van-radio-group>
-            </van-cell>
-              <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位" v-model="invoiceForm.purchaserName"/>
-              <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany" right-icon="arrow" placeholder="请选择发票抬头" v-model="company.name"/>
-              <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企业'" v-model="company.taxNumber"/>
-              <van-field  label="更多" right-icon="arrow-down" v-if="invoiceForm.type === '企业'" @click="showMore" v-show="isHide" readonly placeholder="地址、电话、开户行等"/>
-            <div v-show="isShow">
-                <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="地址" value="" readonly v-model="company.address" right-icon="arrow-up"/>
-                <van-field v-if="invoiceForm.type === '企业'" label="电话" value="" readonly v-model="company.phone"/>
-                <van-field v-if="invoiceForm.type === '企业'" label="开户行" value="" readonly v-model="company.bank"/>
-                <van-field v-if="invoiceForm.type === '企业'" label="银行账号" value="" readonly v-model="company.bankAccount"/>
-            </div>
-          </form>
-        </div>
-        <div class="invoice-contents">
-          <p>发票内容</p>
-          <van-field label="发票内容" v-model="orderType" readonly ></van-field>
-          <van-field class="merge-order_price" label="发票金额" v-model="invoiceForm.mergeSum"  readonly></van-field>
-          <van-field label="备注" placeholder="请输入备注信息"></van-field>
-        </div>
         <div class="page-part" style="margin-bottom: 60px;">
           <p>接收方式</p>
           <van-field label="电子邮箱" v-model="email" readonly ></van-field>
           <van-field label="联系方式" v-model="contactInformation" readonly ></van-field>
         </div>
-        <div class="bottom">
-          <van-button
-            type="info"
-            class="submit"
-            @click="goInvoiceSuccess"
-            v-if="showDisabled"
-          >提交
-          </van-button
-          >
-          <mt-button class="submit" v-else>开票中...</mt-button>
-        </div>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
-        <div class="paper-capacitor">正在开发中...</div>
+        <div class="page-part">
+          <p>接收方式</p>
+          <van-field right-icon="arrow" label="收件人"  readonly ></van-field>
+          <van-field label="联系方式" v-model="contactInformation" readonly ></van-field>
+          <van-field label="邮寄地址"  readonly ></van-field>
+        </div>
+        <div class="page-part" style="margin-bottom: 60px;">
+          <p>开票金额不足200元，需支付邮费</p>
+          <van-field label="支付方式"  readonly ></van-field>
+        </div>
       </mt-tab-container-item>
     </mt-tab-container>
+    <div class="bottom">
+      <van-button
+        type="info"
+        class="submit"
+        @click="goInvoiceSuccess"
+        v-if="showDisabled"
+      >提交
+      </van-button
+      >
+      <mt-button class="submit" v-else>开票中...</mt-button>
+    </div>
     <div>
       <router-view @selectCompany="selectCompany"></router-view>
     </div>
