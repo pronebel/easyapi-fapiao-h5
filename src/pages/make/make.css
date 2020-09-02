@@ -62,7 +62,7 @@
 }
 
 .page-part a {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ebedf0;
 }
 
 .mint-cell-wrapper {
@@ -255,7 +255,7 @@
 }
 
 .page-part a {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ebedf0;
 }
 
 .mint-cell-wrapper {
@@ -276,12 +276,6 @@
 .invoice-contents {
   width: 100%;
   height: auto;
-}
-
-.invoice-contents > div:nth-child(2) {
-  background-color: #fff;
-  padding: 15px 10px;
-  border-bottom: 1px solid #ddd;
 }
 
 .invoice-contents > div:nth-child(2) > span:last-child {
@@ -458,7 +452,7 @@
 }
 
 .page-part a {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ebedf0;
 }
 
 .mint-cell-wrapper {
@@ -597,7 +591,7 @@
 }
 
 .page-part a {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ebedf0;
 }
 
 .mint-cell-wrapper {
@@ -702,5 +696,13 @@
   text-overflow: ellipsis;
   width:260px;
   display: inline-block;
+}
+
+.van-cell__value {
+  min-width: 74%;
+}
+
+.merge-order_price .van-field__control{
+  color:red;
 }
 
