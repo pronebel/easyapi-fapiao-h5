@@ -36,7 +36,18 @@ export default new Router({
       component: resolve => require(["../pages/company/edit.vue"], resolve),
       meta: {title: "编辑抬头", keepAlive: false}
     },
-
+    {
+      path: "/address/",
+      name: "Address",
+      component: resolve => require(["../pages/address/list.vue"], resolve),
+      meta: {title: "地址管理", keepAlive: false}
+    },
+    {
+      path: "/address/edit",
+      name: "EditAddress",
+      component: resolve => require(["../pages/address/edit.vue"], resolve),
+      meta: {title: "编辑地址", keepAlive: false}
+    },
     {
       path: "/make/out-order",
       name: "OutOrder",
