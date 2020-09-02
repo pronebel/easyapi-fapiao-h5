@@ -28,7 +28,7 @@
     },
     data() {
       return {
-        headerTitle: "发票明细",
+        headerTitle: "关联订单",
         id: "",
         invoiceItems: "",
         serviceType: ""
