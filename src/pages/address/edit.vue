@@ -1,36 +1,30 @@
 <template>
   <div class="">
     <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <form action ref="companyForm" :model="companyForm" class="formClass">
+    <form action ref="addressForm" :model="addressForm" class="formClass">
       <div class="">
         <div class="address-bottom2" @click="select(item)">
           <van-cell-group :border="false">
-            <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" :border="false" required @keyup="searchRiseList" @focus="listShow = true" @blur="inputBlur"/>
-            <div class="rise-list" v-if="listShow && searchList !== ''">
-              <ul>
-                <li
-                  v-for="(item, index) in searchList"
-                  :key="index"
-                  @mousedown="chooseRise(index)"
-                >
-                  {{ item.name }}
-                </li>
-              </ul>
-            </div>
-            <van-field label="公司税号" v-model="companyForm.taxNumber" placeholder="请输入纳税人识别号（必填）" :border="false" required/>
-            <van-field label="注册地址" v-model="companyForm.address" placeholder="请输入地址（非必填信息）" :border="false"/>
-            <van-field label="注册电话" v-model="companyForm.phone" placeholder="请输入电话（非必填信息）" :border="false"/>
-            <van-field label="开户银行" v-model="companyForm.bank" placeholder="请输入开户行（非必填信息）" :border="false"/>
-            <van-field label="银行账号" v-model="companyForm.bankAccount" placeholder="请输入开户行账号（非必填信息）" :border="false"/>
+            <van-field label="收件人" v-model="addressForm.name" placeholder="请输入收货人姓名" :border="false"/>
+            <van-field label="联系电话" v-model="addressForm.mobile" placeholder="请输入收货人手机号" :border="false"/>
+            <van-field label="所在地区" v-model="addressForm.area" placeholder="省市区县、乡镇等）" :border="false" readonly @click="showPopup = true"/>
+            <van-field label="详细地址" v-model="addressForm.addr" placeholder="街道、楼牌号等" :border="false"/>
           </van-cell-group>
         </div>
       </div>
       <div class="page-part address-con defaultBnt">
-        <van-cell center title="设置为默认抬头">
-          <van-switch v-model="companyForm.ifDefault" active-color="#FFC2A8" size="24px" />
+        <van-cell center title="设置为默认地址">
+          <van-switch v-model="addressForm.ifDefault" active-color="#FFC2A8" size="24px" />
         </van-cell>
       </div>
     </form>
+    <van-popup
+      v-model="showPopup"
+      position="bottom"
+      :style="{ height: '50%' }"
+    >
+      <van-area title="请选择所在地区" :area-list="areaList" :columns-placeholder="['请选择', '请选择', '请选择']" @confirm="onAddrConfirm"/>
+    </van-popup>
     <div class="bottom">
       <van-button type="info" class="submit" @click="confirm">保存</van-button>
       <van-button
@@ -45,6 +39,7 @@
   import Header from "../../components/header.vue";
   import {MessageBox} from "mint-ui";
   import {Toast} from "mint-ui";
+  import AreaList from './area';
 
   export default {
     name: "EditAddress",
@@ -54,13 +49,13 @@
     data() {
       return {
         headerTitle: "",
-        companyForm: {},
+        addressForm: {},
         id: "",
         title: "",
         accessToken: "",
-        searchList: [],
         name: "",
-        listShow: false
+        showPopup: false,
+        areaList: AreaList ,
       };
     },
 
@@ -78,20 +73,21 @@
       // 创建
       toAdd() {
         this.title = "add";
-        this.headerTitle = "新增抬头";
+        this.headerTitle = "新增地址";
       },
       toEdit() {
         this.title = "edit";
-        this.headerTitle = "修改抬头";
+        this.headerTitle = "修改地址";
         this.id = this.$route.params.id;
         if (this.title === "edit") {
-          this.$ajax.get("/company/" + this.id, {
+          this.$ajax.get("/address/" + this.id, {
             params: {
               accessToken: this.accessToken
             }
           }).then(res => {
-            this.companyForm = res.data.content;
-            this.name = res.data.content.name;
+            this.addressForm = res.data.content;
+            // this.name = res.data.content.name;
+            this.addressForm.area = this.addressForm.province + this.addressForm.city + this.addressForm.district
           }).catch(error => {
             console.log(error);
           });
@@ -105,7 +101,7 @@
           showCancelButton: true
         }).then(action => {
           if (action === "confirm") {
-            this.$ajax.delete("/company/" + this.id, {
+            this.$ajax.delete("/address/" + this.id, {
               params: {
                 accessToken: this.accessToken,
                 username: this.$store.state.username
@@ -121,50 +117,26 @@
           }
         });
       },
-      searchRiseList() {
-        if (this.name.length < 4) {
-          return;
-        }
-        this.$ajax.get("/company/codes", {
-          params: {
-            accessToken: this.accessToken,
-            name: this.name
-          }
-        }).then(res => {
-          this.searchList = res.data.content;
-        }).catch(error => {
-          console.log(error);
-        });
-      },
-      chooseRise(index) {
-        this.name = this.searchList[index].name;
-        this.companyForm.taxNumber = this.searchList[index].taxNumber;
-        this.companyForm.bank = this.searchList[index].bank;
-        this.companyForm.bankAccount = this.searchList[index].bankAccount;
-        this.companyForm.address = this.searchList[index].address;
-        this.companyForm.phone = this.searchList[index].phone;
-        this.listShow = false
-      },
       confirm() {
-        if (!this.name && !this.companyForm.taxNumber) {
-          return Toast("发票抬头和税号不能为空！");
+        if (!this.addressForm.name || !this.addressForm.mobile || !this.addressForm.area || !this.addressForm.addr) {
+          return Toast("请将信息填写完整！");
         }
-        this.companyForm.name = this.name;
+        // this.addressForm.name = this.name;
         this.$messagebox({
           title: "提示",
           message: "确定提交吗？",
           showCancelButton: true
         }).then(action => {
           if (action === "confirm") {
-            this.companyForm.accessToken = this.accessToken;
-            this.companyForm.username = this.$store.state.username;
-            // this.companyForm.ifDefault = true;
+            this.addressForm.accessToken = this.accessToken;
+            this.addressForm.username = this.$store.state.username;
+            // this.addressForm.ifDefault = true;
             this.id = this.$route.params.id;
             if (this.title === "edit") {
               this.$ajax({
                 method: "PUT",
-                url: "/company/" + this.id,
-                data: this.companyForm
+                url: "/address/" + this.id,
+                data: this.addressForm
               }).then(res => {
                 if (res.data.code === 1) {
                   this.$router.go(-1)
@@ -175,8 +147,8 @@
             } else {
               this.$ajax({
                 method: "POST",
-                url: "/company",
-                data: this.companyForm
+                url: "/address",
+                data: this.addressForm
               }).then(res => {
                 if (res.data.code === 1) {
                   this.$router.go(-1)
@@ -188,22 +160,13 @@
           }
         });
       },
-      inputBlur(){
-        this.listShow = false
-        // var has;
-        // has = false;
-        // for(var i = 0; i < this.searchList.length; i++){
-        //   if(this.searchList[i].name === this.name){
-        //     has = true;
-        //   }
-        // };
-        // if(!has){
-        //   this.companyForm.taxNumber = '';
-        //   this.companyForm.address = '';
-        //   this.companyForm.phone = '';
-        //   this.companyForm.bank = '';
-        //   this.companyForm.bankAccount = '';
-        // }
+      onAddrConfirm (e) {
+        console.log(e,888888888)
+        this.addressForm.province = e[0].name;
+        this.addressForm.city = e[1].name;
+        this.addressForm.district = e[2].name;
+        this.addressForm.area = this.addressForm.province + this.addressForm.city + this.addressForm.district;
+        this.showPopup = false
       }
     },
     computed: {

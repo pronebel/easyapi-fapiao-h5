@@ -10,12 +10,12 @@
             type="fading-circle"
           ></mt-spinner>
         </div>
-        <div class="no-record-con" v-show="companyList.length ==0 && !loading">
+        <div class="no-record-con" v-show="addressList.length ==0 && !loading">
           <van-empty image="search" description="暂无数据"/>
         </div>
         <div
           class="address-con header-d"
-          v-for="(item, index) in companyList"
+          v-for="(item, index) in addressList"
           :key="index"
         >
           <div class="address-top">
@@ -27,25 +27,23 @@
           </div>
           <div class="address-bottom" @click="select(item)">
             <van-cell-group :border="false">
-              <van-cell title="公司税号" :value="item.taxNumber" :border="false"/>
-              <van-cell title="注册地址" :value="item.address" :border="false"/>
-              <van-cell title="注册电话" :value="item.phone" :border="false"/>
-              <van-cell title="开户银行" :value="item.bank" :border="false"/>
-              <van-cell title="银行账号" :value="item.bankAccount" :border="false"/>
+              <van-cell title="收件人" :value="item.name" :border="false"/>
+              <van-cell title="联系电话" :value="item.mobile" :border="false"/>
+              <van-cell title="收货地址" :value="item.province + item.city + item.district + item.addr" :border="false"/>
             </van-cell-group>
           </div>
         </div>
       </div>
     </div>
     <div class="bottom">
-      <van-button type="info" class="submit" @click="gotoEditCompany">新增抬头</van-button>
+      <van-button type="info" class="submit" @click="gotoEditAddress">新增地址</van-button>
     </div>
   </div>
 </template>
 
 <script>
   import Header from "../../components/header.vue";
-  import {defaultCompany, getCompanyList} from "../../api/company";
+  import {getDefaultAddress, getAddressList} from "../../api/address";
 
   export default {
     name: "Address",
@@ -55,8 +53,8 @@
     data() {
       return {
         loading: true,
-        headerTitle: "抬头管理",
-        companyList: [],
+        headerTitle: "地址管理",
+        addressList: [],
         accessToken: "",
         from: "make",
         back: false//是否可以后退
@@ -66,11 +64,11 @@
       goBack() {
         history.go(-1);
       },
-      getCompanyList() {
-        getCompanyList({username: localStorage.getItem("username")}).then(res => {
+      getAddressList() {
+        getAddressList({username: localStorage.getItem("username")}).then(res => {
           if (res.data.code !== 0) {
             this.loading = false;
-            this.companyList = res.data.content;
+            this.addressList = res.data.content;
           } else {
             this.isNull = true;
             this.loading = false;
@@ -84,27 +82,27 @@
         if (this.from != 'make') {
           return;
         }
-        this.defaultCompany(item.companyId);
-        this.$emit("selectCompany", item);
+        this.defaultAddress(item.addressId);
+        this.$emit("selectAddress", item);
         this.$router.back(-1);
       },
       //设置默认值
-      defaultCompany(companyId) {
-        defaultCompany(companyId).then(res => {
+      defaultAddress(addressId) {
+        defaultAddress(addressId).then(res => {
         }).catch(error => {
           console.log(error);
         });
       },
-      gotoEditCompany() {
+      gotoEditAddress() {
         this.back = true;
-        this.$router.push({name: "EditCompany", path: "/company/edit"});
+        this.$router.push({name: "EditAddress", path: "/address/edit"});
       },
       edit(index) {
         this.back = true;
         this.$router.push({
-          name: "EditCompany",
-          path: "/company/edit",
-          params: {id: this.companyList[index].companyId}
+          name: "EditAddress",
+          path: "/address/edit",
+          params: {id: this.addressList[index].addressId}
         });
       }
     },
@@ -118,15 +116,15 @@
       this.from = this.$route.params.from;
     },
     activated() {
-      this.getCompanyList();
+      this.getAddressList();
     },
     mounted() {
-      this.getCompanyList();
+      this.getAddressList();
     },
     beforeRouteLeave(to, from, next) {
-      if (to.name === 'EditCompany' && !this.back) {
+      if (to.name === 'EditAddress' && !this.back) {
         next({name: 'Index'});
-      } else if (to.name === 'Company') {
+      } else if (to.name === 'Address') {
         next({name: 'Index'});
       } else {
         next();
