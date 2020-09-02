@@ -55,18 +55,23 @@
             <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
               <van-field label="税号" value="" readonly v-model="company.taxNumber"/>
             </a>
-            <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
-              <van-field label="地址" value="" readonly v-model="company.address"/>
+            <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'" @click="showMore" v-show="isHide">
+              <van-field label="更多" right-icon="arrow-down" readonly placeholder="地址、电话、开户行等"/>
             </a>
-            <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
-              <van-field label="电话" value="" readonly v-model="company.phone"/>
-            </a>
-            <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
-              <van-field label="开户行" value="" readonly v-model="company.bank"/>
-            </a>
-            <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
-              <van-field label="银行账号" value="" readonly v-model="company.bankAccount"/>
-            </a>
+            <div v-show="isShow">
+              <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'" @click="hide">
+                <van-field label="地址" value="" readonly v-model="company.address" right-icon="arrow-up"/>
+              </a>
+              <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
+                <van-field label="电话" value="" readonly v-model="company.phone"/>
+              </a>
+              <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
+                <van-field label="开户行" value="" readonly v-model="company.bank"/>
+              </a>
+              <a class="mint-cell mint-field" v-if="invoiceForm.type === '企业'">
+                <van-field label="银行账号" value="" readonly v-model="company.bankAccount"/>
+              </a>
+            </div>
             <a
               class="mint-cell mint-field"
               v-if="invoiceForm.type === '企业' && make === 'false'"
@@ -267,11 +272,11 @@
 </template>
 
 <script>
-  import {getDefaultCompany} from "../../api/company";
+  import { getDefaultCompany } from "../../api/company";
   import Header from "../../components/header.vue";
-  import {Navbar, TabItem} from "mint-ui";
-  import {Toast} from "mint-ui";
-  import {MessageBox} from "mint-ui";
+  import { Navbar, TabItem } from "mint-ui";
+  import { Toast } from "mint-ui";
+  import { MessageBox } from "mint-ui";
 
   export default {
     name: "MergeOrder",
@@ -280,6 +285,8 @@
     },
     data() {
       return {
+        isShow: false,
+        isHide: true,
         loadingList: true,
         amountOfMoney: 0,
         accessToken: "",
@@ -307,16 +314,26 @@
         priceSplicing: "",
         invoiceForm: {
           type: "",
-          purchaserName:""
+          purchaserName: ""
         }
       };
     },
     computed: {
       show() {
         return this.$store.state.ifShowH5NavBar;
-      },
+      }
     },
     methods: {
+      //展示更多
+      showMore() {
+        this.isShow = true;
+        this.isHide = false;
+      },
+      //隐藏
+      hide() {
+        this.isShow = false;
+        this.isHide = true;
+      },
       goBack() {
         history.go(-1);
       },
