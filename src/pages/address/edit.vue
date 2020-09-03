@@ -108,7 +108,7 @@
               }
             }).then(res => {
               if (res.data.code === 1) {
-                this.$messagebox.alert(res.data.message);
+                // this.$messagebox.alert(res.data.message);
                 this.$router.go(-1)
               }
             }).catch(error => {

@@ -177,17 +177,6 @@
   vertical-align: top;
 }
 
-.address-bottom .address-bottom-name {
-  float: left;
-  width: 90px;
-  color: #999;
-}
-
-.address-bottom .address-bottom-con {
-  float: left;
-  margin-left: 10px;
-}
-
 .bottom-button {
   width: 160px;
   height: 40px;
