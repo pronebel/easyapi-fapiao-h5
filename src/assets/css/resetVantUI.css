@@ -70,3 +70,11 @@
 .addContent .van-cell {
   border-bottom: solid 1px #f4f4f4;
 }
+
+#formBox .van-cell__value {
+  flex: 3;
+}
+
+#formBox .van-cell__value .van-radio__label {
+  color: #777
+}

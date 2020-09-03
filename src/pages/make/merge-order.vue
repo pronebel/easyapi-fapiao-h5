@@ -24,7 +24,7 @@
     <div class="page-part invoice-con">
       <p>发票详情</p>
       <form action id="formBox" ref="invoiceForm" :model="invoiceForm">
-        <van-cell title="抬头类型" title-style="width:100px;" center>
+        <van-cell title="抬头类型" center>
           <van-radio-group class="van-radio-group_type" v-model="invoiceForm.type" direction="horizontal"
                            @change="selectType">
             <van-radio name="企业">企业</van-radio>
