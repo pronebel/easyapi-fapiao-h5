@@ -27,9 +27,8 @@
           </div>
           <div class="address-bottom" @click="select(item)">
             <van-cell-group :border="false">
-              <van-cell title="收件人" :value="item.name" :border="false"/>
               <van-cell title="联系电话" :value="item.mobile" :border="false"/>
-              <van-cell title="收货地址" :value="item.province + item.city + item.district + item.addr" :border="false"/>
+              <van-cell title="收票地址" :value="item.province + item.city + item.district + item.addr" :border="false"/>
             </van-cell-group>
           </div>
         </div>
