@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div v-if="order === true" class="block">
-      <van-cell-group>
+    <div v-if="order === true">
+      <van-cell-group title="订单开票">
         <van-cell v-for="(type) in orderTypeList" :key="type.orderTypeId" :value="type.name" is-link
                   :to="{ path: '/make/out-order', query: { orderType: type.name }}"
                   size="large"/>
       </van-cell-group>
     </div>
-    <div class="block">
-      <van-cell-group>
+    <div>
+      <van-cell-group title="发票管理">
         <van-cell title="开票记录" is-link to="/invoice/"/>
         <van-cell title="开票规则" is-link to="/rule"/>
         <van-cell title="抬头管理" is-link :to="{ path: '/company/', params: { from: index }}"/>
@@ -39,7 +39,9 @@
       };
     },
     methods: {
-      //获取发票类型
+      /**
+       * 获取订单类型列表
+       */
       getOrderTypeList() {
         getOrderTypeList(this.username).then(res => {
           if (res.status === 200) {
@@ -105,7 +107,7 @@
 
 <style scoped>
   .block {
-    margin: 10px 0 0 0;
+    margin: 0 0 0 0;
   }
 
   .bottom {
@@ -118,7 +120,7 @@
   }
 
   .bottom .submit {
-    left:50%;
+    left: 50%;
     transform: translateX(-50%);
     width: 95%;
     border: none;
@@ -132,7 +134,7 @@
   .bottom .van-button__text {
     font-size: 17px;
     font-weight: 500;
-    letter-spacing:5px;
+    letter-spacing: 5px;
     text-indent: 5px
   }
 </style>
