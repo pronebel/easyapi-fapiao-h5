@@ -12,6 +12,13 @@
   flex: 1
 }
 
+.defaultBnt .van-cell__title {
+  flex: 2
+}
+
+.defaultBnt .van-cell__value {
+  flex: 3
+}
 .address-bottom2 .van-cell--required::before {
   left: 69px;
 }
