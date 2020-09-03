@@ -57,8 +57,8 @@
       <mt-tab-container-item id="1">
         <div class="page-part" style="margin-bottom: 60px;">
           <p>接收方式</p>
-          <van-field label="电子邮箱" v-model="email" readonly></van-field>
-          <van-field label="联系方式" v-model="contactInformation" readonly></van-field>
+          <van-field label="电子邮箱" v-model="email"></van-field>
+          <van-field label="联系方式" v-model="contactInformation"></van-field>
         </div>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">

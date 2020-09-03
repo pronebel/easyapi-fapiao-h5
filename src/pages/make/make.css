@@ -44,7 +44,7 @@
 }
 
 .mint-navbar .mint-tab-item {
-  border: 1px solid #dddddd;
+  border: 1px solid #dddddd !important;
   border-radius: 4px;
   color: #999;
 }
