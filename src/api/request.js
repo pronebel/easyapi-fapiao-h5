@@ -23,6 +23,7 @@ axios.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 axios.interceptors.response.use(
   function (response) {
     if (response.status == 204) {
@@ -33,6 +34,8 @@ axios.interceptors.response.use(
     if (error.response.data.code == -9) {
       router.push(`/error`);
     } else if (error.response.data.code == -7) {
+      router.push(`/error`);
+    } else if (error.response.data.code == -5) {
       router.push(`/error`);
     } else {
       return Promise.reject(error);
