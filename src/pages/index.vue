@@ -12,6 +12,7 @@
         <van-cell title="开票记录" is-link to="/invoice/"/>
         <van-cell title="开票规则" is-link to="/rule"/>
         <van-cell title="抬头管理" is-link :to="{ path: '/company/', params: { from: index }}"/>
+        <van-cell title="地址管理" is-link :to="{ path: '/address/', params: { from: index }}"/>
       </van-cell-group>
     </div>
 
