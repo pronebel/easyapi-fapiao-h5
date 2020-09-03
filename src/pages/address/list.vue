@@ -43,7 +43,7 @@
 
 <script>
   import Header from "../../components/header.vue";
-  import {getDefaultAddress, getAddressList} from "../../api/address";
+  import {getDefaultAddress, getAddressList,defaultAddress} from "../../api/address";
 
   export default {
     name: "Address",
@@ -79,6 +79,7 @@
         });
       },
       select(item) {
+        console.log(item)
         if (this.from != 'make') {
           return;
         }

@@ -16,8 +16,8 @@
           <p style="font-size: 12px">最快1分钟开具</p>
         </mt-tab-item>
         <mt-tab-item id="2">
-        <p style="font-size: 16px;">纸质发票</p>
-        <p style="font-size: 12px;">预计一周送达</p>
+          <p style="font-size: 16px;">纸质发票</p>
+          <p style="font-size: 12px;">预计一周送达</p>
         </mt-tab-item>
       </mt-navbar>
     </div>
@@ -25,17 +25,22 @@
       <p>发票详情</p>
       <form action id="formBox" ref="invoiceForm" :model="invoiceForm">
         <van-cell title="抬头类型" title-style="width:100px;" center>
-          <van-radio-group class="van-radio-group_type" v-model="invoiceForm.type" direction="horizontal" @change="selectType">
+          <van-radio-group class="van-radio-group_type" v-model="invoiceForm.type" direction="horizontal"
+                           @change="selectType">
             <van-radio name="企业">企业</van-radio>
             <van-radio name="个人">个人</van-radio>
           </van-radio-group>
         </van-cell>
-        <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位" v-model="invoiceForm.purchaserName"/>
-        <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany" right-icon="arrow" placeholder="请选择发票抬头" v-model="company.name"/>
+        <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位"
+                   v-model="invoiceForm.purchaserName"/>
+        <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany" right-icon="arrow"
+                   placeholder="请选择发票抬头" v-model="company.name"/>
         <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企业'" v-model="company.taxNumber"/>
-        <van-field  label="更多" right-icon="arrow-down" v-if="invoiceForm.type === '企业'" @click="showMore" v-show="isHide" readonly placeholder="地址、电话、开户行等"/>
+        <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type === '企业'" @click="showMore" v-show="isHide"
+                   readonly placeholder="地址、电话、开户行等"/>
         <div v-show="isShow">
-          <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="地址" value="" readonly v-model="company.address" right-icon="arrow-up"/>
+          <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="地址" value="" readonly
+                     v-model="company.address" right-icon="arrow-up"/>
           <van-field v-if="invoiceForm.type === '企业'" label="电话" value="" readonly v-model="company.phone"/>
           <van-field v-if="invoiceForm.type === '企业'" label="开户行" value="" readonly v-model="company.bank"/>
           <van-field v-if="invoiceForm.type === '企业'" label="银行账号" value="" readonly v-model="company.bankAccount"/>
@@ -44,28 +49,28 @@
     </div>
     <div class="invoice-contents">
       <p>发票内容</p>
-      <van-field label="发票内容" v-model="orderType" readonly ></van-field>
-      <van-field class="merge-order_price" label="发票金额" v-model="invoiceForm.mergeSum"  readonly></van-field>
+      <van-field label="发票内容" v-model="orderType" readonly></van-field>
+      <van-field class="merge-order_price" label="发票金额" v-model="invoiceForm.mergeSum" readonly></van-field>
       <van-field label="备注" placeholder="请输入备注信息"></van-field>
     </div>
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="1">
         <div class="page-part" style="margin-bottom: 60px;">
           <p>接收方式</p>
-          <van-field label="电子邮箱" v-model="email" readonly ></van-field>
-          <van-field label="联系方式" v-model="contactInformation" readonly ></van-field>
+          <van-field label="电子邮箱" v-model="email" readonly></van-field>
+          <van-field label="联系方式" v-model="contactInformation" readonly></van-field>
         </div>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
         <div class="page-part">
           <p>接收方式</p>
-          <van-field right-icon="arrow" label="收件人"  readonly ></van-field>
-          <van-field label="联系方式" v-model="contactInformation" readonly ></van-field>
-          <van-field label="邮寄地址"  readonly ></van-field>
+          <van-field right-icon="arrow" label="收件人" readonly @click="gotoAddress" v-model="address.name"></van-field>
+          <van-field label="联系方式" v-model="address.mobile" readonly></van-field>
+          <van-cell title="邮寄地址" :value="address.province + address.city + address.district + address.addr"  readonly></van-cell>
         </div>
         <div class="page-part" style="margin-bottom: 60px;">
           <p>开票金额不足200元，需支付邮费</p>
-          <van-field label="支付方式"  readonly ></van-field>
+          <van-field label="支付方式" readonly></van-field>
         </div>
       </mt-tab-container-item>
     </mt-tab-container>
@@ -88,6 +93,7 @@
 
 <script>
   import { getDefaultCompany } from "../../api/company";
+  import { getDefaultAddress } from "../../api/address";
   import Header from "../../components/header.vue";
   import { Navbar, TabItem } from "mint-ui";
   import { Toast } from "mint-ui";
@@ -117,6 +123,7 @@
         NeedEmail: "",
         orderType: "",
         company: {},
+        address:{},
         outOrderIds: "",
         email: "",
         selectCompanyList: [],
@@ -157,6 +164,7 @@
         localStorage.setItem("type", this.invoiceForm.type);
         if (this.invoiceForm.type === "企业") {
           this.getDefaultCompany();
+          this.getDefaultAddress()
         } else if (this.invoiceForm.type === "个人") {
           this.invoiceForm.purchaserName = "个人";
           this.invoiceForm.purchaserTaxpayerNumber = "";
@@ -184,7 +192,6 @@
           this.invoiceForm.username = this.seletedOutOrderList[i].username;
         }
       },
-
       getDefaultCompany() {
         getDefaultCompany(this.$store.state.username).then(res => {
           if (res.data.code === 1) {
@@ -198,6 +205,14 @@
             this.invoiceForm.companyId = this.company.companyId;
           }
         });
+      },
+      getDefaultAddress(){
+        getDefaultAddress(this.$store.state.username).then(res=>{
+          console.log(res)
+          if (res.data.code === 1) {
+            this.address = res.data.content
+          }
+        })
       },
       gotoCompany() {
         if (this.company) {
@@ -213,6 +228,27 @@
           this.$router.push({
             path: "/company/",
             name: "Company",
+            params: {
+              id: "",
+              from: "make"
+            }
+          });
+        }
+      },
+      gotoAddress() {
+        if (this.address) {
+          this.$router.push({
+            path: "/address/",
+            name: "Address",
+            params: {
+              id: this.address.addressID,
+              from: "make"
+            }
+          });
+        } else {
+          this.$router.push({
+            path: "/address/",
+            name: "Address",
             params: {
               id: "",
               from: "make"
@@ -336,6 +372,7 @@
     },
     mounted() {
       this.getDefaultCompany();
+      this.getDefaultAddress();
       this.getOrder();
       this.getEmailInfo();
       this.getInvoiceRemark();

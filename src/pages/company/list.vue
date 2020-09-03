@@ -85,6 +85,7 @@
           return;
         }
         this.defaultCompany(item.companyId);
+        console.log(item.companyId)
         this.$emit("selectCompany", item);
         this.$router.back(-1);
       },

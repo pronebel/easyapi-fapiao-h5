@@ -68,7 +68,17 @@ export const deleteAddress = id => axios.delete(`${baseUrl}/address/${id}`, {
  * 获取我的默认地址信息
  */
 export const getDefaultAddress = username => axios.get(`${baseUrl}/address/${username}/default`, {
-  data: {
+  params: {
     accessToken: localStorage.getItem("accessToken")
   }
+});
+
+/**
+ * 设置为默认地址
+ *
+ * @see https://www.easyai.com
+ */
+export const defaultAddress = id => axios.put(`${baseUrl}/address/${id}`, {
+  accessToken: localStorage.getItem("accessToken"),
+  ifDefault: true
 });

@@ -89,7 +89,7 @@ export default new Router({
       path: "/make/merge-order",
       name: "MergeOrder",
       component: resolve => require(["../pages/make/merge-order.vue"], resolve),
-      meta: {title: "开具发票", keepAlive: false}
+      meta: {title: "开具发票", keepAlive: true}
     },
     {
       path: "/make/success",
