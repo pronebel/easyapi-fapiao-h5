@@ -90,7 +90,7 @@
         selectList: [],
         outOrderList: [],//外部订单列表
         allCheck: false,//全部选择
-        minPrice: 10000,//最大开票金额
+        minPrice: 0.01,//最小开票金额
         accessToken: "",
         orderType: ""
       };
