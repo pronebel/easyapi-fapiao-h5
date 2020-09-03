@@ -698,10 +698,6 @@
   display: inline-block;
 }
 
-.van-cell__value {
-  min-width: 74%;
-}
-
 .merge-order_price .van-field__control{
   color:red;
 }
