@@ -24,7 +24,7 @@
     <div class="page-part invoice-con">
       <p>发票详情</p>
       <form action id="formBox" ref="invoiceForm" :model="invoiceForm">
-        <van-cell title="抬头类型" title-style="width:100px;" center>
+        <van-cell title="抬头类型" center>
           <van-radio-group class="van-radio-group_type" v-model="invoiceForm.type" direction="horizontal"
                            @change="selectType">
             <van-radio name="企业">企业</van-radio>
@@ -57,8 +57,8 @@
       <mt-tab-container-item id="1">
         <div class="page-part" style="margin-bottom: 60px;">
           <p>接收方式</p>
-          <van-field label="电子邮箱" v-model="email" readonly></van-field>
-          <van-field label="联系方式" v-model="contactInformation" readonly></van-field>
+          <van-field label="电子邮箱" v-model="email"></van-field>
+          <van-field label="联系方式" v-model="contactInformation"></van-field>
         </div>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">

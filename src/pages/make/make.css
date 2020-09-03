@@ -44,7 +44,7 @@
 }
 
 .mint-navbar .mint-tab-item {
-  border: 1px solid #dddddd;
+  border: 1px solid #dddddd !important;
   border-radius: 4px;
   color: #999;
 }
@@ -696,10 +696,6 @@
   text-overflow: ellipsis;
   width:260px;
   display: inline-block;
-}
-
-.van-cell__value {
-  min-width: 74%;
 }
 
 .merge-order_price .van-field__control{
