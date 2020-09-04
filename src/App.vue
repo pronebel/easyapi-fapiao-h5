@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <!--<router-view v-wechat-title="$route.meta.title"/>-->
     <transition>
       <keep-alive>
         <router-view v-wechat-title="$route.meta.title" v-if="$route.meta.keepAlive"/>

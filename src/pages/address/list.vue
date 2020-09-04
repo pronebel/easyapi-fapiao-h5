@@ -25,7 +25,7 @@
               <span class="edit" @click="edit(index)">编辑</span>
             </p>
           </div>
-          <div class="address-bottom" @click="select(item)">
+          <div class="address-bottom" v-on:click="select(item)">
             <van-cell-group :border="false">
               <van-cell title="联系电话" :value="item.mobile" :border="false"/>
               <van-cell title="收票地址" :value="item.province + item.city + item.district + item.addr" :border="false"/>
@@ -82,6 +82,7 @@
         if (this.from != 'make') {
           return;
         }
+        event.$emit('select',item)
         this.defaultAddress(item.addressId);
         this.$emit("selectAddress", item);
         this.$router.back(-1);
@@ -122,6 +123,13 @@
       this.getAddressList();
     },
     beforeRouteLeave(to, from, next) {
+      // console.log(to,from)
+      // if (to.path == "/make/merge-order") {
+      //   to.meta.keepAlive = true
+      // } else {
+      //   to.meta.keepAlive = false;
+      // }
+      // next();
       if (to.name === 'EditAddress' && !this.back) {
         next({name: 'Index'});
       } else if (to.name === 'Address') {
