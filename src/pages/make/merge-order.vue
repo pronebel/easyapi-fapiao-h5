@@ -12,12 +12,16 @@
       <p>请选择发票类型</p>
       <mt-navbar v-model="selected" class="invoice-type">
         <mt-tab-item id="1">
-          <p style="font-size: 16px">电子发票</p>
-          <p style="font-size: 12px">最快1分钟开具</p>
+          <div @click="getEtr">
+            <p style="font-size: 16px">电子发票</p>
+            <p style="font-size: 12px">最快1分钟开具</p>
+          </div>
         </mt-tab-item>
         <mt-tab-item id="2">
-          <p style="font-size: 16px;">纸质发票</p>
-          <p style="font-size: 12px;">预计一周送达</p>
+          <div @click="getPaper">
+            <p style="font-size: 16px;">纸质发票</p>
+            <p style="font-size: 12px;">预计一周送达</p>
+          </div>
         </mt-tab-item>
       </mt-navbar>
     </div>
@@ -29,6 +33,13 @@
                            @change="selectType">
             <van-radio name="企业">企业</van-radio>
             <van-radio name="个人">个人</van-radio>
+          </van-radio-group>
+        </van-cell>
+        <van-cell title="发票类型" center v-show="this.selected==2">
+          <van-radio-group class="van-radio-group_type" v-model="paperForm.type" direction="horizontal"
+          >
+            <van-radio style="margin-bottom: 5px;" name="增值税普通发票" @click="getRadioVal">增值税普通发票</van-radio>
+            <van-radio name="增值税专用发票" @click="getRadioVal">增值税专用发票</van-radio>
           </van-radio-group>
         </van-cell>
         <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位"
@@ -66,7 +77,8 @@
           <p>接收方式</p>
           <van-field right-icon="arrow" label="收件人" readonly @click="gotoAddress" v-model="address.name"></van-field>
           <van-field label="联系方式" v-model="address.mobile" readonly></van-field>
-          <van-cell title="邮寄地址" :value="address.province + address.city + address.district + address.addr"  readonly></van-cell>
+          <van-cell title="邮寄地址" :value="address.province + address.city + address.district + address.addr"
+                    readonly></van-cell>
         </div>
         <div class="page-part" style="margin-bottom: 60px;">
           <p>开票金额不足200元，需支付邮费</p>
@@ -123,7 +135,7 @@
         NeedEmail: "",
         orderType: "",
         company: {},
-        address:{},
+        address: {},
         outOrderIds: "",
         email: "",
         selectCompanyList: [],
@@ -137,6 +149,9 @@
         invoiceForm: {
           type: "",
           purchaserName: ""
+        },
+        paperForm: {
+          type: ""
         }
       };
     },
@@ -146,6 +161,38 @@
       }
     },
     methods: {
+      getRadioVal(){
+        console.log(this.paperForm.type);
+
+      },
+      getEtr(){
+        this.orderType = localStorage.getItem("orderType");
+        this.invoiceForm.mergeSum = localStorage.getItem("tot");
+        this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
+        for (let i = 0; i < this.seletedOutOrderList.length; i++) {
+          this.outOrderIds += this.seletedOutOrderList[i].outOrderId + ",";
+          this.invoiceForm.outOrderIds = this.outOrderIds;
+          this.invoiceForm.category = "增值税电子普通发票";
+          console.log(this.invoiceForm.category);
+          this.invoiceForm.property = "电子";
+          this.invoiceForm.username = this.seletedOutOrderList[i].username;
+        }
+      },
+      getPaper(){
+          console.log(111);
+          this.orderType = localStorage.getItem("orderType");
+          this.invoiceForm.mergeSum = localStorage.getItem("tot");
+          this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
+          for (let j = 0; j < this.seletedOutOrderList.length; j++) {
+            this.outOrderIds += this.seletedOutOrderList[j].outOrderId + ",";
+            this.invoiceForm.outOrderIds = this.outOrderIds;
+            this.invoiceForm.category = this.paperForm.type;
+            console.log(this.invoiceForm.category);
+            this.invoiceForm.property = "纸质";
+            console.log(this.invoiceForm.property)
+            this.invoiceForm.username = this.seletedOutOrderList[j].username;
+          }
+      },
       //展示更多
       showMore() {
         this.isShow = true;
@@ -160,11 +207,10 @@
         history.go(-1);
       },
       selectType() {
-        console.log(this.invoiceForm.type);
         localStorage.setItem("type", this.invoiceForm.type);
         if (this.invoiceForm.type === "企业") {
           this.getDefaultCompany();
-          this.getDefaultAddress()
+          this.getDefaultAddress();
         } else if (this.invoiceForm.type === "个人") {
           this.invoiceForm.purchaserName = "个人";
           this.invoiceForm.purchaserTaxpayerNumber = "";
@@ -174,7 +220,6 @@
           this.invoiceForm.purchaserBankAccount = "";
           this.invoiceForm.companyId = "";
         }
-        console.log(this.invoiceForm);
 
       },
       selectCompany() {
@@ -184,13 +229,14 @@
         this.orderType = localStorage.getItem("orderType");
         this.invoiceForm.mergeSum = localStorage.getItem("tot");
         this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
-        for (let i = 0; i < this.seletedOutOrderList.length; i++) {
-          this.outOrderIds += this.seletedOutOrderList[i].outOrderId + ",";
-          this.invoiceForm.outOrderIds = this.outOrderIds;
-          this.invoiceForm.category = "增值税电子普通发票";
-          this.invoiceForm.property = "电子";
-          this.invoiceForm.username = this.seletedOutOrderList[i].username;
-        }
+          for (let i = 0; i < this.seletedOutOrderList.length; i++) {
+            this.outOrderIds += this.seletedOutOrderList[i].outOrderId + ",";
+            this.invoiceForm.outOrderIds = this.outOrderIds;
+            this.invoiceForm.category = "增值税电子普通发票";
+            console.log(this.invoiceForm.category);
+            this.invoiceForm.property = "电子";
+            this.invoiceForm.username = this.seletedOutOrderList[i].username;
+          }
       },
       getDefaultCompany() {
         getDefaultCompany(this.$store.state.username).then(res => {
@@ -206,13 +252,14 @@
           }
         });
       },
-      getDefaultAddress(){
-        getDefaultAddress(this.$store.state.username).then(res=>{
-          console.log(res)
+      getDefaultAddress() {
+        getDefaultAddress(this.$store.state.username).then(res => {
+          console.log(res);
           if (res.data.code === 1) {
-            this.address = res.data.content
+            this.address = res.data.content;
+            this.invoiceForm.addressId = this.address.addressId;
           }
-        })
+        });
       },
       gotoCompany() {
         if (this.company) {
@@ -264,71 +311,95 @@
             invoiceForm: this.invoiceForm
           }
         }).then(res => {
+          console.log(res);
           this.loadingList = false;
           this.email = res.data.content.email ? res.data.content.email : "";
           this.contactInformation = res.data.content.mobile ? res.data.content.mobile : "";
         });
       },
       goInvoiceSuccess() {
-        MessageBox({
-          title: "提示",
-          message: "确认抬头正确并开票吗？",
-          showCancelButton: true
-        }).then(action => {
-          if (action === "confirm") {
-            this.showDisabled = false;
-            //验证邮箱
-            let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-            if (this.NeedEmail === true) {
-              if (this.email === "") {
-                this.showDisabled = true;
-                return Toast("请输入邮箱");
-              } else if (!regEmail.test(this.email)) {
-                this.showDisabled = true;
-                return Toast("邮箱格式不正确");
-              }
-            } else {
-              if (this.email) {
-                if (!regEmail.test(this.email)) {
+        if (this.selected == 1) {
+          MessageBox({
+            title: "提示",
+            message: "确认抬头正确并开票吗？",
+            showCancelButton: true
+          }).then(action => {
+            if (action === "confirm") {
+              this.showDisabled = false;
+              //验证邮箱
+              let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+              if (this.NeedEmail === true) {
+                if (this.email === "") {
+                  this.showDisabled = true;
+                  return Toast("请输入邮箱");
+                } else if (!regEmail.test(this.email)) {
                   this.showDisabled = true;
                   return Toast("邮箱格式不正确");
                 }
+              } else {
+                if (this.email) {
+                  if (!regEmail.test(this.email)) {
+                    this.showDisabled = true;
+                    return Toast("邮箱格式不正确");
+                  }
+                }
               }
-            }
-            //手机号验证
-            let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-            if (this.NeedMobile === true) {
-              if (this.contactInformation === "") {
-                this.showDisabled = true;
-                return Toast("请输入手机号码");
-              } else if (!reg.test(this.contactInformation)) {
-                this.showDisabled = true;
-                return Toast("手机格式不正确");
-              }
-            } else {
-              if (this.contactInformation) {
-                if (!reg.test(this.contactInformation)) {
+              //手机号验证
+              let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+              if (this.NeedMobile === true) {
+                if (this.contactInformation === "") {
+                  this.showDisabled = true;
+                  return Toast("请输入手机号码");
+                } else if (!reg.test(this.contactInformation)) {
                   this.showDisabled = true;
                   return Toast("手机格式不正确");
                 }
+              } else {
+                if (this.contactInformation) {
+                  if (!reg.test(this.contactInformation)) {
+                    this.showDisabled = true;
+                    return Toast("手机格式不正确");
+                  }
+                }
+              }
+              if (this.order === "true") {
+                this.invoiceForm.accessToken = this.accessToken;
+                this.invoiceForm.addrMobile = this.contactInformation;
+                this.invoiceForm.email = this.email;
+                this.$ajax.post("/merge-make", this.invoiceForm, {}).then(res => {
+                  if (res.data.code === 1) {
+                    this.$router.push(`/make/success`);
+                  }
+                }).catch(error => {
+                  this.showDisabled = false;
+                  Toast(error.response.data.message);
+                  this.showDisabled = true;
+                });
               }
             }
-            if (this.order === "true") {
-              this.invoiceForm.accessToken = this.accessToken;
-              this.invoiceForm.addrMobile = this.contactInformation;
-              this.invoiceForm.email = this.email;
-              this.$ajax.post("/merge-make", this.invoiceForm, {}).then(res => {
-                if (res.data.code === 1) {
-                  this.$router.push(`/make/success`);
-                }
-              }).catch(error => {
-                this.showDisabled = false;
-                Toast(error.response.data.message);
-                this.showDisabled = true;
-              });
+          });
+        } else {
+          MessageBox({
+            title: "提示",
+            message: "确认以上信息并开票吗？",
+            showCancelButton: true
+          }).then(action => {
+            if (action === "confirm") {
+              if (this.order === "true") {
+                this.invoiceForm.accessToken = this.accessToken;
+                this.$ajax.post("/merge-make", this.invoiceForm, {}).then(res => {
+                  if (res.data.code === 1) {
+                    this.$router.push(`/make/success`);
+                  }
+                }).catch(error => {
+                  this.showDisabled = false;
+                  Toast(error.response.data.message);
+                  this.showDisabled = true;
+                });
+              }
             }
-          }
-        });
+          });
+        }
       },
 
       /**
@@ -357,6 +428,7 @@
     },
     watch: {},
     created() {
+      console.log(1);
       this.make = localStorage.getItem("make");
       this.order = localStorage.getItem("order");
       this.accessToken = localStorage.getItem("accessToken");
@@ -367,12 +439,30 @@
         this.invoiceForm.type = "企业";
       }
     },
+    // beforeRouteLeave(to,from,next){
+    // from.meta.keepAlive = false;
+    // next(
+    //   console.log(111)
+    // )
+    // },
     activated() {
+      console.log(3);
       this.selectCompany();
+      // this.getDefaultAddress();
+      // this.getDefaultCompany();
+      event.$on("select", function(data) {
+        this.address = data;
+        this.$forceUpdate();
+        console.log(this.address);
+      });
+    },
+    deactivated() {
+      console.log(4);
     },
     mounted() {
-      this.getDefaultCompany();
+      console.log(2);
       this.getDefaultAddress();
+      this.getDefaultCompany();
       this.getOrder();
       this.getEmailInfo();
       this.getInvoiceRemark();
