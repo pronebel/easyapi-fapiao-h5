@@ -151,7 +151,7 @@
           purchaserName: ""
         },
         paperForm: {
-          type: ""
+          type: "增值税普通发票"
         }
       };
     },
@@ -163,7 +163,7 @@
     methods: {
       getRadioVal(){
         console.log(this.paperForm.type);
-
+        this.invoiceForm.category = this.paperForm.type;
       },
       getEtr(){
         this.orderType = localStorage.getItem("orderType");
