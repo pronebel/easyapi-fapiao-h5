@@ -7,11 +7,10 @@
         <div class="mint-cell-left"></div>
         <div class="mint-cell-wrapper">
           <div class="mint-cell-title">
-
             <span class="mint-cell-text"
             ><font style="vertical-align: inherit;"
             ><font style="vertical-align: inherit;"
-            >电子发票（{{ invoiceDetail.statements }}）</font
+            >{{invoiceDetail.category}}（{{ invoiceDetail.statements }}）</font
             ></font
             ></span
             >
@@ -31,195 +30,17 @@
     </div>
     <div class="page-part invoice-con">
       <p>发票详情</p>
-      <a class="mint-cell mint-field">
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
-            <span class="mint-cell-text"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;">发票抬头</font></font
-            ></span>
-          </div>
-          <div class="mint-cell-value">
-            <span>{{ invoiceDetail.purchaserName }}</span>
-            <div class="mint-field-clear" style="display: none;">
-              <i class="mintui mintui-field-error"></i>
-            </div>
-            <span class="mint-field-state is-default"
-            ><i class="mintui mintui-field-default"></i
-            ></span>
-            <div class="mint-field-other"></div>
-          </div>
-        </div>
-        <div class="mint-cell-right"></div>
-      </a>
-      <a class="mint-cell mint-field">
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
-            <span class="mint-cell-text"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;">税号</font></font
-            ></span
-            >
-          </div>
-          <div class="mint-cell-value">
-            <span>{{ invoiceDetail.purchaserTaxpayerNumber }}</span>
-            <div class="mint-field-clear" style="display: none;">
-              <i class="mintui mintui-field-error"></i>
-            </div>
-            <span class="mint-field-state is-default"
-            ><i class="mintui mintui-field-default"></i
-            ></span>
-            <div class="mint-field-other"></div>
-          </div>
-        </div>
-        <div class="mint-cell-right"></div>
-      </a>
-      <a class="mint-cell mint-field">
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
-            <span class="mint-cell-text"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;">地址、电话</font></font
-            ></span
-            >
-          </div>
-          <div class="mint-cell-value" style="display: block;">
-            <span>{{ invoiceDetail.purchaserAddress }} {{ invoiceDetail.purchaserPhone }}</span>
-            <div class="mint-field-clear" style="display: none;">
-              <i class="mintui mintui-field-error"></i>
-            </div>
-            <span class="mint-field-state is-default"
-            ><i class="mintui mintui-field-default"></i
-            ></span>
-            <div class="mint-field-other"></div>
-          </div>
-        </div>
-        <div class="mint-cell-right"></div>
-      </a>
-      <a class="mint-cell mint-field">
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
-            <span class="mint-cell-text"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;"
-            >开户行及账号</font
-            ></font
-            ></span
-            >
-          </div>
-          <div class="mint-cell-value">
-            <span>{{ invoiceDetail.purchaserBank }} {{ invoiceDetail.purchaserBankAccount }}</span>
-            <div class="mint-field-clear" style="display: none;">
-              <i class="mintui mintui-field-error"></i>
-            </div>
-            <span class="mint-field-state is-default"
-            ><i class="mintui mintui-field-default"></i
-            ></span>
-            <div class="mint-field-other"></div>
-          </div>
-        </div>
-        <div class="mint-cell-right"></div>
-      </a>
-      <a class="mint-cell mint-field">
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
-            <span class="mint-cell-text"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;">发票金额</font></font
-            ></span
-            >
-          </div>
-          <div class="mint-cell-value">
-            <span>￥{{ invoiceDetail.price }}</span>
-            <div class="mint-field-clear" style="display: none;">
-              <i class="mintui mintui-field-error"></i>
-            </div>
-            <span class="mint-field-state is-default"
-            ><i class="mintui mintui-field-default"></i
-            ></span>
-            <div class="mint-field-other"></div>
-          </div>
-        </div>
-        <div class="mint-cell-right"></div>
-      </a>
-      <a class="mint-cell mint-field">
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
-            <span class="mint-cell-text"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;">备注</font></font
-            ></span
-            >
-          </div>
-          <div class="mint-cell-value">
-            <span>{{ invoiceDetail.remark }}</span>
-            <div class="mint-field-clear" style="display: none;">
-              <i class="mintui mintui-field-error"></i>
-            </div>
-            <span class="mint-field-state is-default"
-            ><i class="mintui mintui-field-default"></i
-            ></span>
-            <div class="mint-field-other"></div>
-          </div>
-        </div>
-        <div class="mint-cell-right"></div>
-      </a>
+      <van-field v-model="invoiceDetail.purchaserName" label="发票抬头"/>
+      <van-field v-model="invoiceDetail.purchaserTaxpayerNumber" label="税号"/>
+      <van-cell :value="invoiceDetail.purchaserAddress+invoiceDetail.purchaserPhone" title="地址、电话"/>
+      <van-cell :value="invoiceDetail.purchaserBank+invoiceDetail.purchaserBankAccount" title="开户行及账号"/>
+      <van-field v-model="invoiceDetail.price" label="发票金额"/>
+      <van-field label="备注" placeholder="业务需要，类别开票车牌号"/>
     </div>
-    <div class="page-part">
+    <div class="page-part" v-show="invoiceDetail.category=='增值税电子普通发票'">
       <p>接收方式</p>
-
-      <a class="mint-cell mint-field">
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
-            <span class="mint-cell-text"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;">电子邮件</font></font
-            ></span
-            >
-          </div>
-          <div class="mint-cell-value">
-            <span>{{ invoiceDetail.email }}</span>
-            <div class="mint-field-clear" style="display: none;">
-              <i class="mintui mintui-field-error"></i>
-            </div>
-            <span class="mint-field-state is-default"
-            ><i class="mintui mintui-field-default"></i
-            ></span>
-            <div class="mint-field-other"></div>
-          </div>
-        </div>
-        <div class="mint-cell-right"></div>
-      </a>
-      <a class="mint-cell mint-field">
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
-            <span class="mint-cell-text"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;">联系方式</font></font
-            ></span
-            >
-          </div>
-          <div class="mint-cell-value">
-            <span>{{ invoiceDetail.addrMobile }}</span>
-            <div class="mint-field-clear" style="display: none;">
-              <i class="mintui mintui-field-error"></i>
-            </div>
-            <span class="mint-field-state is-default"
-            ><i class="mintui mintui-field-default"></i
-            ></span>
-            <div class="mint-field-other"></div>
-          </div>
-        </div>
-        <div class="mint-cell-right"></div>
-      </a>
+      <van-field label="电子邮件" v-model="invoiceDetail.email"/>
+      <van-field label="联系方式" v-model="invoiceDetail.addrMobile"/>
       <a class="mint-cell" @click="goAssociatedOrder"
       ><span class="mint-cell-mask"></span>
         <div class="mint-cell-left"></div>
@@ -252,6 +73,13 @@
         <!--<mt-button class="submit" @click="goElectronicInvoice">重发电子发票与订单</mt-button>-->
       </div>
     </div>
+    <div class="page-part" v-show="invoiceDetail.category=='增值税普通发票' ||invoiceDetail.category=='增值税专用发票'">
+      <p>接收方式</p>
+      <van-field label="收件人" readonly></van-field>
+      <van-field label="联系方式" readonly></van-field>
+      <!--<van-cell title="邮寄地址" :value="address.province + address.city + address.district + address.addr"-->
+      <!--readonly></van-cell>-->
+    </div>
     <mt-popup
       v-model="popupVisible"
       position="middle"
@@ -278,9 +106,9 @@
 </template>
 
 <script>
-  import {getInvoice} from "../../api/invoice";
+  import { getInvoice } from "../../api/invoice";
   import Header from "../../components/header.vue";
-  import {MessageBox} from "mint-ui";
+  import { MessageBox } from "mint-ui";
   import Clipboard from "clipboard";
 
   export default {
@@ -305,7 +133,7 @@
       //查看发票
       viewPicture() {
         if (this.invoiceDetail.state === 1) {
-          this.popupVisible = true
+          this.popupVisible = true;
         } else if (this.invoiceDetail.state === 2) {
           this.$toast("当前发票作废了");
         } else if (this.invoiceDetail.state === 3) {
@@ -336,17 +164,17 @@
       goAssociatedOrder() {
         this.$router.push({
           path: "/invoice/out-order",
-          query: {id: this.$route.query.id}
+          query: { id: this.$route.query.id }
         });
       },
       copyLink() {
         let _this = this;
         let clipboard = new this.clipboard(".copyPdfUrl");
-        clipboard.on('success', function () {
-          _this.$toast({message:"复制成功", className: 'top-toast'})
+        clipboard.on("success", function() {
+          _this.$toast({ message: "复制成功", className: "top-toast" });
         });
-        clipboard.on('error', function () {
-          _this.$toast({message:"复制失败", className: 'top-toast'})
+        clipboard.on("error", function() {
+          _this.$toast({ message: "复制失败", className: "top-toast" });
         });
       }
     },
@@ -393,7 +221,8 @@
   .mint-cell-wrapper {
     background: none !important;
   }
-  .submit{
+
+  .submit {
     border: none;
     height: 40px;
     border-radius: 5px;
@@ -405,5 +234,10 @@
     font-weight: 500;
     /* letter-spacing:2px;
     text-indent: 2px */
-}
+  }
+
+  .van-cell__value {
+    min-width: 74%;
+    text-align: left;
+  }
 </style>

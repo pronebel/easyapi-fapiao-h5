@@ -473,4 +473,7 @@
 
 <style scoped>
   @import 'make.css';
+  .van-cell__value {
+    min-width: 74%;
+  }
 </style>

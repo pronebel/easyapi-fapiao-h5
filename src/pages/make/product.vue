@@ -41,7 +41,7 @@
             <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type    === '企业'" @click="showMore" v-show="isHide"
                        readonly placeholder="地址、电话、开户行等"/>
             <div v-show="isShow">
-              <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="地   址" value="" readonly
+              <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="地址" value="" readonly
                          v-model="company.address" right-icon="arrow-up"/>
               <van-field v-if="invoiceForm.type === '企业'" label="电话" value=""     readonly v-model="company.phone"/>
               <van-field v-if="invoiceForm.type === '企业'" label="开户行" value=""     readonly v-model="company.bank"/>
@@ -67,7 +67,7 @@
             <li style="width: 24%;line-height: 15px;padding-top:12px">
               {{ product.name }}
             </li>
-            <li style="width: 24%">{{ product.specifications }}</li>
+            <li style="width: 24%">{{ product.specification }}</li>
             <li>{{ product.unit }}</li>
             <li>{{ product.number }}</li>
             <li>{{ product.price }}</li>
@@ -668,6 +668,27 @@
         }
         console.log(this.invoiceForm);
 
+      },
+      gotoCompany() {
+        if (this.company) {
+          this.$router.push({
+            path: "/company/",
+            name: "Company",
+            params: {
+              id: this.company.companyId,
+              from: "make"
+            }
+          });
+        } else {
+          this.$router.push({
+            path: "/company/",
+            name: "Company",
+            params: {
+              id: "",
+              from: "make"
+            }
+          });
+        }
       },
     },
     watch: {},
