@@ -52,8 +52,8 @@
         <div class="invoice-contents" v-if="make === 'true'">
           <p>发票内容</p>
           <ul class="contents-title">
-            <li style="width: 24%">商品名称</li>
-            <li style="width: 24%">规格型号</li>
+            <li style="width: 35%">商品名称</li>
+            <li style="width: 35%">规格型号</li>
             <li>单位</li>
             <li>数量</li>
             <li>单价</li>
@@ -64,10 +64,10 @@
             v-for="(product, index) in productList"
             :key="index"
           >
-            <li style="width: 24%;line-height: 15px;padding-top:12px">
+            <li style="width: 35%; line-height: 15px;padding-top:12px">
               {{ product.name }}
             </li>
-            <li style="width: 24%">{{ product.specification }}</li>
+            <li style="width: 35%; line-height: 15px;padding-top:12px">{{ product.specification }}</li>
             <li>{{ product.unit }}</li>
             <li>{{ product.number }}</li>
             <li>{{ product.price }}</li>
