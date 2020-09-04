@@ -669,6 +669,27 @@
         console.log(this.invoiceForm);
 
       },
+      gotoCompany() {
+        if (this.company) {
+          this.$router.push({
+            path: "/company/",
+            name: "Company",
+            params: {
+              id: this.company.companyId,
+              from: "make"
+            }
+          });
+        } else {
+          this.$router.push({
+            path: "/company/",
+            name: "Company",
+            params: {
+              id: "",
+              from: "make"
+            }
+          });
+        }
+      },
     },
     watch: {},
     mounted() {
