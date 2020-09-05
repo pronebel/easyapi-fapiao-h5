@@ -12,236 +12,188 @@
       <p>请选择发票类型</p>
       <mt-navbar v-model="selected" class="invoice-type">
         <mt-tab-item id="1">
-          <p style="font-size: 16px">电子发票</p>
-          <p style="font-size: 12px">最快1分钟开具</p>
+          <div @click="getEtr">
+            <p style="font-size: 16px">电子发票</p>
+            <p style="font-size: 12px">最快1分钟开具</p>
+          </div>
         </mt-tab-item>
         <mt-tab-item id="2">
-          <p style="font-size: 16px;">纸质发票</p>
-          <p style="font-size: 12px;">预计一周送达</p>
+          <div @click="getPaper">
+            <p style="font-size: 16px;">纸质发票</p>
+            <p style="font-size: 12px;">预计一周送达</p>
+          </div>
         </mt-tab-item>
       </mt-navbar>
     </div>
+
+    <div class="page-part invoice-con">
+      <p>发票详情</p>
+      <form action id="formBox" ref="invoiceForm" :model="invoiceForm">
+        <van-cell title="抬头类型" center>
+          <van-radio-group class="van-radio-group_type" v-model="invoiceForm.type" direction="horizontal"
+                            @change="selectType">
+            <van-radio name="企业">企业</van-radio>
+            <van-radio name="个人">个人</van-radio>
+          </van-radio-group>
+        </van-cell>
+        <van-cell title="发票类型" center v-show="this.selected==2">
+          <van-radio-group class="van-radio-group_type" v-model="paperForm.type" direction="horizontal"
+          >
+            <van-radio style="margin-bottom: 5px;" name="增值税普通发票" @click="getRadioVal">增值税普通发票</van-radio>
+            <van-radio name="增值税专用发票" @click="getRadioVal">增值税专用发票</van-radio>
+          </van-radio-group>
+        </van-cell>
+        <van-field label="发票抬头" v-if="invoiceForm.type === '个人'"    placeholder="请输入姓名/事业单位"
+                    v-model="invoiceForm.purchaserName"/>
+        <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'"     @click="gotoCompany" right-icon="arrow"
+                    placeholder="请选择发票抬头" v-model="company.name"/>
+        <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企    业'" v-model="company.taxNumber"/>
+        <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type    === '企业'" @click="showMore" v-show="isHide"
+                    readonly placeholder="地址、电话、开户行等"/>
+        <div v-show="isShow">
+          <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="地址" value="" readonly
+                      v-model="company.address" right-icon="arrow-up"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="电话" value=""     readonly v-model="company.phone"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="开户行" value=""     readonly v-model="company.bank"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="银行账号"    value="" readonly v-model="company.bankAccount"/>
+        </div>
+      </form>
+    </div>
+    <div class="invoice-contents" v-if="make === 'true'">
+      <p>发票内容</p>
+      <ul class="contents-title">
+        <li style="width: 35%">商品名称</li>
+        <li style="width: 35%">规格型号</li>
+        <li>单位</li>
+        <li>数量</li>
+        <li>单价</li>
+        <li>操作</li>
+      </ul>
+      <ul
+        class="contents-content"
+        v-for="(product, index) in productList"
+        :key="index"
+      >
+        <li style="width: 35%; line-height: 15px;padding-top:12px">
+          {{ product.name }}
+        </li>
+        <li style="width: 35%; line-height: 15px;padding-top:12px">{{ product.specification }}</li>
+        <li>{{ product.unit }}</li>
+        <li>{{ product.number }}</li>
+        <li>{{ product.price }}</li>
+        <li
+          style="color: #1989fa"
+          @click="deleteContent(product.productId)"
+        >
+          删除
+        </li>
+      </ul>
+      <div class="btn">
+        <mt-button class="submit-btn" @click="showSearchPopup">
+          +添加发票内容
+        </mt-button
+        >
+      </div>
+      <!-- <a class="mint-cell mint-field" style=" border-bottom: 1px solid#ddd;"
+      >
+        <div class="mint-cell-left"></div>
+        <div class="mint-cell-wrapper">
+          <div class="mint-cell-title">
+
+            <span class="mint-cell-text"
+            ><font style="vertical-align: inherit;"
+            ><font style="vertical-align: inherit;"
+            >发票金额</font
+            ></font
+            ></span
+            >
+
+          </div>
+          <div class="mint-cell-value">
+            <span v-if="make === 'true'" style="color:#ff4848 "
+            >{{ amountOfMoney }} <span style="color: #999">元</span></span
+            >
+            <div class="mint-field-clear" style="display: none;">
+              <i class="mintui mintui-field-error"></i>
+            </div>
+            <span class="mint-field-state is-default"
+            ><i class="mintui mintui-field-default"></i
+            ></span>
+            <div class="mint-field-other"></div>
+          </div>
+
+        </div>
+        <div class="mint-cell-right"></div>
+      </a>
+      <a class="mint-cell mint-field"
+      >
+        <div class="mint-cell-left"></div>
+        <div class="mint-cell-wrapper">
+          <div class="mint-cell-title">
+
+            <span class="mint-cell-text"
+            ><font style="vertical-align: inherit;"
+            ><font style="vertical-align: inherit;">备注</font></font
+            ></span
+            >
+
+          </div>
+          <div class="mint-cell-value">
+            <input
+              :placeholder="remark"
+              type="text"
+              style="font-size: 15px"
+              class="mint-field-core"
+              v-model="invoiceForm.inputValue"
+            />
+            <div class="mint-field-clear" style="display: none;">
+              <i class="mintui mintui-field-error"></i>
+            </div>
+            <span class="mint-field-state is-default"
+            ><i class="mintui mintui-field-default"></i
+            ></span>
+            <div class="mint-field-other"></div>
+          </div>
+
+        </div>
+        <div class="mint-cell-right"></div>
+      </a> -->
+      <van-field class="merge-order_price" label="发票金额" v-model="amountOfMoney" readonly style="border-bottom: solid 1px #ddd"></van-field>
+      <van-field label="备注" placeholder="请输入备注信息" v-model="invoiceForm.inputValue"></van-field>
+    </div>
+
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="1">
-        <div class="page-part invoice-con">
-          <p>发票详情</p>
-          <form action id="formBox" ref="invoiceForm" :model="invoiceForm">
-            <van-cell title="抬头类型" center>
-              <van-radio-group class="van-radio-group_type" v-model="invoiceForm.type" direction="horizontal"
-                               @change="selectType">
-                <van-radio name="企业">企业</van-radio>
-                <van-radio name="个人">个人</van-radio>
-              </van-radio-group>
-            </van-cell>
-            <van-field label="发票抬头" v-if="invoiceForm.type === '个人'"    placeholder="请输入姓名/事业单位"
-                       v-model="invoiceForm.purchaserName"/>
-            <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'"     @click="gotoCompany" right-icon="arrow"
-                       placeholder="请选择发票抬头" v-model="company.name"/>
-            <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企    业'" v-model="company.taxNumber"/>
-            <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type    === '企业'" @click="showMore" v-show="isHide"
-                       readonly placeholder="地址、电话、开户行等"/>
-            <div v-show="isShow">
-              <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="地址" value="" readonly
-                         v-model="company.address" right-icon="arrow-up"/>
-              <van-field v-if="invoiceForm.type === '企业'" label="电话" value=""     readonly v-model="company.phone"/>
-              <van-field v-if="invoiceForm.type === '企业'" label="开户行" value=""     readonly v-model="company.bank"/>
-              <van-field v-if="invoiceForm.type === '企业'" label="银行账号"    value="" readonly v-model="company.bankAccount"/>
-            </div>
-          </form>
-        </div>
-        <div class="invoice-contents" v-if="make === 'true'">
-          <p>发票内容</p>
-          <ul class="contents-title">
-            <li style="width: 35%">商品名称</li>
-            <li style="width: 35%">规格型号</li>
-            <li>单位</li>
-            <li>数量</li>
-            <li>单价</li>
-            <li>操作</li>
-          </ul>
-          <ul
-            class="contents-content"
-            v-for="(product, index) in productList"
-            :key="index"
-          >
-            <li style="width: 35%; line-height: 15px;padding-top:12px">
-              {{ product.name }}
-            </li>
-            <li style="width: 35%; line-height: 15px;padding-top:12px">{{ product.specification }}</li>
-            <li>{{ product.unit }}</li>
-            <li>{{ product.number }}</li>
-            <li>{{ product.price }}</li>
-            <li
-              style="color: #1989fa"
-              @click="deleteContent(product.productId)"
-            >
-              删除
-            </li>
-          </ul>
-          <div class="btn">
-            <mt-button class="submit-btn" @click="showSearchPopup">
-              +添加发票内容
-            </mt-button
-            >
-          </div>
-          <a class="mint-cell mint-field" style=" border-bottom: 1px solid#ddd;"
-          >
-            <div class="mint-cell-left"></div>
-            <div class="mint-cell-wrapper">
-              <div class="mint-cell-title">
-
-                <span class="mint-cell-text"
-                ><font style="vertical-align: inherit;"
-                ><font style="vertical-align: inherit;"
-                >发票金额</font
-                ></font
-                ></span
-                >
-
-              </div>
-              <div class="mint-cell-value">
-                <span v-if="make === 'true'" style="color:#ff4848 "
-                >{{ amountOfMoney }} <span style="color: #999">元</span></span
-                >
-                <div class="mint-field-clear" style="display: none;">
-                  <i class="mintui mintui-field-error"></i>
-                </div>
-                <span class="mint-field-state is-default"
-                ><i class="mintui mintui-field-default"></i
-                ></span>
-                <div class="mint-field-other"></div>
-              </div>
-
-            </div>
-            <div class="mint-cell-right"></div>
-          </a>
-          <a class="mint-cell mint-field"
-          >
-            <div class="mint-cell-left"></div>
-            <div class="mint-cell-wrapper">
-              <div class="mint-cell-title">
-
-                <span class="mint-cell-text"
-                ><font style="vertical-align: inherit;"
-                ><font style="vertical-align: inherit;">备注</font></font
-                ></span
-                >
-
-              </div>
-              <div class="mint-cell-value">
-                <input
-                  :placeholder="remark"
-                  type="text"
-                  style="font-size: 15px"
-                  class="mint-field-core"
-                  v-model="invoiceForm.inputValue"
-                />
-                <div class="mint-field-clear" style="display: none;">
-                  <i class="mintui mintui-field-error"></i>
-                </div>
-                <span class="mint-field-state is-default"
-                ><i class="mintui mintui-field-default"></i
-                ></span>
-                <div class="mint-field-other"></div>
-              </div>
-
-            </div>
-            <div class="mint-cell-right"></div>
-          </a>
-        </div>
-        <div class="page-part">
+        <div class="page-part" style="margin-bottom: 60px;">
           <p>接收方式</p>
-          <a class="mint-cell mint-field"
-          >
-            <div class="mint-cell-left"></div>
-            <div class="mint-cell-wrapper">
-              <div class="mint-cell-title">
-
-                <span class="mint-cell-text"
-                ><font style="vertical-align: inherit;"
-                ><font
-                  style="vertical-align: inherit;color:#333;font-size: 15px"
-                >电子邮件</font
-                ></font
-                ></span
-                >
-
-              </div>
-              <div class="mint-cell-value">
-                <input
-                  placeholder=""
-                  type="email"
-                  class="mint-field-core"
-                  style="color:#333;font-size: 15px"
-                  v-model="email"
-                />
-                <div class="mint-field-clear" style="display: none;">
-                  <i class="mintui mintui-field-error"></i>
-                </div>
-                <span class="mint-field-state is-default"
-                ><i class="mintui mintui-field-default"></i
-                ></span>
-                <div class="mint-field-other"></div>
-              </div>
-
-            </div>
-            <div class="mint-cell-right"></div>
-          </a>
-          <a class="mint-cell mint-field"
-             style="margin-bottom:60px;"
-          >
-            <div class="mint-cell-left"></div>
-            <div class="mint-cell-wrapper">
-              <div class="mint-cell-title">
-
-                <span class="mint-cell-text"
-                ><font style="vertical-align: inherit;"
-                ><font
-                  style="vertical-align: inherit; color:#333;font-size: 15px"
-                >联系方式</font
-                ></font
-                ></span
-                >
-
-              </div>
-              <div class="mint-cell-value">
-                <input
-                  placeholder=""
-                  type="tal"
-                  class="mint-field-core"
-                  style="color:#333;font-size: 15px"
-                  v-model="contactInformation"
-                />
-                <div class="mint-field-clear" style="display: none;">
-                  <i class="mintui mintui-field-error"></i>
-                </div>
-                <span class="mint-field-state is-default"
-                ><i class="mintui mintui-field-default"></i
-                ></span>
-                <div class="mint-field-other"></div>
-              </div>
-
-            </div>
-            <div class="mint-cell-right"></div>
-          </a>
-          <div class="bottom">
-            <van-button
-              type="info"
-              class="submit"
-              @click="goInvoiceSuccess"
-              v-if="showDisabled"
-            >提交
-            </van-button>
-            <van-button class="submit" v-else>开票中...</van-button>
-          </div>
+          <van-field label="电子邮箱" v-model="email"></van-field>
+          <van-field label="联系方式" v-model="contactInformation"></van-field>
         </div>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
-        <div class="paper-capacitor">
-          正在开发中...
+        <div class="page-part">
+          <p>接收方式</p>
+          <van-field right-icon="arrow" label="收件人" readonly @click="gotoAddress" v-model="address.name"></van-field>
+          <van-field label="联系方式" v-model="address.mobile" readonly></van-field>
+          <van-cell title="邮寄地址" :value="address.province + address.city + address.district + address.addr"
+                    readonly></van-cell>
+        </div>
+        <div class="page-part" style="margin-bottom: 60px;">
+          <p>开票金额不足200元，需支付邮费</p>
+          <van-field label="支付方式" readonly></van-field>
         </div>
       </mt-tab-container-item>
     </mt-tab-container>
+    <div class="bottom">
+      <van-button
+        type="info"
+        class="submit"
+        @click="goInvoiceSuccess"
+        v-if="showDisabled"
+      >提交
+      </van-button>
+      <van-button class="submit" v-else>开票中...</van-button>
+    </div>
     <div>
       <router-view @seletedOrder="seletedOrder"></router-view>
     </div>
@@ -302,6 +254,7 @@
   import Isemail from "isemail";
   import axios from '../../api/request'
   import {getDefaultCompany} from "../../api/company";
+  import { getDefaultAddress } from "../../api/address";
 
   export default {
     name: "MakeProduct",
@@ -324,6 +277,7 @@
         NeedMobile: "",
         NeedEmail: "",
         company: {},
+        address: {},
         email: "",
         seletedOrderList: [],
         sum: 0,
@@ -331,6 +285,7 @@
         mergeTax: 0,
         remark: "",
         invoiceForm: {
+          isPaper: false,
           type: "",
           purchaserName: ""
         },
@@ -348,11 +303,48 @@
         showPopup: false,
         radio: null,
         totalPrice: 0,
+        paperForm: {
+          type: "增值税普通发票"
+        }
 
       };
     },
 
     methods: {
+      getRadioVal(){
+        console.log(this.paperForm.type);
+        this.invoiceForm.category = this.paperForm.type;
+      },
+      getEtr(){
+        localStorage.setItem("isPaper", false);
+        this.orderType = localStorage.getItem("orderType");
+        this.invoiceForm.mergeSum = localStorage.getItem("tot");
+        this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
+        for (let i = 0; i < this.seletedOutOrderList.length; i++) {
+          this.outOrderIds += this.seletedOutOrderList[i].outOrderId + ",";
+          this.invoiceForm.outOrderIds = this.outOrderIds;
+          this.invoiceForm.category = "增值税电子普通发票";
+          console.log(this.invoiceForm.category);
+          this.invoiceForm.property = "电子";
+          this.invoiceForm.username = this.seletedOutOrderList[i].username;
+        }
+      },
+      getPaper(){
+          console.log(111);
+          localStorage.setItem("isPaper", true);
+          this.orderType = localStorage.getItem("orderType");
+          this.invoiceForm.mergeSum = localStorage.getItem("tot");
+          this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
+          for (let j = 0; j < this.seletedOutOrderList.length; j++) {
+            this.outOrderIds += this.seletedOutOrderList[j].outOrderId + ",";
+            this.invoiceForm.outOrderIds = this.outOrderIds;
+            this.invoiceForm.category = this.paperForm.type;
+            console.log(this.invoiceForm.category);
+            this.invoiceForm.property = "纸质";
+            console.log(this.invoiceForm.property)
+            this.invoiceForm.username = this.seletedOutOrderList[j].username;
+          }
+      },
       //展示更多
       showMore() {
         this.isShow = true;
@@ -387,6 +379,15 @@
             this.invoiceForm.purchaserBank = this.company.bank;
             this.invoiceForm.purchaserBankAccount = this.company.bankAccount;
             this.invoiceForm.companyId = this.company.companyId;
+          }
+        });
+      },
+      getDefaultAddress() {
+        getDefaultAddress(this.$store.state.username).then(res => {
+          console.log(res);
+          if (res.data.code === 1) {
+            this.address = res.data.content;
+            this.invoiceForm.addressId = this.address.addressId;
           }
         });
       },
@@ -690,6 +691,27 @@
           });
         }
       },
+      gotoAddress() {
+        if (this.address) {
+          this.$router.push({
+            path: "/address/",
+            name: "Address",
+            params: {
+              id: this.address.addressID,
+              from: "make"
+            }
+          });
+        } else {
+          this.$router.push({
+            path: "/address/",
+            name: "Address",
+            params: {
+              id: "",
+              from: "make"
+            }
+          });
+        }
+      },
     },
     watch: {},
     mounted() {
@@ -697,12 +719,24 @@
     },
     created() {
       this.resetPage()
+      this.make = localStorage.getItem("make");
+      this.order = localStorage.getItem("order");
+      this.accessToken = localStorage.getItem("accessToken");
+      this.invoiceForm.isPaper = localStorage.getItem("isPaper");
+      this.selected = this.invoiceForm.isPaper ? "2" : "1";
+      this.invoiceForm.type = localStorage.getItem("type");
+      if (this.invoiceForm.type) {
+        this.invoiceForm.type = localStorage.getItem("type");
+      } else {
+        this.invoiceForm.type = "企业";
+      }
     },
     activated() {
       this.seletedOrder();
     },
     mounted() {
       this.calculatedAmount();
+      this.getDefaultAddress();
       this.getDefaultCompany();
       this.getEmailInfo();
       this.getSpecifications();
