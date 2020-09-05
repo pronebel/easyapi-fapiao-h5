@@ -147,6 +147,7 @@
         remark: "",
         priceSplicing: "",
         invoiceForm: {
+          isPaper: false,
           type: "",
           purchaserName: ""
         },
@@ -166,6 +167,7 @@
         this.invoiceForm.category = this.paperForm.type;
       },
       getEtr(){
+        localStorage.setItem("isPaper", false);
         this.orderType = localStorage.getItem("orderType");
         this.invoiceForm.mergeSum = localStorage.getItem("tot");
         this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
@@ -180,6 +182,7 @@
       },
       getPaper(){
           console.log(111);
+          localStorage.setItem("isPaper", true);
           this.orderType = localStorage.getItem("orderType");
           this.invoiceForm.mergeSum = localStorage.getItem("tot");
           this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
@@ -432,6 +435,8 @@
       this.make = localStorage.getItem("make");
       this.order = localStorage.getItem("order");
       this.accessToken = localStorage.getItem("accessToken");
+      this.invoiceForm.isPaper = localStorage.getItem("isPaper");
+      this.selected = this.invoiceForm.isPaper ? "2" : "1";
       this.invoiceForm.type = localStorage.getItem("type");
       if (this.invoiceForm.type) {
         this.invoiceForm.type = localStorage.getItem("type");
