@@ -44,7 +44,7 @@
           </van-radio-group>
         </van-cell>
         <van-field label="发票抬头" v-if="invoiceForm.type === '个人'"    placeholder="请输入姓名/事业单位"
-                    v-model="invoiceForm.purchaserName"/>
+                    v-model="invoiceForm.purchaserName" readonly/>
         <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'"     @click="gotoCompany" right-icon="arrow"
                     placeholder="请选择发票抬头" v-model="company.name"/>
         <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企    业'" v-model="company.taxNumber"/>
@@ -430,76 +430,132 @@
         this.invoiceForm.category = !this.invoiceForm.isPaper ? "增值税电子普通发票" : this.paperForm.type;
         console.log(this.invoiceForm.property,33333333)
         this.showDisabled = false;
-        //验证邮箱
-        if (this.NeedEmail === true) {
-          if (this.email === "") {
-            this.showDisabled = true;
-            return Toast("请输入邮箱");
-          } else if (!Isemail.validate(this.email)) {
-            this.showDisabled = true;
-            return Toast("邮箱格式不正确");
-          }
-        } else {
-          if (this.email) {
-            if (!Isemail.validate(this.email)) {
-              this.showDisabled = true;
-              return Toast("邮箱格式不正确");
+        if (this.selected == 1) {
+          MessageBox({
+            title: "提示",
+            message: "确认抬头正确并开票吗？",
+            showCancelButton: true
+          }).then(action => {
+            if (action === "confirm") {
+              //验证邮箱
+              if (this.NeedEmail === true) {
+                if (this.email === "") {
+                  this.showDisabled = true;
+                  return Toast("请输入邮箱");
+                } else if (!Isemail.validate(this.email)) {
+                  this.showDisabled = true;
+                  return Toast("邮箱格式不正确");
+                }
+              } else {
+                if (this.email) {
+                  if (!Isemail.validate(this.email)) {
+                    this.showDisabled = true;
+                    return Toast("邮箱格式不正确");
+                  }
+                }
+              }
+              //手机号验证
+              let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+              if (this.NeedMobile === true) {
+                if (this.contactInformation === "") {
+                  this.showDisabled = true;
+                  return Toast("请输入手机号码");
+                } else if (!reg.test(this.contactInformation)) {
+                  this.showDisabled = true;
+                  return Toast("手机格式不正确");
+                }
+              } else {
+                if (this.contactInformation) {
+                  if (!reg.test(this.contactInformation)) {
+                    this.showDisabled = true;
+                    return Toast("手机格式不正确");
+                  }
+                }
+              }
+              if (this.productList === null) {
+                this.showDisabled = true;
+                return Toast("商品服务不能为空");
+              }
+              let username = this.$store.state.username;
+              //验证手机号
+              axios.post('/invoice/product/make', {
+                products: this.productList,
+                accessToken: this.accessToken,
+                type: this.invoiceForm.type,
+                addressId: this.invoiceForm.addressId,
+                category: this.invoiceForm.category,
+                property: this.invoiceForm.property,
+                ifUseMergeVm: "false",
+                remark: this.invoiceForm.inputValue,
+                username: username,
+                companyId: this.company.companyId,
+                email: this.email,
+                addrMobile: this.contactInformation
+              }).then(res => {
+                if (res.data.code === 1) {
+                  this.$messagebox.alert(res.data.message);
+                  this.$router.push(`/make/success`);
+                }
+              }).catch(error => {
+                if (error.response.data.code === 1) {
+                  this.showDisabled = false;
+                  Toast(error.response.data.message);
+                  this.showDisabled = true;
+                } else {
+                  this.showDisabled = false;
+                  Toast("请检查信息并完善");
+                  this.showDisabled = true;
+                }
+              });
+
             }
-          }
-        }
-        //手机号验证
-        let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-        if (this.NeedMobile === true) {
-          if (this.contactInformation === "") {
-            this.showDisabled = true;
-            return Toast("请输入手机号码");
-          } else if (!reg.test(this.contactInformation)) {
-            this.showDisabled = true;
-            return Toast("手机格式不正确");
-          }
+          })
         } else {
-          if (this.contactInformation) {
-            if (!reg.test(this.contactInformation)) {
-              this.showDisabled = true;
-              return Toast("手机格式不正确");
+          MessageBox({
+            title: "提示",
+            message: "确认以上信息并开票吗？",
+            showCancelButton: true
+          }).then(action => {
+            if (action === "confirm") {
+              if (this.productList === null) {
+                this.showDisabled = true;
+                return Toast("商品服务不能为空");
+              }
+              let username = this.$store.state.username;
+              //验证手机号
+              axios.post('/invoice/product/make', {
+                products: this.productList,
+                accessToken: this.accessToken,
+                type: this.invoiceForm.type,
+                addressId: this.invoiceForm.addressId,
+                category: this.invoiceForm.category,
+                property: this.invoiceForm.property,
+                ifUseMergeVm: "false",
+                remark: this.invoiceForm.inputValue,
+                username: username,
+                companyId: this.company.companyId,
+                email: this.email,
+                addrMobile: this.contactInformation
+              }).then(res => {
+                if (res.data.code === 1) {
+                  this.$messagebox.alert(res.data.message);
+                  this.$router.push(`/make/success`);
+                }
+              }).catch(error => {
+                if (error.response.data.code === 1) {
+                  this.showDisabled = false;
+                  Toast(error.response.data.message);
+                  this.showDisabled = true;
+                } else {
+                  this.showDisabled = false;
+                  Toast("请检查信息并完善");
+                  this.showDisabled = true;
+                }
+              });
+
             }
-          }
+          });
         }
-        if (this.productList === null) {
-          this.showDisabled = true;
-          return Toast("商品服务不能为空");
-        }
-        let username = this.$store.state.username;
-        //验证手机号
-        axios.post('/invoice/product/make', {
-          products: this.productList,
-          accessToken: this.accessToken,
-          type: this.invoiceForm.type,
-          addressId: this.invoiceForm.addressId,
-          category: this.invoiceForm.category,
-          property: this.invoiceForm.property,
-          ifUseMergeVm: "false",
-          remark: this.invoiceForm.inputValue,
-          username: username,
-          companyId: this.company.companyId,
-          email: this.email,
-          addrMobile: this.contactInformation
-        }).then(res => {
-          if (res.data.code === 1) {
-            this.$messagebox.alert(res.data.message);
-            this.$router.push(`/make/success`);
-          }
-        }).catch(error => {
-          if (error.response.data.code === 1) {
-            this.showDisabled = false;
-            Toast(error.response.data.message);
-            this.showDisabled = true;
-          } else {
-            this.showDisabled = false;
-            Toast("请检查信息并完善");
-            this.showDisabled = true;
-          }
-        });
         localStorage.removeItem("productList");
       },
       //计算发票金额
