@@ -77,8 +77,7 @@
           <p>接收方式</p>
           <van-field right-icon="arrow" label="收件人" readonly @click="gotoAddress" v-model="address.name"></van-field>
           <van-field label="联系方式" v-model="address.mobile" readonly></van-field>
-          <van-cell title="邮寄地址" :value="address.province + address.city + address.district + address.addr"
-                    readonly></van-cell>
+          <van-cell title="邮寄地址" :value="address.province + address.city + address.district + address.addr" readonly></van-cell>
         </div>
         <div class="page-part" style="margin-bottom: 60px;">
           <p>开票金额不足200元，需支付邮费</p>
@@ -480,5 +479,15 @@
   @import 'make.css';
   .van-cell__value {
     min-width: 74%;
+  }
+
+  .page-part .van-cell__title {
+    width: 6.2em;
+    flex: none;
+  }
+
+  .page-part .van-cell__value {
+    flex: 3;
+    text-align: left;
   }
 </style>
