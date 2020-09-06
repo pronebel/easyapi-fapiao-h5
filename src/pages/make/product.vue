@@ -231,7 +231,7 @@
                 <span> 元 / {{ item.unit }}</span >
               </van-col>
               <van-col span="7">
-                <van-stepper v-model="item.number" integer min="0" max="99" default-value="0" @change="calcTotalPrice"/>
+                <van-stepper v-model="item.number" integer min="0" default-value="0" @change="calcTotalPrice"/>
               </van-col>
             </van-row>
           </van-cell>
