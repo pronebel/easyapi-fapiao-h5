@@ -320,6 +320,7 @@
         });
       },
       goInvoiceSuccess() {
+        this.invoiceForm.category = this.paperForm.type;
         this.invoiceForm.isPaper = JSON.parse(localStorage.getItem("isPaper"));
         this.invoiceForm.property = this.invoiceForm.isPaper ? "纸质" : "电子";
         if (this.selected == 1) {
