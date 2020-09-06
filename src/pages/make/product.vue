@@ -425,6 +425,9 @@
         });
       },
       goInvoiceSuccess() {
+        this.invoiceForm.isPaper = JSON.parse(localStorage.getItem("isPaper"));
+        this.invoiceForm.property = this.invoiceForm.isPaper ? "纸质" : "电子";
+        console.log(this.invoiceForm.property,33333333)
         this.showDisabled = false;
         //验证邮箱
         if (this.NeedEmail === true) {
@@ -471,8 +474,9 @@
           products: this.productList,
           accessToken: this.accessToken,
           type: this.invoiceForm.type,
+          addressId: this.invoiceForm.addressId,
           category: "增值税电子普通发票",
-          property: "电子",
+          property: this.invoiceForm.property,
           ifUseMergeVm: "false",
           remark: this.invoiceForm.inputValue,
           username: username,
