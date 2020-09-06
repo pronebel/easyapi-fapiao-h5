@@ -320,9 +320,9 @@
         });
       },
       goInvoiceSuccess() {
-        this.invoiceForm.category = this.paperForm.type;
         this.invoiceForm.isPaper = JSON.parse(localStorage.getItem("isPaper"));
         this.invoiceForm.property = this.invoiceForm.isPaper ? "纸质" : "电子";
+        this.invoiceForm.category = !this.invoiceForm.isPaper ? "增值税电子普通发票" : this.paperForm.type;
         if (this.selected == 1) {
           MessageBox({
             title: "提示",

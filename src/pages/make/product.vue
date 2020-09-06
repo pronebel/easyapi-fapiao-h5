@@ -427,6 +427,7 @@
       goInvoiceSuccess() {
         this.invoiceForm.isPaper = JSON.parse(localStorage.getItem("isPaper"));
         this.invoiceForm.property = this.invoiceForm.isPaper ? "纸质" : "电子";
+        this.invoiceForm.category = !this.invoiceForm.isPaper ? "增值税电子普通发票" : this.paperForm.type;
         console.log(this.invoiceForm.property,33333333)
         this.showDisabled = false;
         //验证邮箱
@@ -475,7 +476,7 @@
           accessToken: this.accessToken,
           type: this.invoiceForm.type,
           addressId: this.invoiceForm.addressId,
-          category: "增值税电子普通发票",
+          category: this.invoiceForm.category,
           property: this.invoiceForm.property,
           ifUseMergeVm: "false",
           remark: this.invoiceForm.inputValue,
