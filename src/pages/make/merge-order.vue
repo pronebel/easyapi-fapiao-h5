@@ -434,7 +434,7 @@
       this.make = localStorage.getItem("make");
       this.order = localStorage.getItem("order");
       this.accessToken = localStorage.getItem("accessToken");
-      this.invoiceForm.isPaper = localStorage.getItem("isPaper");
+      this.invoiceForm.isPaper = JSON.parse(localStorage.getItem("isPaper"));
       this.selected = this.invoiceForm.isPaper ? "2" : "1";
       this.invoiceForm.type = localStorage.getItem("type");
       if (this.invoiceForm.type) {
