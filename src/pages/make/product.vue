@@ -666,6 +666,7 @@
         //   // return true
         // }
         this.resetPage()
+        this.calculatedAmount()
         this.showPopup = false
       },
       showSearchPopup(){
