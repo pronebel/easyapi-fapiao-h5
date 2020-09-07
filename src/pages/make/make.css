@@ -584,7 +584,7 @@
 }
 
 .mint-navbar .mint-tab-item.is-selected {
-  border: 1px solid #1989fa;
+  border: 1px solid #1989fa !important;
   border-radius: 4px;
   margin-bottom: 0 !important;
   color: #1989fa !important;

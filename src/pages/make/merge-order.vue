@@ -77,8 +77,7 @@
           <p>接收方式</p>
           <van-field right-icon="arrow" label="收件人" readonly @click="gotoAddress" v-model="address.name"></van-field>
           <van-field label="联系方式" v-model="address.mobile" readonly></van-field>
-          <van-cell title="邮寄地址" :value="address.province + address.city + address.district + address.addr"
-                    readonly></van-cell>
+          <van-cell title="邮寄地址" :value="address.province + address.city + address.district + address.addr" readonly></van-cell>
         </div>
         <div class="page-part" style="margin-bottom: 60px;">
           <p>开票金额不足200元，需支付邮费</p>
@@ -147,6 +146,7 @@
         remark: "",
         priceSplicing: "",
         invoiceForm: {
+          isPaper: false,
           type: "",
           purchaserName: ""
         },
@@ -166,6 +166,7 @@
         this.invoiceForm.category = this.paperForm.type;
       },
       getEtr(){
+        localStorage.setItem("isPaper", false);
         this.orderType = localStorage.getItem("orderType");
         this.invoiceForm.mergeSum = localStorage.getItem("tot");
         this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
@@ -180,6 +181,7 @@
       },
       getPaper(){
           console.log(111);
+          localStorage.setItem("isPaper", true);
           this.orderType = localStorage.getItem("orderType");
           this.invoiceForm.mergeSum = localStorage.getItem("tot");
           this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
@@ -318,6 +320,9 @@
         });
       },
       goInvoiceSuccess() {
+        this.invoiceForm.isPaper = JSON.parse(localStorage.getItem("isPaper"));
+        this.invoiceForm.property = this.invoiceForm.isPaper ? "纸质" : "电子";
+        this.invoiceForm.category = !this.invoiceForm.isPaper ? "增值税电子普通发票" : this.paperForm.type;
         if (this.selected == 1) {
           MessageBox({
             title: "提示",
@@ -432,6 +437,8 @@
       this.make = localStorage.getItem("make");
       this.order = localStorage.getItem("order");
       this.accessToken = localStorage.getItem("accessToken");
+      this.invoiceForm.isPaper = JSON.parse(localStorage.getItem("isPaper"));
+      this.selected = this.invoiceForm.isPaper ? "2" : "1";
       this.invoiceForm.type = localStorage.getItem("type");
       if (this.invoiceForm.type) {
         this.invoiceForm.type = localStorage.getItem("type");
@@ -475,5 +482,15 @@
   @import 'make.css';
   .van-cell__value {
     min-width: 74%;
+  }
+
+  .page-part .van-cell__title {
+    width: 6.2em;
+    flex: none;
+  }
+
+  .page-part .van-cell__value {
+    flex: 3;
+    text-align: left;
   }
 </style>
