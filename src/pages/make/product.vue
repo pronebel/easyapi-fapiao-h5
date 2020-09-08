@@ -482,7 +482,7 @@
                 products: this.productList,
                 accessToken: this.accessToken,
                 type: this.invoiceForm.type,
-                addressId: this.invoiceForm.addressId,
+                // addressId: this.invoiceForm.addressId,
                 category: this.invoiceForm.category,
                 property: this.invoiceForm.property,
                 ifUseMergeVm: "false",
@@ -534,8 +534,8 @@
                 remark: this.invoiceForm.inputValue,
                 username: username,
                 companyId: this.company.companyId,
-                email: this.email,
-                addrMobile: this.contactInformation
+                // email: this.email,
+                // addrMobile: this.address.mobile
               }).then(res => {
                 if (res.data.code === 1) {
                   this.$messagebox.alert(res.data.message);
