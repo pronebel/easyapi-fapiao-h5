@@ -51,8 +51,9 @@
         <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type    === '企业'" @click="showMore" v-show="isHide"
                     readonly placeholder="地址、电话、开户行等"/>
         <div v-show="isShow">
-          <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="地址" value="" readonly
-                      v-model="company.address" right-icon="arrow-up"/>
+          <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="税号" value="" readonly
+                      v-model="company.taxNumber" right-icon="arrow-up"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="地址" value=""     readonly v-model="company.address"/>
           <van-field v-if="invoiceForm.type === '企业'" label="电话" value=""     readonly v-model="company.phone"/>
           <van-field v-if="invoiceForm.type === '企业'" label="开户行" value=""     readonly v-model="company.bank"/>
           <van-field v-if="invoiceForm.type === '企业'" label="银行账号"    value="" readonly v-model="company.bankAccount"/>
