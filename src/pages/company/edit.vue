@@ -4,8 +4,8 @@
     <form action ref="companyForm" :model="companyForm" class="formClass">
       <div class="">
         <div class="address-bottom2" @click="select(item)">
-          <van-cell-group :border="false">
-            <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" :border="false" required @keyup="searchRiseList" @focus="listShow = true" @blur="inputBlur"/>
+          <van-cell-group>
+            <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" border required @keyup="searchRiseList" @focus="listShow = true" @blur="inputBlur" />
             <div class="rise-list" v-if="listShow && searchList !== ''">
               <ul>
                 <li
@@ -17,11 +17,11 @@
                 </li>
               </ul>
             </div>
-            <van-field label="公司税号" v-model="companyForm.taxNumber" placeholder="请输入纳税人识别号（必填）" :border="false" required/>
-            <van-field label="注册地址" v-model="companyForm.address" placeholder="请输入地址（非必填信息）" :border="false"/>
-            <van-field label="注册电话" v-model="companyForm.phone" placeholder="请输入电话（非必填信息）" :border="false"/>
-            <van-field label="开户银行" v-model="companyForm.bank" placeholder="请输入开户行（非必填信息）" :border="false"/>
-            <van-field label="银行账号" v-model="companyForm.bankAccount" placeholder="请输入开户行账号（非必填信息）" :border="false"/>
+            <van-field label="公司税号" v-model="companyForm.taxNumber" placeholder="请输入纳税人识别号（必填）" border required/>
+            <van-field label="注册地址" v-model="companyForm.address" placeholder="请输入地址（非必填信息）" border/>
+            <van-field label="注册电话" v-model="companyForm.phone" placeholder="请输入电话（非必填信息）" border/>
+            <van-field label="开户银行" v-model="companyForm.bank" placeholder="请输入开户行（非必填信息）" border/>
+            <van-field label="银行账号" v-model="companyForm.bankAccount" placeholder="请输入开户行账号（非必填信息）" border/>
           </van-cell-group>
         </div>
       </div>

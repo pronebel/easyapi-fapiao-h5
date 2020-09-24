@@ -4,11 +4,11 @@
     <form action ref="addressForm" :model="addressForm" class="formClass">
       <div class="">
         <div class="address-bottom2" @click="select(item)">
-          <van-cell-group :border="false">
-            <van-field label="收件人" v-model="addressForm.name" placeholder="请输入收货人姓名" :border="false"/>
-            <van-field label="联系电话" v-model="addressForm.mobile" placeholder="请输入收货人手机号" :border="false"/>
-            <van-field label="所在地区" v-model="addressForm.area" placeholder="省市区县、乡镇等）" :border="false" readonly @click="showPopup = true"/>
-            <van-field label="详细地址" v-model="addressForm.addr" placeholder="街道、楼牌号等" :border="false"/>
+          <van-cell-group border>
+            <van-field label="收件人" v-model="addressForm.name" placeholder="请输入收货人姓名" border/>
+            <van-field label="联系电话" v-model="addressForm.mobile" placeholder="请输入收货人手机号" border/>
+            <van-field label="所在地区" v-model="addressForm.area" placeholder="省市区县、乡镇等）" border readonly @click="showPopup = true"/>
+            <van-field label="详细地址" v-model="addressForm.addr" placeholder="街道、楼牌号等" border/>
           </van-cell-group>
         </div>
       </div>

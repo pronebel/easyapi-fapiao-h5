@@ -69,6 +69,7 @@
         <li>单价</li>
         <li>操作</li>
       </ul>
+      <van-cell class="line"/>
       <ul
         class="contents-content"
         v-for="(product, index) in productList"
@@ -88,6 +89,7 @@
           删除
         </li>
       </ul>
+      <van-cell class="line"/>
       <div class="btn">
         <mt-button class="submit-btn" @click="showSearchPopup">
           +添加发票内容
@@ -158,8 +160,14 @@
         </div>
         <div class="mint-cell-right"></div>
       </a> -->
-      <van-field class="merge-order_price" label="发票金额" v-model="amountOfMoney" readonly style="border-bottom: solid 1px #ddd"></van-field>
-      <van-field label="备注" placeholder="请输入备注信息" v-model="invoiceForm.inputValue"></van-field>
+      <!-- <van-cell-group> -->
+        <!-- <van-cell-group> -->
+          <!-- <van-cell title="单元格" value="内容"/> -->
+        <van-cell class="line"/>
+        <!-- </van-cell-group> -->
+        <van-field class="merge-order_price" label="发票金额" v-model="amountOfMoney" readonly></van-field>
+        <van-field label="备注" placeholder="请输入备注信息" v-model="invoiceForm.inputValue"></van-field>
+      <!-- </van-cell-group> -->
     </div>
 
     <mt-tab-container v-model="selected">
@@ -835,4 +843,7 @@
     text-align: left;
   }
 
+  .line {
+    padding: 1px;
+  }
 </style>
