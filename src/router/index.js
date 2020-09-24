@@ -61,7 +61,7 @@ export default new Router({
       meta: {title: "开具发票", keepAlive: false}
     },
     {
-      path: "/single-query-order",
+      path: "/make/single-query-order",
       name: "SingleQueryOrder",
       component: resolve => require(["../pages/make/single-query-order.vue"], resolve),
       meta: {title: "开具发票", keepAlive: false}

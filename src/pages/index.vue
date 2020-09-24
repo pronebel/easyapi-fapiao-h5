@@ -106,9 +106,6 @@
 </script>
 
 <style scoped>
-  .block {
-    margin: 0 0 0 0;
-  }
 
   .bottom {
     margin-top: 10px;

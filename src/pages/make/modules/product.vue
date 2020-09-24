@@ -40,11 +40,11 @@
             <van-cell v-for="item in productList" :key="item.productId" @click="chooseRadio(item.productId)">
               <van-row type="flex" align="center">
                 <van-col span="6">
-                  <van-image width="60" height="60" :src="item.img" />
+                  <van-image width="60" height="60" :src="item.img"/>
                 </van-col>
                 <van-col span="15">
-                  <span style="display: block">商品名称：{{ item.name }}</span >
-                  <span>商品价格：{{ item.price }} 元</span >
+                  <span style="display: block">商品名称：{{ item.name }}</span>
+                  <span>商品价格：{{ item.price }} 元</span>
                 </van-col>
                 <van-col span="3">
                   <van-radio :name="item.productId"/>
@@ -128,7 +128,7 @@
       getProductList(params) {
         getProductList(params).then(res => {
           this.productList = res.data.content;
-          for(var i = 0; i < this.productList.length; i++){
+          for (var i = 0; i < this.productList.length; i++) {
             this.productListColumns[i] = this.productList[i].name + ' ' + this.productList[i].specification
           }
         });
@@ -160,12 +160,12 @@
           MessageBox("提示", "单价不能为空");
         }
       },
-      showSearchPopup(){
+      showSearchPopup() {
         this.showPopup = true
         this.searchValue = ''
         this.getProductList()
       },
-      chooseRadio(id){
+      chooseRadio(id) {
         this.radio = id
         for (var i = 0; i < this.productList.length; i++) {
           if (this.radio === this.productList[i].productId) {
