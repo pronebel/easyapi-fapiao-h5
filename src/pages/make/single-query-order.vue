@@ -10,7 +10,7 @@
       </div>
       <p>请选择发票类型</p>
       <mt-navbar v-model="selected" class="invoice-type">
-        <mt-tab-item id="1">
+        <mt-tab-item id="1" style="margin-left:0">
           <p style="font-size: 16px">电子发票</p>
           <p style="font-size: 12px">最快1分钟开具</p>
         </mt-tab-item>
@@ -712,4 +712,7 @@
 
 <style scoped>
   @import 'make.css';
+  .nav {
+    margin-top: 0;
+  }
 </style>

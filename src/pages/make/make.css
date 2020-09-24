@@ -160,8 +160,8 @@
 
 .active {
   border: 1px solid  #1989fa;
-  background: #1989fa;
-  color: white;
+  background: white ;
+  color: #1989fa;
 }
 
 .category {
