@@ -78,7 +78,7 @@
         });
       },
       select(item) {
-        console.log(item)
+        console.log(item.name)
         if (this.from != 'make') {
           return;
         }
@@ -89,6 +89,7 @@
       },
       //设置默认值
       defaultAddress(addressId) {
+        console.log(addressId)
         defaultAddress(addressId).then(res => {
         }).catch(error => {
           console.log(error);

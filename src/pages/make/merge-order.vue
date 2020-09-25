@@ -36,12 +36,12 @@
           </van-radio-group>
         </van-cell>
         <van-cell title="发票类型" center v-show="this.selected==2">
-          <van-radio-group class="van-radio-group_type" v-model="paperForm.type" direction="horizontal"
-          >
-            <van-radio style="margin-bottom: 5px;" name="增值税普通发票" @click="getRadioVal">增值税普通发票</van-radio>
-            <van-radio name="增值税专用发票" @click="getRadioVal">增值税专用发票</van-radio>
-          </van-radio-group>
-        </van-cell>
+        <van-radio-group class="van-radio-group_type" v-model="paperForm.type" direction="horizontal"
+        >
+          <van-radio style="margin-bottom: 5px;" name="增值税普通发票" @click="getRadioVal">增值税普通发票</van-radio>
+          <van-radio name="增值税专用发票" @click="getRadioVal">增值税专用发票</van-radio>
+        </van-radio-group>
+      </van-cell>
         <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位"
                    v-model="invoiceForm.purchaserName"/>
         <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany" right-icon="arrow"
@@ -222,7 +222,6 @@
           this.invoiceForm.purchaserBankAccount = "";
           this.invoiceForm.companyId = "";
         }
-
       },
       selectCompany() {
         this.loadingList = false;
@@ -316,7 +315,9 @@
           console.log(res);
           this.loadingList = false;
           this.email = res.data.content.email ? res.data.content.email : "";
+          localStorage.setItem("email",this.email)
           this.contactInformation = res.data.content.mobile ? res.data.content.mobile : "";
+          localStorage.setItem("mobile",this.contactInformation)
         });
       },
       goInvoiceSuccess() {
