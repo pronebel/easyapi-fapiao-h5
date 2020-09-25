@@ -88,7 +88,6 @@
           startAddTime: this.startAddTime,
           endAddTime: this.endAddTime
         };
-        params.username = localStorage.getItem("username");
         getInvoiceList(params).then(res => {
           if (res.data.code === 1) {
             this.empty = false;

@@ -7,14 +7,15 @@
           <van-cell-group border>
             <van-field label="收件人" v-model="addressForm.name" placeholder="请输入收货人姓名" border/>
             <van-field label="联系电话" v-model="addressForm.mobile" placeholder="请输入收货人手机号" border/>
-            <van-field label="所在地区" v-model="addressForm.area" placeholder="省市区县、乡镇等）" border readonly @click="showPopup = true"/>
+            <van-field label="所在地区" v-model="addressForm.area" placeholder="省市区县、乡镇等）" border readonly
+                       @click="showPopup = true"/>
             <van-field label="详细地址" v-model="addressForm.addr" placeholder="街道、楼牌号等" border/>
           </van-cell-group>
         </div>
       </div>
       <div class="page-part address-con defaultBnt">
         <van-cell center title="设置为默认地址">
-          <van-switch v-model="addressForm.ifDefault" active-color="#FFC2A8" size="24px" />
+          <van-switch v-model="addressForm.ifDefault" active-color="#FFC2A8" size="24px"/>
         </van-cell>
       </div>
     </form>
@@ -23,7 +24,8 @@
       position="bottom"
       :style="{ height: '50%' }"
     >
-      <van-area title="请选择所在地区" :area-list="areaList" :columns-placeholder="['请选择', '请选择', '请选择']" @confirm="onAddrConfirm"/>
+      <van-area title="请选择所在地区" :area-list="areaList" :columns-placeholder="['请选择', '请选择', '请选择']"
+                @confirm="onAddrConfirm"/>
     </van-popup>
     <div class="bottom">
       <van-button type="info" class="submit" @click="confirm">保存</van-button>
@@ -31,7 +33,8 @@
         v-if="this.title === 'edit'"
         class="submit_delete"
         @click="deleteDate"
-      >删除</van-button>
+      >删除
+      </van-button>
     </div>
   </div>
 </template>
@@ -40,6 +43,7 @@
   import {MessageBox} from "mint-ui";
   import {Toast} from "mint-ui";
   import AreaList from './area';
+  import {createAddress, updateAddress, deleteAddress} from "../../api/address";
 
   export default {
     name: "EditAddress",
@@ -55,7 +59,7 @@
         accessToken: "",
         name: "",
         showPopup: false,
-        areaList: AreaList ,
+        areaList: AreaList,
       };
     },
 
@@ -101,14 +105,8 @@
           showCancelButton: true
         }).then(action => {
           if (action === "confirm") {
-            this.$ajax.delete("/address/" + this.id, {
-              params: {
-                accessToken: this.accessToken,
-                username: this.$store.state.username
-              }
-            }).then(res => {
+            deleteAddress(this.id).then(res => {
               if (res.data.code === 1) {
-                // this.$messagebox.alert(res.data.message);
                 this.$router.go(-1)
               }
             }).catch(error => {
@@ -121,23 +119,15 @@
         if (!this.addressForm.name || !this.addressForm.mobile || !this.addressForm.area || !this.addressForm.addr) {
           return Toast("请将信息填写完整！");
         }
-        // this.addressForm.name = this.name;
         this.$messagebox({
           title: "提示",
           message: "确定提交吗？",
           showCancelButton: true
         }).then(action => {
           if (action === "confirm") {
-            this.addressForm.accessToken = this.accessToken;
-            this.addressForm.username = this.$store.state.username;
-            // this.addressForm.ifDefault = true;
             this.id = this.$route.params.id;
             if (this.title === "edit") {
-              this.$ajax({
-                method: "PUT",
-                url: "/address/" + this.id,
-                data: this.addressForm
-              }).then(res => {
+              updateAddress(this.id, this.addressForm).then(res => {
                 if (res.data.code === 1) {
                   this.$router.go(-1)
                 }
@@ -145,11 +135,7 @@
                 this.$messagebox.alert(error.response.data.message);
               });
             } else {
-              this.$ajax({
-                method: "POST",
-                url: "/address",
-                data: this.addressForm
-              }).then(res => {
+              createAddress(this.addressForm).then(res => {
                 if (res.data.code === 1) {
                   this.$router.go(-1)
                 }
@@ -160,8 +146,8 @@
           }
         });
       },
-      onAddrConfirm (e) {
-        console.log(e,888888888)
+      onAddrConfirm(e) {
+        console.log(e, 888888888)
         this.addressForm.province = e[0].name;
         this.addressForm.city = e[1].name;
         this.addressForm.district = e[2].name;

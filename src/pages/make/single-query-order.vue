@@ -38,7 +38,8 @@
             <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany" right-icon="arrow"
                        placeholder="请选择发票抬头" v-model="company.name"/>
             <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企业'" v-model="company.taxNumber"/>
-            <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type === '企业'" @click="showMore" v-show="isHide"
+            <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type === '企业'" @click="showMore"
+                       v-show="isHide"
                        readonly placeholder="地址、电话、开户行等"/>
             <div v-show="isShow">
               <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="地址" value="" readonly
@@ -243,6 +244,7 @@
 
 <script>
   import {getDefaultCompany} from "../../api/company";
+  import {getCustomer} from "../../api/customer";
   import {queryShopOrder, getState} from "../../api/query";
   import {Navbar, TabItem} from "mint-ui";
   import {Toast} from "mint-ui";
@@ -253,8 +255,8 @@
     name: "singleOrder",
     data() {
       return {
-        isHide:true,
-        isShow:false,
+        isHide: true,
+        isShow: false,
         active: '商品明细',
         list: [
           {
@@ -355,8 +357,7 @@
         }
       },
       getDefaultCompany() {
-        let username = this.username;
-        getDefaultCompany(username).then(res => {
+        getDefaultCompany().then(res => {
           if (res.data.code === 0) {
             this.company = [];
           } else {
@@ -394,26 +395,20 @@
         }
       },
       getShopOrder() {
-        getState(this.outOrderNo, localStorage.getItem("username")).then(res => {
+        getState(this.outOrderNo).then(res => {
           if (res.data.code === 1 && res.data.content) {
             this.$router.replace({path: "/invoice/detail", query: {id: res.data.content[0].invoiceId}});
           }
         })
-        queryShopOrder(this.outOrderNo, localStorage.getItem("username")).then(res => {
+        queryShopOrder(this.outOrderNo).then(res => {
           if (res.data.code == 1) {
             this.outOrder = res.data.content;
             this.amountOfMoney = res.data.content.price;
           }
         });
       },
-      getEmailInfo() {
-        let username = this.username;
-        this.$ajax.get("/api/user/" + username + "/invoice/money", {
-          params: {
-            accessToken: this.accessToken,
-            taxNumber: this.taxNumber
-          }
-        }).then(res => {
+      getCustomer() {
+        getCustomer({taxNumber: this.taxNumber}).then(res => {
           this.loadingList = false;
           this.email = res.data.content.email ? res.data.content.email : "";
           this.contactInformation = res.data.content.mobile ? res.data.content.mobile : "";
@@ -465,7 +460,6 @@
             this.invoiceForm.accessToken = this.accessToken;
             this.invoiceForm.addrMobile = this.contactInformation;
             this.invoiceForm.email = this.email;
-            this.invoiceForm.username = this.username;
             this.invoiceForm.type = this.invoiceForm.type;
             this.invoiceForm.category = "增值税电子普通发票";
             this.invoiceForm.property = "电子";
@@ -517,12 +511,6 @@
       } else if (this.accessToken === "") {
         Toast("accessToken不能为空！");
       }
-      if (this.$route.query.username) {
-        localStorage.setItem("username", this.$route.query.username);
-        this.username = localStorage.getItem("username");
-      } else if (this.username === "") {
-        Toast("username不能为空！");
-      }
       if (this.$route.query.outOrderNo) {
         localStorage.setItem("outOrderNo", this.$route.query.outOrderNo);
         this.outOrderNo = localStorage.getItem("outOrderNo");
@@ -531,7 +519,6 @@
       }
       this.accessToken = localStorage.getItem("accessToken");
       this.taxNumber = localStorage.getItem("taxNumber");
-      this.username = localStorage.getItem("username");
       this.outOrderNo = localStorage.getItem("outOrderNo");
       this.invoiceForm.type = localStorage.getItem("type");
       if (this.invoiceForm.type) {
@@ -545,7 +532,7 @@
       this.getDefaultCompany();
     },
     mounted() {
-      this.getEmailInfo();
+      this.getCustomer();
       this.getDefaultCompany();
       this.getSpecifications();
       this.getInvoicingService();
@@ -556,6 +543,7 @@
 
 <style scoped>
   @import 'make.css';
+
   .nav {
     margin-top: 0;
   }

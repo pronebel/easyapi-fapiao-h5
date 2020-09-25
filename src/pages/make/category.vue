@@ -256,6 +256,9 @@
   import {Toast} from "mint-ui";
   import {MessageBox} from "mint-ui";
   import Isemail from "isemail";
+  import {getDefaultCompany} from "../../api/company";
+  import {getCustomer} from "../../api/customer";
+  import {getCustomCategoryList} from "../../api/custom-category";
 
   export default {
     name: "singleOrder",
@@ -312,12 +315,7 @@
         this.company = item;
       },
       getDefaultCompany() {
-        let username = this.username;
-        this.$ajax.get("/company/" + username + "/default", {
-          params: {
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        getDefaultCompany().then(res => {
           if (res.data.code === 0) {
             this.company = [];
           } else {
@@ -354,14 +352,10 @@
         }
       },
       getCustomCategories() {
-        let outOrderNo = this.outOrderNo;
-        this.$ajax.get("/custom-categories", {
-          params: {
-            username: this.username,
-            taxNumber: this.taxNumber,
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        let params = {
+          taxNumber: this.taxNumber
+        };
+        getCustomCategoryList(params).then(res => {
           this.categoryName = res.data.content;
           this.productList = res.data.content.invoiceItems;
           this.remark = this.scanContent.remark;
@@ -369,20 +363,15 @@
           console.log(error);
         });
       },
-      getEmailInfo() {
-        let username = this.username;
-        this.$ajax.get("/api/user/" + username + "/invoice/money", {
-          params: {
-            accessToken: this.accessToken,
-            taxNumber: this.taxNumber
-          }
-        }).then(res => {
+      getCustomer() {
+        getCustomer({taxNumber: this.taxNumber}).then(res => {
           (this.loadingList = false), (this.email = res.data.content.email);
           this.contactInformation = res.data.content.mobile;
         }).catch(error => {
           console.log(error);
         });
-      },
+      }
+      ,
       goInvoiceSuccess() {
         this.showDisabled = false;
         //验证邮箱
@@ -436,7 +425,6 @@
             price: this.price,
             customCategoryId: this.customCategory,
             addrMobile: this.contactInformation,
-            username: this.username,
             accessToken: this.accessToken
           }
         }).then(res => {
@@ -452,9 +440,11 @@
           Toast(error.response.data.message);
           this.showDisabled = true;
         });
-      },
+      }
+      ,
       selectCustomCategoryId() {
-      },
+      }
+      ,
       //获取备注
       getSpecifications() {
         this.$ajax.get("/api/invoice/rule", {
@@ -466,7 +456,8 @@
         }).catch(error => {
           console.log(error);
         });
-      },
+      }
+      ,
       getInvoicingService() {
         this.$ajax.get("/api/shop/0/support", {
           params: {
@@ -478,7 +469,8 @@
         }).catch(error => {
           console.log(error);
         });
-      },
+      }
+      ,
       //跳转添加内容
       addContent() {
         this.$router.push(`/product`);
@@ -500,15 +492,8 @@
         Toast("taxNumber不能为空！");
       }
 
-      if (this.$route.query.username) {
-        localStorage.setItem("username", this.$route.query.username);
-        this.username = localStorage.getItem("username");
-      } else if (this.username === "") {
-        Toast("username不能为空！");
-      }
       this.accessToken = localStorage.getItem("accessToken");
       this.taxNumber = localStorage.getItem("taxNumber");
-      this.username = localStorage.getItem("username");
       this.invoiceForm.type = localStorage.getItem("type");
       if (this.invoiceForm.type) {
         this.invoiceForm.type = localStorage.getItem("type");
@@ -521,7 +506,7 @@
       this.seletedOrder();
     },
     mounted() {
-      this.getEmailInfo();
+      this.getCustomer();
       this.getDefaultCompany();
       this.getSpecifications();
       this.getInvoicingService();

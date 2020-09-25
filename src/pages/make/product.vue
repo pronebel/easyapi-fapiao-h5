@@ -31,7 +31,7 @@
       <form action id="formBox" ref="invoiceForm" :model="invoiceForm">
         <van-cell title="抬头类型" center>
           <van-radio-group class="van-radio-group_type" v-model="invoiceForm.type" direction="horizontal"
-                            @change="selectType">
+                           @change="selectType">
             <van-radio name="企业">企业</van-radio>
             <van-radio name="个人">个人</van-radio>
           </van-radio-group>
@@ -43,20 +43,21 @@
             <van-radio name="增值税专用发票" @click="getRadioVal">增值税专用发票</van-radio>
           </van-radio-group>
         </van-cell>
-        <van-field label="发票抬头" v-if="invoiceForm.type === '个人'"    placeholder="请输入姓名/事业单位"
-                    v-model="invoiceForm.purchaserName" readonly/>
-        <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'"     @click="gotoCompany" right-icon="arrow"
-                    placeholder="请选择发票抬头" v-model="company.name"/>
+        <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位"
+                   v-model="invoiceForm.purchaserName" readonly/>
+        <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany" right-icon="arrow"
+                   placeholder="请选择发票抬头" v-model="company.name"/>
         <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企    业'" v-model="company.taxNumber"/>
-        <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type    === '企业'" @click="showMore" v-show="isHide"
-                    readonly placeholder="地址、电话、开户行等"/>
+        <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type    === '企业'" @click="showMore"
+                   v-show="isHide"
+                   readonly placeholder="地址、电话、开户行等"/>
         <div v-show="isShow">
           <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="税号" value="" readonly
-                      v-model="company.taxNumber" right-icon="arrow-up"/>
-          <van-field v-if="invoiceForm.type === '企业'" label="地址" value=""     readonly v-model="company.address"/>
-          <van-field v-if="invoiceForm.type === '企业'" label="电话" value=""     readonly v-model="company.phone"/>
-          <van-field v-if="invoiceForm.type === '企业'" label="开户行" value=""     readonly v-model="company.bank"/>
-          <van-field v-if="invoiceForm.type === '企业'" label="银行账号"    value="" readonly v-model="company.bankAccount"/>
+                     v-model="company.taxNumber" right-icon="arrow-up"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="地址" value="" readonly v-model="company.address"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="电话" value="" readonly v-model="company.phone"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="开户行" value="" readonly v-model="company.bank"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="银行账号" value="" readonly v-model="company.bankAccount"/>
         </div>
       </form>
     </div>
@@ -162,12 +163,12 @@
         <div class="mint-cell-right"></div>
       </a> -->
       <!-- <van-cell-group> -->
-        <!-- <van-cell-group> -->
-          <!-- <van-cell title="单元格" value="内容"/> -->
-        <van-cell class="line"/>
-        <!-- </van-cell-group> -->
-        <van-field class="merge-order_price" label="发票金额" v-model="amountOfMoney" readonly></van-field>
-        <van-field label="备注" placeholder="请输入备注信息" v-model="invoiceForm.inputValue"></van-field>
+      <!-- <van-cell-group> -->
+      <!-- <van-cell title="单元格" value="内容"/> -->
+      <van-cell class="line"/>
+      <!-- </van-cell-group> -->
+      <van-field class="merge-order_price" label="发票金额" v-model="amountOfMoney" readonly></van-field>
+      <van-field label="备注" placeholder="请输入备注信息" v-model="invoiceForm.inputValue"></van-field>
       <!-- </van-cell-group> -->
     </div>
 
@@ -184,7 +185,8 @@
           <p>接收方式</p>
           <van-field right-icon="arrow" label="收件人" readonly @click="gotoAddress" v-model="address.name"></van-field>
           <van-field label="联系方式" v-model="address.mobile" readonly></van-field>
-          <van-cell title="邮寄地址" :value="address.province + address.city + address.district + address.addr" readonly></van-cell>
+          <van-cell title="邮寄地址" :value="address.province + address.city + address.district + address.addr"
+                    readonly></van-cell>
         </div>
         <div class="page-part" style="margin-bottom: 60px;">
           <p>开票金额不足200元，需支付邮费</p>
@@ -230,14 +232,15 @@
           <van-cell v-for="item in productListAll" :key="item.productId">
             <van-row type="flex" align="center">
               <van-col span="6">
-                <van-image width="60" height="60" :src="item.img" />
+                <van-image width="60" height="60" :src="item.img"/>
               </van-col>
               <van-col span="11">
-                <span style="display: block">{{ item.name }}</span >
-                <span style="display: block; font-size: 12px; color: #888">{{ item.specification }}</span >
+                <span style="display: block">{{ item.name }}</span>
+                <span style="display: block; font-size: 12px; color: #888">{{ item.specification }}</span>
                 <span>￥</span>
-                <input style="width: 40px; text-align: center; border:none;" v-model=" item.price " @change="calcTotalPrice"/>
-                <span> 元 / {{ item.unit }}</span >
+                <input style="width: 40px; text-align: center; border:none;" v-model=" item.price "
+                       @change="calcTotalPrice"/>
+                <span> 元 / {{ item.unit }}</span>
               </van-col>
               <van-col span="7">
                 <van-stepper v-model="item.number" integer min="0" default-value="0" @change="calcTotalPrice"/>
@@ -255,6 +258,7 @@
 
 <script>
   import {getProductList} from "../../api/product";
+  import {getCustomer} from "../../api/customer";
   import Header from "../../components/header.vue";
   import {Navbar, TabItem} from "mint-ui";
   import {Toast} from "mint-ui";
@@ -262,7 +266,7 @@
   import Isemail from "isemail";
   import axios from '../../api/request'
   import {getDefaultCompany} from "../../api/company";
-  import { getDefaultAddress } from "../../api/address";
+  import {getDefaultAddress} from "../../api/address";
 
   export default {
     name: "MakeProduct",
@@ -319,11 +323,10 @@
     },
 
     methods: {
-      getRadioVal(){
-        console.log(this.paperForm.type);
+      getRadioVal() {
         this.invoiceForm.category = this.paperForm.type;
       },
-      getEtr(){
+      getEtr() {
         localStorage.setItem("isPaper", false);
         this.orderType = localStorage.getItem("orderType");
         this.invoiceForm.mergeSum = localStorage.getItem("tot");
@@ -332,26 +335,20 @@
           this.outOrderIds += this.seletedOutOrderList[i].outOrderId + ",";
           this.invoiceForm.outOrderIds = this.outOrderIds;
           this.invoiceForm.category = "增值税电子普通发票";
-          console.log(this.invoiceForm.category);
           this.invoiceForm.property = "电子";
-          this.invoiceForm.username = this.seletedOutOrderList[i].username;
         }
       },
-      getPaper(){
-          console.log(111);
-          localStorage.setItem("isPaper", true);
-          this.orderType = localStorage.getItem("orderType");
-          this.invoiceForm.mergeSum = localStorage.getItem("tot");
-          this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
-          for (let j = 0; j < this.seletedOutOrderList.length; j++) {
-            this.outOrderIds += this.seletedOutOrderList[j].outOrderId + ",";
-            this.invoiceForm.outOrderIds = this.outOrderIds;
-            this.invoiceForm.category = this.paperForm.type;
-            console.log(this.invoiceForm.category);
-            this.invoiceForm.property = "纸质";
-            console.log(this.invoiceForm.property)
-            this.invoiceForm.username = this.seletedOutOrderList[j].username;
-          }
+      getPaper() {
+        localStorage.setItem("isPaper", true);
+        this.orderType = localStorage.getItem("orderType");
+        this.invoiceForm.mergeSum = localStorage.getItem("tot");
+        this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
+        for (let j = 0; j < this.seletedOutOrderList.length; j++) {
+          this.outOrderIds += this.seletedOutOrderList[j].outOrderId + ",";
+          this.invoiceForm.outOrderIds = this.outOrderIds;
+          this.invoiceForm.category = this.paperForm.type;
+          this.invoiceForm.property = "纸质";
+        }
       },
       //展示更多
       showMore() {
@@ -374,8 +371,7 @@
         this.company = item;
       },
       getDefaultCompany() {
-        let username = this.$store.state.username;
-        getDefaultCompany(username).then(res => {
+        getDefaultCompany().then(res => {
           if (res.data.code === 0) {
             this.company = [];
           } else {
@@ -391,8 +387,7 @@
         });
       },
       getDefaultAddress() {
-        getDefaultAddress(this.$store.state.username).then(res => {
-          console.log(res);
+        getDefaultAddress().then(res => {
           if (res.data.code === 1) {
             this.address = res.data.content;
             this.invoiceForm.addressId = this.address.addressId;
@@ -420,14 +415,8 @@
           });
         }
       },
-      getEmailInfo() {
-        let username = this.$store.state.username;
-        axios.get("/api/user/" + username + "/invoice/money", {
-          params: {
-            accessToken: this.accessToken,
-            invoiceForm: this.invoiceForm
-          }
-        }).then(res => {
+      getCustomer() {
+        getCustomer({}).then(res => {
           this.loadingList = false;
           this.email = res.data.content.email;
           this.contactInformation = res.data.content.mobile;
@@ -437,7 +426,6 @@
         this.invoiceForm.isPaper = JSON.parse(localStorage.getItem("isPaper"));
         this.invoiceForm.property = this.invoiceForm.isPaper ? "纸质" : "电子";
         this.invoiceForm.category = !this.invoiceForm.isPaper ? "增值税电子普通发票" : this.paperForm.type;
-        console.log(this.invoiceForm.property,33333333)
         this.showDisabled = false;
         if (this.selected == 1) {
           MessageBox({
@@ -485,7 +473,6 @@
                 this.showDisabled = true;
                 return Toast("商品服务不能为空");
               }
-              let username = this.$store.state.username;
               //验证手机号
               axios.post('/invoice/product/make', {
                 products: this.productList,
@@ -496,7 +483,6 @@
                 property: this.invoiceForm.property,
                 ifUseMergeVm: "false",
                 remark: this.invoiceForm.inputValue,
-                username: username,
                 companyId: this.company.companyId,
                 email: this.email,
                 addrMobile: this.contactInformation
@@ -530,7 +516,6 @@
                 this.showDisabled = true;
                 return Toast("商品服务不能为空");
               }
-              let username = this.$store.state.username;
               //验证手机号
               axios.post('/invoice/product/make', {
                 products: this.productList,
@@ -541,7 +526,6 @@
                 property: this.invoiceForm.property,
                 ifUseMergeVm: "false",
                 remark: this.invoiceForm.inputValue,
-                username: username,
                 companyId: this.company.companyId,
                 // email: this.email,
                 // addrMobile: this.address.mobile
@@ -626,14 +610,14 @@
         let obj = {}
         for (var i = 0; i < this.productListAll.length; i++) {
           // console.log(this.productListAll[i],33333)
-          if (this.productListAll[i].number > 0 ) {
+          if (this.productListAll[i].number > 0) {
             obj = {
-                productId: this.productListAll[i].productId,
-                specification: this.productListAll[i].specification,
-                unit: this.productListAll[i].unit,
-                price: this.productListAll[i].price,
-                name: this.productListAll[i].name,
-                number: this.productListAll[i].number
+              productId: this.productListAll[i].productId,
+              specification: this.productListAll[i].specification,
+              unit: this.productListAll[i].unit,
+              price: this.productListAll[i].price,
+              name: this.productListAll[i].name,
+              number: this.productListAll[i].number
             };
             let oldList = JSON.parse(localStorage.getItem("productList")) || []
             oldList.push(obj)
@@ -642,8 +626,6 @@
 
         }
         // calcProductList
-
-
 
 
         // let obj = {};
@@ -678,14 +660,14 @@
         this.calculatedAmount()
         this.showPopup = false
       },
-      showSearchPopup(){
+      showSearchPopup() {
         // console.log(this.totalPrice,333333)
         this.totalPrice = 0
         this.showPopup = true
         this.searchValue = ''
         this.getProductList()
       },
-      chooseRadio(id){
+      chooseRadio(id) {
         this.radio = id
         for (var i = 0; i < this.productListAll.length; i++) {
           if (this.radio === this.productListAll[i].productId) {
@@ -701,7 +683,7 @@
         var searchVal = {name: this.searchValue}
         this.getProductList(searchVal)
       },
-      calcTotalPrice(){
+      calcTotalPrice() {
         let total = 0;
         if (this.productListAll !== null) {
           for (var i = 0; i < this.productListAll.length; i++) {
@@ -710,7 +692,7 @@
           this.totalPrice = total;
         }
       },
-      resetPage(){
+      resetPage() {
         this.make = localStorage.getItem("make");
         this.order = localStorage.getItem("order");
         this.accessToken = localStorage.getItem("accessToken");
@@ -783,7 +765,6 @@
         }
       },
     },
-    watch: {},
     mounted() {
       this.getProductList();
     },
@@ -808,7 +789,7 @@
       this.calculatedAmount();
       this.getDefaultAddress();
       this.getDefaultCompany();
-      this.getEmailInfo();
+      this.getCustomer();
       this.getSpecifications();
       this.getInvoicingService();
     }
@@ -828,7 +809,9 @@
     text-align: center;
     line-height: 44px;
     font-size: 16px;
-  };
+  }
+
+  ;
 
   .van-cell__value {
     min-width: 74%;

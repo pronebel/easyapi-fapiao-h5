@@ -6,9 +6,8 @@ import {baseUrl} from "./request";
 /**
  * 获取订单类型列表
  */
-export const getOrderTypeList = (username) => axios.get(`${baseUrl}/order-types`, {
+export const getOrderTypeList = () => axios.get(`${baseUrl}/order-types`, {
   params: {
-    username: username,
     accessToken: localStorage.getItem("accessToken")
   }
 });

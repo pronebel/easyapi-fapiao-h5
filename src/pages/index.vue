@@ -31,7 +31,6 @@
     name: "Index",
     data() {
       return {
-        username: "",
         accessToken: "",
         make: "",
         order: "",
@@ -43,7 +42,7 @@
        * 获取订单类型列表
        */
       getOrderTypeList() {
-        getOrderTypeList(this.username).then(res => {
+        getOrderTypeList().then(res => {
           if (res.status === 200) {
             this.orderTypeList = res.data.content;
             setTimeout(function () {
@@ -60,7 +59,7 @@
        * 获取发票开票类型
        */
       getShopSupport() {
-        getShopSupport(this.username).then(res => {
+        getShopSupport().then(res => {
           if (res.data.content.ifProduct !== false) {
             this.make = res.data.content.ifProduct;
             localStorage.setItem("make", this.make);
@@ -77,16 +76,12 @@
     created() {
       localStorage.removeItem("make");
       localStorage.removeItem("order");
-      this.username = this.$route.query.username;
       this.accessToken = this.$route.query.accessToken;
-      if (this.accessToken && this.username) {
+      if (this.accessToken) {
         localStorage.setItem("accessToken", this.accessToken);
-        localStorage.setItem("username", this.username);
-        this.$store.state.username = this.$route.query.username;
       } else {
         this.accessToken = localStorage.getItem("accessToken");
-        this.username = localStorage.getItem("username");
-        if (!this.accessToken || !this.username) {
+        if (!this.accessToken) {
           this.$router.push("/error");
         }
       }

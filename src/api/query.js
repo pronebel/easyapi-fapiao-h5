@@ -7,17 +7,18 @@ import {baseUrl} from "./request";
  *
  * @see https://www.easyai.com
  */
-export const queryShopOrder = (outOrderNo, username) => axios.get(`${baseUrl}/shop-order/${outOrderNo}/query`, {
+export const queryShopOrder = (outOrderNo) => axios.get(`${baseUrl}/shop-order/${outOrderNo}/query`, {
   params: {
-    accessToken: localStorage.getItem("accessToken"),
-    username: username
+    accessToken: localStorage.getItem("accessToken")
   }
 });
 
-export const getState = (outOrderNo, username) => axios.get(`${baseUrl}/invoice/state`, {
+/**
+ * 批量查询发票状态
+ */
+export const getState = (outOrderNo) => axios.get(`${baseUrl}/invoice/state`, {
   params: {
     outOrderNos: outOrderNo,
-    accessToken: localStorage.getItem("accessToken"),
-    username: username
+    accessToken: localStorage.getItem("accessToken")
   }
 });

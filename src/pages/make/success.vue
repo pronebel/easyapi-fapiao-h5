@@ -20,7 +20,6 @@
         this.$router.replace({
           path: "/",
           query: {
-            username: localStorage.getItem("username"),
             accessToken: localStorage.getItem("accessToken")
           }
         });

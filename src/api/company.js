@@ -47,8 +47,7 @@ export const updateCompany = (id, data) => axios.put(`${baseUrl}/company/${id}`,
  */
 export const deleteCompany = id => axios.delete(`${baseUrl}/company/${id}`, {
   data: {
-    accessToken: localStorage.getItem("accessToken"),
-    username: localStorage.getItem("username")
+    accessToken: localStorage.getItem("accessToken")
   }
 });
 
@@ -68,7 +67,7 @@ export const defaultCompany = id => axios.put(`${baseUrl}/company/${id}`, {
  *
  * @see https://www.easyai.com
  */
-export const getDefaultCompany = username => axios.get(`${baseUrl}/company/${username}/default`, {
+export const getDefaultCompany = () => axios.get(`${baseUrl}/company/default`, {
   params: {
     accessToken: localStorage.getItem("accessToken")
   }

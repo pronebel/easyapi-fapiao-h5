@@ -29,7 +29,8 @@
             <div class="order-right" @click="checked(index)">
               <van-cell-group :border="false">
                 <van-cell :title="'订单号：' + item.no" :border="false" class="orderNum"/>
-                <van-cell v-if="item.fields" :title="Object.values(JSON.parse(item.fields))[0]" :value="item.noY" :border="false"/>
+                <van-cell v-if="item.fields" :title="Object.values(JSON.parse(item.fields))[0]" :value="item.noY"
+                          :border="false"/>
                 <van-cell :title="item.orderTime" class="price" :value="'￥' + item.price" :border="false"/>
               </van-cell-group>
             </div>
@@ -113,10 +114,7 @@
       },
       getOutOrderList() {
         this.loading = true
-        let params = {};
-        params.username = this.$store.state.username
-        params.type = this.orderType
-        getOutOrderList(params, this.page).then(res => {
+        getOutOrderList({type: this.orderType}, this.page).then(res => {
           if (res.data.code === 1) {
             let data = res.data.content;
             this.page.total = res.data.totalPages;

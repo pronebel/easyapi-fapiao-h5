@@ -42,7 +42,7 @@
 
 <script>
   import Header from "../../components/header.vue";
-  import {getDefaultAddress, getAddressList,defaultAddress} from "../../api/address";
+  import {getAddressList, defaultAddress} from "../../api/address";
 
   export default {
     name: "Address",
@@ -64,12 +64,11 @@
         history.go(-1);
       },
       getAddressList() {
-        getAddressList({username: localStorage.getItem("username")}).then(res => {
+        getAddressList({}).then(res => {
           if (res.data.code !== 0) {
             this.loading = false;
             this.addressList = res.data.content;
           } else {
-            this.isNull = true;
             this.loading = false;
           }
         }).catch(error => {
@@ -78,11 +77,10 @@
         });
       },
       select(item) {
-        console.log(item.name)
         if (this.from != 'make') {
           return;
         }
-        event.$emit('select',item)
+        event.$emit('select', item)
         this.defaultAddress(item.addressId);
         this.$emit("selectAddress", item);
         this.$router.back(-1);

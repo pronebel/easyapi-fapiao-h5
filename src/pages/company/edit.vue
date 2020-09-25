@@ -5,7 +5,8 @@
       <div class="">
         <div class="address-bottom2" @click="select(item)">
           <van-cell-group>
-            <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" border required @keyup="searchRiseList" @focus="listShow = true" @blur="inputBlur" />
+            <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" border required @keyup="searchRiseList"
+                       @focus="listShow = true" @blur="inputBlur"/>
             <div class="rise-list" v-if="listShow && searchList !== ''">
               <ul>
                 <li
@@ -27,7 +28,7 @@
       </div>
       <div class="page-part address-con defaultBnt">
         <van-cell center title="设置为默认抬头">
-          <van-switch v-model="companyForm.ifDefault" active-color="#FFC2A8" size="24px" />
+          <van-switch v-model="companyForm.ifDefault" active-color="#FFC2A8" size="24px"/>
         </van-cell>
       </div>
     </form>
@@ -37,7 +38,8 @@
         v-if="this.title === 'edit'"
         class="submit_delete"
         @click="deleteDate"
-      >删除</van-button>
+      >删除
+      </van-button>
     </div>
   </div>
 </template>
@@ -45,6 +47,8 @@
   import Header from "../../components/header.vue";
   import {MessageBox} from "mint-ui";
   import {Toast} from "mint-ui";
+  import {createCompany, updateCompany, deleteCompany} from "../../api/company";
+
 
   export default {
     name: "EditCompany",
@@ -105,14 +109,8 @@
           showCancelButton: true
         }).then(action => {
           if (action === "confirm") {
-            this.$ajax.delete("/company/" + this.id, {
-              params: {
-                accessToken: this.accessToken,
-                username: this.$store.state.username
-              }
-            }).then(res => {
+            deleteCompany(this.id).then(res => {
               if (res.data.code === 1) {
-                // this.$messagebox.alert(res.data.message);
                 this.$router.go(-1)
               }
             }).catch(error => {
@@ -156,16 +154,9 @@
           showCancelButton: true
         }).then(action => {
           if (action === "confirm") {
-            this.companyForm.accessToken = this.accessToken;
-            this.companyForm.username = this.$store.state.username;
-            // this.companyForm.ifDefault = true;
             this.id = this.$route.params.id;
             if (this.title === "edit") {
-              this.$ajax({
-                method: "PUT",
-                url: "/company/" + this.id,
-                data: this.companyForm
-              }).then(res => {
+              updateCompany(this.id, this.companyForm).then(res => {
                 if (res.data.code === 1) {
                   this.$router.go(-1)
                 }
@@ -173,11 +164,7 @@
                 this.$messagebox.alert(error.response.data.message);
               });
             } else {
-              this.$ajax({
-                method: "POST",
-                url: "/company",
-                data: this.companyForm
-              }).then(res => {
+              createCompany(this.companyForm).then(res => {
                 if (res.data.code === 1) {
                   this.$router.go(-1)
                 }
@@ -188,7 +175,7 @@
           }
         });
       },
-      inputBlur(){
+      inputBlur() {
         this.listShow = false
         // var has;
         // has = false;

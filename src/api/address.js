@@ -59,8 +59,7 @@ export const updateAddress = (id, data) => axios.put(`${baseUrl}/address/${id}`,
  */
 export const deleteAddress = id => axios.delete(`${baseUrl}/address/${id}`, {
   data: {
-    accessToken: localStorage.getItem("accessToken"),
-    username: localStorage.getItem("username")
+    accessToken: localStorage.getItem("accessToken")
   }
 });
 

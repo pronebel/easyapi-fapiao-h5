@@ -67,12 +67,11 @@
         history.go(-1);
       },
       getCompanyList() {
-        getCompanyList({username: localStorage.getItem("username")}).then(res => {
+        getCompanyList({}).then(res => {
           if (res.data.code !== 0) {
             this.loading = false;
             this.companyList = res.data.content;
           } else {
-            this.isNull = true;
             this.loading = false;
           }
         }).catch(error => {
@@ -85,7 +84,6 @@
           return;
         }
         this.defaultCompany(item.companyId);
-        console.log(item.companyId)
         this.$emit("selectCompany", item);
         this.$router.back(-1);
       },
@@ -125,7 +123,7 @@
       this.getCompanyList();
     },
     beforeRouteLeave(to, from, next) {
-      console.log(to,from)
+      console.log(to, from)
       if (to.name === 'EditCompany' && !this.back) {
         next({name: 'Index'});
       } else if (to.name === 'Company') {
