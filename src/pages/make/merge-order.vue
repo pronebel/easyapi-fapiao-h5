@@ -164,7 +164,6 @@
     },
     methods: {
       getRadioVal() {
-        console.log(this.paperForm.type);
         this.invoiceForm.category = this.paperForm.type;
       },
       getEtr() {
@@ -420,7 +419,6 @@
     },
     watch: {},
     created() {
-      console.log(1);
       this.make = localStorage.getItem("make");
       this.order = localStorage.getItem("order");
       this.accessToken = localStorage.getItem("accessToken");
@@ -436,18 +434,13 @@
     // beforeRouteLeave(to,from,next){
     // from.meta.keepAlive = false;
     // next(
-    //   console.log(111)
     // )
     // },
     activated() {
-      console.log(3);
       this.selectCompany();
-      // this.getDefaultAddress();
-      // this.getDefaultCompany();
       event.$on("select", function (data) {
         this.address = data;
         this.$forceUpdate();
-        console.log(this.address);
       });
     },
     mounted() {

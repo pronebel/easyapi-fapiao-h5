@@ -147,7 +147,6 @@
         });
       },
       onAddrConfirm(e) {
-        console.log(e, 888888888)
         this.addressForm.province = e[0].name;
         this.addressForm.city = e[1].name;
         this.addressForm.district = e[2].name;

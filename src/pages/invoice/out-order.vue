@@ -53,7 +53,6 @@
         });
       }
     },
-    watch: {},
     created() {
       this.id = this.$route.query.id;
     },

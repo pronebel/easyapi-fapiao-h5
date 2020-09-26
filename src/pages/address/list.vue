@@ -87,7 +87,6 @@
       },
       //设置默认值
       defaultAddress(addressId) {
-        console.log(addressId)
         defaultAddress(addressId).then(res => {
         }).catch(error => {
           console.log(error);

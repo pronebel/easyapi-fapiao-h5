@@ -123,7 +123,6 @@
       this.getCompanyList();
     },
     beforeRouteLeave(to, from, next) {
-      console.log(to, from)
       if (to.name === 'EditCompany' && !this.back) {
         next({name: 'Index'});
       } else if (to.name === 'Company') {
