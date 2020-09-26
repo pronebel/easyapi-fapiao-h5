@@ -24,7 +24,7 @@
 <script>
   import {Indicator} from "mint-ui";
   import {Toast} from "mint-ui";
-  import {getOrderTypeList} from "../api/api";
+  import {getOrderTypeList} from "../api/order-type";
   import {getShopSupport} from "../api/shop";
 
   export default {
