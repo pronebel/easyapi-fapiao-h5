@@ -357,79 +357,10 @@
           </a>
         </div>
         <div class="page-part">
-          <p>接收方式</p>
-          <a class="mint-cell mint-field"
-          >
-            <div class="mint-cell-left"></div>
-            <div class="mint-cell-wrapper">
-              <div class="mint-cell-title">
-
-                <span class="mint-cell-text"
-                ><font style="vertical-align: inherit;"
-                ><font
-                  style="vertical-align: inherit;color:#333;font-size: 15px"
-                >电子邮件</font
-                ></font
-                ></span
-                >
-
-              </div>
-              <div class="mint-cell-value">
-                <input
-                  placeholder=""
-                  type="email"
-                  class="mint-field-core"
-                  style="color:#333;font-size: 15px"
-                  v-model="email"
-                />
-                <div class="mint-field-clear" style="display: none;">
-                  <i class="mintui mintui-field-error"></i>
-                </div>
-                <span class="mint-field-state is-default"
-                ><i class="mintui mintui-field-default"></i
-                ></span>
-                <div class="mint-field-other"></div>
-              </div>
-
-            </div>
-            <div class="mint-cell-right"></div>
-          </a>
-          <a class="mint-cell mint-field"
-          >
-            <div class="mint-cell-left"></div>
-            <div class="mint-cell-wrapper">
-              <div class="mint-cell-title">
-
-                <span class="mint-cell-text"
-                ><font style="vertical-align: inherit;"
-                ><font
-                  style="vertical-align: inherit; color:#333;font-size: 15px"
-                >联系方式</font
-                ></font
-                ></span
-                >
-
-              </div>
-              <div class="mint-cell-value">
-                <input
-                  placeholder=""
-                  type="tal"
-                  class="mint-field-core"
-                  style="color:#333;font-size: 15px"
-                  v-model="contactInformation"
-                />
-                <div class="mint-field-clear" style="display: none;">
-                  <i class="mintui mintui-field-error"></i>
-                </div>
-                <span class="mint-field-state is-default"
-                ><i class="mintui mintui-field-default"></i
-                ></span>
-                <div class="mint-field-other"></div>
-              </div>
-
-            </div>
-            <div class="mint-cell-right"></div>
-          </a>
+          <van-cell-group title="接收方式">
+            <van-field label="电子邮件" value="" v-model="email"/>
+            <van-field label="手机号码" type="tel" value="" v-model="contactInformation"/>
+          </van-cell-group>
           <div class="bottom">
             <mt-button
               class="submit"
