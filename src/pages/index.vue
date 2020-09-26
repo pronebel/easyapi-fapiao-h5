@@ -31,7 +31,6 @@
     name: "Index",
     data() {
       return {
-        accessToken: "",
         make: "",
         order: "",
         orderTypeList: ""
@@ -76,12 +75,10 @@
     created() {
       localStorage.removeItem("make");
       localStorage.removeItem("order");
-      this.accessToken = this.$route.query.accessToken;
-      if (this.accessToken) {
-        localStorage.setItem("accessToken", this.accessToken);
+      if (this.$route.query.accessToken) {
+        localStorage.setItem("accessToken", this.$route.query.accessToken);
       } else {
-        this.accessToken = localStorage.getItem("accessToken");
-        if (!this.accessToken) {
+        if (!localStorage.getItem("accessToken")) {
           this.$router.push("/error");
         }
       }

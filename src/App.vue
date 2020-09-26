@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!--<router-view v-wechat-title="$route.meta.title"/>-->
     <transition>
       <keep-alive>
         <router-view v-wechat-title="$route.meta.title" v-if="$route.meta.keepAlive"/>
@@ -14,8 +13,7 @@
 
 <script>
   export default {
-    name: "App",
-    methods: {}
+    name: "App"
   };
 </script>
 
@@ -26,6 +24,7 @@
     -moz-osx-font-smoothing: grayscale;
     padding: 0 !important;
   }
+
   .top-toast {
     z-index: 9999 !important;
   }
