@@ -20,6 +20,7 @@
 
 <script>
   import Header from "../../components/header.vue";
+  import {getInvoice} from "../../api/invoice";
 
   export default {
     name: "OutOrder",
@@ -29,35 +30,23 @@
     data() {
       return {
         headerTitle: "关联订单",
-        id: "",
-        invoiceItems: "",
-        serviceType: ""
+        invoiceItems: [],
       };
     },
     methods: {
       goBack() {
         history.go(-1);
       },
-      getInvoiceDetails() {
-        this.id = this.$route.query.id;
-        this.$ajax.get("/api/invoice/record/" + this.id, {
-          params: {
-            accessToken: localStorage.getItem("accessToken"),
-            size: 500
-          }
-        }).then(res => {
+      getInvoiceDetail() {
+        getInvoice(this.$route.query.id).then(res => {
           this.invoiceItems = res.data.content.invoiceItems;
-          this.serviceType = res.data.content.serviceType;
         }).catch(error => {
           console.log(error);
         });
       }
     },
-    created() {
-      this.id = this.$route.query.id;
-    },
     mounted() {
-      this.getInvoiceDetails();
+      this.getInvoiceDetail();
     }
   };
 </script>
