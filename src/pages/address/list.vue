@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="add-con">
-      <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
+      <Header @head-back="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
       <div style="margin-top: 10px;margin-bottom: 35px;">
         <div id="loading">
           <mt-spinner
@@ -82,7 +82,7 @@
         }
         event.$emit('select', item)
         this.defaultAddress(item.addressId);
-        this.$emit("selectAddress", item);
+        this.$emit("select-address", item);
         this.$router.back(-1);
       },
       //设置默认值

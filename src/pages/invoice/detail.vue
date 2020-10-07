@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
+    <Header @head-back="goBack()" :headerTitle="headerTitle"></Header>
     <div class="invoiced">
       <a class="mint-cell" @click="viewPicture"
       ><span class="mint-cell-mask"></span>

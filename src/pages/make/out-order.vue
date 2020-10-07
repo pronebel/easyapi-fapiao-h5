@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 0 10px;height: 100%;">
-    <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
+    <Header @head-back="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <div class="no-record-con" v-show="empty">
       <van-empty image="search" description="暂无订单数据"/>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;">
-    <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
+    <Header @head-back="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <div class="nav" style="margin-top: 0px">
       <div id="loading">
         <mt-spinner
@@ -98,7 +98,7 @@
       <mt-button class="submit" v-else>开票中...</mt-button>
     </div>
     <div>
-      <router-view @selectCompany="selectCompany"></router-view>
+      <router-view @select-company="selectCompany"></router-view>
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <Header @headBack="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
+    <Header @head-back="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <form action ref="addressForm" :model="addressForm" class="formClass">
       <div class="">
         <div class="address-bottom2" @click="select(item)">

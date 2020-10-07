@@ -1,6 +1,6 @@
 <template>
   <div class="associated-con">
-    <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
+    <Header @head-back="goBack()" :headerTitle="headerTitle"></Header>
     <div class="order-con address-con header-d address-bottom" v-for="(item,index) in invoiceItems" :key="index">
       <van-cell-group :border="false">
         <van-cell title="税收编码：" :value="item.no" :border="false"/>

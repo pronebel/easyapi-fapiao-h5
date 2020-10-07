@@ -1,6 +1,6 @@
 <template>
   <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;">
-    <Header @headBack="goBack()" :headerTitle="headerTitle"></Header>
+    <Header @head-back="goBack()" :headerTitle="headerTitle"></Header>
     <div class="nav">
       <div id="loading">
         <mt-spinner

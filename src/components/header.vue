@@ -27,7 +27,7 @@
     },
     methods: {
       goBack() {
-        this.$emit("headBack");
+        this.$emit("head-back");
       }
     },
     mounted() {
