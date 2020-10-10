@@ -44,7 +44,7 @@
           </van-radio-group>
         </van-cell>
         <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位"
-                   v-model="invoiceForm.purchaserName" readonly/>
+                   v-model="invoiceForm.purchaserName"/>
         <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany" right-icon="arrow"
                    placeholder="请选择发票抬头" v-model="company.name"/>
         <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企    业'" v-model="company.taxNumber"/>
