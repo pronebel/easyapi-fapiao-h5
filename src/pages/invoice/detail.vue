@@ -2,30 +2,8 @@
   <div>
     <Header @head-back="goBack()" :headerTitle="headerTitle"></Header>
     <div class="invoiced">
-      <a class="mint-cell" @click="viewPicture"
-      ><span class="mint-cell-mask"></span>
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
-            <span class="mint-cell-text"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;"
-            >{{invoiceDetail.category}}（{{ invoiceDetail.statements }}）</font
-            ></font
-            ></span
-            >
-            <span class="mint-cell-label"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;">{{
-                  invoiceDetail.updateTime
-                }}</font></font
-            ></span
-            >
-          </div>
-          <div class="mint-cell-value is-link"><span></span></div>
-          <i class="mint-cell-allow-right"></i>
-        </div>
-        <div class="mint-cell-right"></div>
+      <a @click="viewPicture">
+        <van-cell :title=" invoiceDetail.category+ '（' + invoiceDetail.statements + '）'" is-link></van-cell>
       </a>
     </div>
     <div class="page-part invoice-con">
@@ -41,37 +19,12 @@
       <p>接收方式</p>
       <van-field label="电子邮件" v-model="invoiceDetail.email"/>
       <van-field label="联系方式" v-model="invoiceDetail.addrMobile"/>
-      <a class="mint-cell" @click="goAssociatedOrder"
-      ><span class="mint-cell-mask"></span>
-        <div class="mint-cell-left"></div>
-        <div class="mint-cell-wrapper">
-          <div class="mint-cell-title">
-            <span class="mint-cell-text"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;"
-            ><span>1</span>张发票，含<span>{{
-                    this.invoiceItems.length
-                  }}</span
-            >个商品</font
-            ></font
-            ></span
-            >
-            <span class="mint-cell-label"
-            ><font style="vertical-align: inherit;"
-            ><font style="vertical-align: inherit;">{{
-                  invoiceDetail.updateTime
-                }}</font></font
-            ></span
-            >
-          </div>
-          <div class="mint-cell-value is-link"><span></span></div>
-          <i class="mint-cell-allow-right"></i>
-        </div>
-        <div class="mint-cell-right"></div>
+      <a @click="goAssociatedOrder">
+        <van-cell :title="'1张发票，含'+ invoiceItems.length + '个商品'" :label="invoiceDetail.updateTime" is-link></van-cell>
       </a>
-      <div class="bottom">
+      <!-- <div class="bottom"> -->
         <!--<mt-button class="submit" @click="goElectronicInvoice">重发电子发票与订单</mt-button>-->
-      </div>
+      <!-- </div> -->
     </div>
     <div class="page-part" v-show="invoiceDetail.category=='增值税普通发票' ||invoiceDetail.category=='增值税专用发票'">
       <p>接收方式</p>
@@ -80,9 +33,8 @@
       <!--<van-cell title="邮寄地址" :value="address.province + address.city + address.district + address.addr"-->
       <!--readonly></van-cell>-->
     </div>
-    <mt-popup
+    <van-popup
       v-model="popupVisible"
-      position="middle"
       style="padding:30px"
       align="center">
       <p style="fontSize:17px">发票预览</p>
@@ -101,7 +53,7 @@
         <textarea :value="url" style="width:300px"/>
       </div>
       <p style="margin-top:7px">复制发票下载地址并在浏览器中打开进行下载</p>
-    </mt-popup>
+    </van-popup>
   </div>
 </template>
 
