@@ -4,11 +4,10 @@
       <Header @head-back="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
       <div style="margin-top: 10px;margin-bottom: 35px;">
         <div id="loading">
-          <mt-spinner
+          <van-loading
             color="#56cbf6"
             v-show="loading"
-            type="fading-circle"
-          ></mt-spinner>
+          />
         </div>
         <div class="no-record-con" v-show="addressList.length ==0 && !loading">
           <van-empty image="search" description="暂无数据"/>
