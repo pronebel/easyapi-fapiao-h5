@@ -2,27 +2,27 @@
   <div>
     <div class="nav">
       <div id="loading">
-        <mt-spinner
-          color="#56cbf6"
-          v-show="loadingList"
-          type="fading-circle"
-        ></mt-spinner>
+        <van-loading  v-show="loadingList" type="spinner" color="#56cbf6" />
       </div>
       <p>请选择发票类型</p>
-      <mt-navbar v-model="selected" class="invoice-type">
-        <mt-tab-item id="1" style="margin-left:0">
-          <p style="font-size: 16px">电子发票</p>
-          <p style="font-size: 12px">最快1分钟开具</p>
-        </mt-tab-item>
-        <!--<mt-tab-item id="2">-->
-        <!--<p style="font-size: 16px;">纸质发票</p>-->
-        <!--<p style="font-size: 12px;">预计一周送达</p>-->
-        <!--</mt-tab-item>-->
-      </mt-navbar>
+      <van-row type="flex" justify="space-between" class="twoBox">
+        <van-col span="12">
+          <div :class="{'blueBox': isEInvoice, 'grayBox': isPInvoice }" style="margin-right:5px" @click="getEtr">
+            <p style="font-size: 16px; margin-top: -6px">电子发票</p>
+            <p style="font-size: 12px; margin-top: 6px">最快1分钟开具</p>
+          </div>
+        </van-col>
+        <van-col span="12">
+          <div :class="{'blueBox': !isEInvoice, 'grayBox': !isPInvoice }" style="margin-left:5px" @click="getPaper">
+            <p style="font-size: 16px; margin-top: -6px">纸质发票</p>
+            <p style="font-size: 12px; margin-top: 6px">预计一周送达</p>
+          </div>
+        </van-col>
+      </van-row>
     </div>
 
-    <mt-tab-container v-model="selected">
-      <mt-tab-container-item id="1">
+    <div>
+      <div v-show="this.isEInvoice">
         <div class="page-part invoice-con">
           <form action="" id="formBox" ref="invoiceForm" :model="invoiceForm">
             <van-cell-group title="发票抬头">
@@ -60,7 +60,7 @@
                   商品明细
                 </van-tag>
                 <van-tag type="primary" plain size="medium" :class="{active:active=='商品类别'}"
-                         @click="showDetail('商品类别')">商品类别
+                         @click="showDetail('商品类别')" style="margin-left:5px">商品类别
                 </van-tag>
               </template>
             </van-field>
@@ -75,23 +75,23 @@
         </van-cell-group>
         <div class="page-part">
           <div class="bottom">
-            <mt-button
+            <van-button
+              type="info"
               class="submit"
               @click="makeInvoice"
               v-if="showDisabled"
-            >提交
-            </mt-button
-            >
-            <mt-button class="submit" v-else>开票中...</mt-button>
+              >提交
+            </van-button>
+            <van-button type="info" class="submit" v-else>开票中 </van-button>
           </div>
         </div>
-      </mt-tab-container-item>
-      <mt-tab-container-item id="2">
+      </div>
+      <div v-show="!this.isEInvoice">
         <div class="paper-capacitor">
           正在开发中...
         </div>
-      </mt-tab-container-item>
-    </mt-tab-container>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -139,7 +139,9 @@
         remark: "",
         invoiceForm: {
           type: ""
-        }
+        },
+        isEInvoice: true,
+        isPInvoice: false
       };
     },
     methods: {
@@ -353,6 +355,34 @@
           this.ifNeedMobile = res.data.content.ifNeedMobile;
           this.ifNeedEmail = res.data.content.ifNeedEmail;
         });
+      },
+      getEtr() {
+        this.isEInvoice = true;
+        this.isPInvoice = false;
+        localStorage.setItem("isPaper", false);
+        this.orderType = localStorage.getItem("orderType");
+        this.invoiceForm.mergeSum = localStorage.getItem("tot");
+        this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
+        for (let i = 0; i < this.seletedOutOrderList.length; i++) {
+          this.outOrderIds += this.seletedOutOrderList[i].outOrderId + ",";
+          this.invoiceForm.outOrderIds = this.outOrderIds;
+          this.invoiceForm.category = "增值税电子普通发票";
+          this.invoiceForm.property = "电子";
+        }
+      },
+      getPaper() {
+        this.isEInvoice = false;
+        this.isPInvoice = true;
+        localStorage.setItem("isPaper", true);
+        this.orderType = localStorage.getItem("orderType");
+        this.invoiceForm.mergeSum = localStorage.getItem("tot");
+        this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
+        for (let j = 0; j < this.seletedOutOrderList.length; j++) {
+          this.outOrderIds += this.seletedOutOrderList[j].outOrderId + ",";
+          this.invoiceForm.outOrderIds = this.outOrderIds;
+          this.invoiceForm.category = this.paperForm.type;
+          this.invoiceForm.property = "纸质";
+        }
       }
     },
     watch: {},
@@ -398,5 +428,31 @@
 
   .nav {
     margin-top: 0;
+  }
+  .twoBox {
+    height: 70px;
+    /* border: 2px solid blue; */
+    text-align: center;
+    background: #fff;
+    padding: 20px 10px
+  }
+
+  .blueBox {
+    box-sizing:border-box;
+    padding: 17px 0;
+    font-size: 15px;
+    height: 70px;
+    border: 1px solid #1989fa;
+    color: #1989fa;
+    border-radius: 4px;
+  }
+  .grayBox {
+    box-sizing:border-box;
+    padding: 17px 0;
+    font-size: 15px;
+    height: 70px;
+    border: 1px solid #999;
+    color: #999;
+    border-radius: 4px;
   }
 </style>
