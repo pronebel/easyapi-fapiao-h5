@@ -3,27 +3,23 @@
     <Header @head-back="goBack()" :headerTitle="headerTitle"></Header>
     <div class="nav">
       <div id="loading">
-        <mt-spinner
-          color="#56cbf6"
-          v-show="loadingList"
-          type="fading-circle"
-        ></mt-spinner>
+        <van-loading  v-show="loadingList" type="spinner" color="#56cbf6" />
       </div>
       <p>请选择发票类型</p>
-      <mt-navbar v-model="selected" class="invoice-type">
-        <mt-tab-item id="1">
-          <div @click="getEtr">
-            <p style="font-size: 16px">电子发票</p>
-            <p style="font-size: 12px">最快1分钟开具</p>
+      <van-row type="flex" justify="space-between" class="twoBox">
+        <van-col span="12">
+          <div :class="{'blueBox': isEInvoice, 'grayBox': isPInvoice }" style="margin-right:5px" @click="getEtr">
+            <p style="font-size: 16px; margin-top: -6px">电子发票</p>
+            <p style="font-size: 12px; margin-top: 6px">最快1分钟开具</p>
           </div>
-        </mt-tab-item>
-        <mt-tab-item id="2">
-          <div @click="getPaper">
-            <p style="font-size: 16px;">纸质发票</p>
-            <p style="font-size: 12px;">预计一周送达</p>
+        </van-col>
+        <van-col span="12">
+          <div :class="{'blueBox': !isEInvoice, 'grayBox': !isPInvoice }" style="margin-left:5px" @click="getPaper">
+            <p style="font-size: 16px; margin-top: -6px">纸质发票</p>
+            <p style="font-size: 12px; margin-top: 6px">预计一周送达</p>
           </div>
-        </mt-tab-item>
-      </mt-navbar>
+        </van-col>
+      </van-row>
     </div>
 
     <div class="page-part invoice-con">
@@ -36,7 +32,7 @@
             <van-radio name="个人">个人</van-radio>
           </van-radio-group>
         </van-cell>
-        <van-cell title="发票类型" center v-show="this.selected==2">
+        <van-cell title="发票类型" center v-show="!this.isEInvoice">
           <van-radio-group class="van-radio-group_type" v-model="paperForm.type" direction="horizontal"
           >
             <van-radio style="margin-bottom: 5px;" name="增值税普通发票" @click="getRadioVal">增值税普通发票</van-radio>
@@ -93,9 +89,9 @@
       </ul>
       <van-cell class="line"/>
       <div class="btn">
-        <mt-button class="submit-btn" @click="showSearchPopup">
+        <van-button class="submit-btn" @click="showSearchPopup">
           +添加发票内容
-        </mt-button
+        </van-button
         >
       </div>
       <!-- <a class="mint-cell mint-field" style=" border-bottom: 1px solid#ddd;"
@@ -172,15 +168,15 @@
       <!-- </van-cell-group> -->
     </div>
 
-    <mt-tab-container v-model="selected">
-      <mt-tab-container-item id="1">
+    <div>
+      <div v-show="this.isEInvoice">
         <div class="page-part" style="margin-bottom: 60px;">
           <p>接收方式</p>
           <van-field label="电子邮箱" v-model="email"></van-field>
           <van-field label="联系方式" v-model="contactInformation"></van-field>
         </div>
-      </mt-tab-container-item>
-      <mt-tab-container-item id="2">
+      </div>
+      <div v-show="!this.isEInvoice">
         <div class="page-part">
           <p>接收方式</p>
           <van-field right-icon="arrow" label="收件人" readonly @click="gotoAddress" v-model="address.name"></van-field>
@@ -192,8 +188,8 @@
           <p>开票金额不足200元，需支付邮费</p>
           <van-field label="支付方式" readonly></van-field>
         </div>
-      </mt-tab-container-item>
-    </mt-tab-container>
+      </div>
+    </div>
     <div class="bottom">
       <van-button
         type="info"
@@ -317,7 +313,9 @@
         totalPrice: 0,
         paperForm: {
           type: "增值税普通发票"
-        }
+        },
+        isEInvoice: true,
+        isPInvoice: false
 
       };
     },
@@ -327,6 +325,8 @@
         this.invoiceForm.category = this.paperForm.type;
       },
       getEtr() {
+        this.isEInvoice = true;
+        this.isPInvoice = false;
         localStorage.setItem("isPaper", false);
         this.orderType = localStorage.getItem("orderType");
         this.invoiceForm.mergeSum = localStorage.getItem("tot");
@@ -339,6 +339,8 @@
         }
       },
       getPaper() {
+        this.isEInvoice = false;
+        this.isPInvoice = true;
         localStorage.setItem("isPaper", true);
         this.orderType = localStorage.getItem("orderType");
         this.invoiceForm.mergeSum = localStorage.getItem("tot");
@@ -824,5 +826,32 @@
 
   .line {
     padding: 1px;
+  }
+
+  .twoBox {
+    height: 70px;
+    /* border: 2px solid blue; */
+    text-align: center;
+    background: #fff;
+    padding: 20px 10px
+  }
+
+  .blueBox {
+    box-sizing:border-box;
+    padding: 17px 0;
+    font-size: 15px;
+    height: 70px;
+    border: 1px solid #1989fa;
+    color: #1989fa;
+    border-radius: 4px;
+  }
+  .grayBox {
+    box-sizing:border-box;
+    padding: 17px 0;
+    font-size: 15px;
+    height: 70px;
+    border: 1px solid #999;
+    color: #999;
+    border-radius: 4px;
   }
 </style>
