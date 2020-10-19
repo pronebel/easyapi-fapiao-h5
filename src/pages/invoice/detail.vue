@@ -23,7 +23,7 @@
         <van-cell :title="'1张发票，含'+ invoiceItems.length + '个商品'" :label="invoiceDetail.updateTime" is-link></van-cell>
       </a>
       <!-- <div class="bottom"> -->
-        <!--<mt-button class="submit" @click="goElectronicInvoice">重发电子发票与订单</mt-button>-->
+      <!--<mt-button class="submit" @click="goElectronicInvoice">重发电子发票与订单</mt-button>-->
       <!-- </div> -->
     </div>
     <div class="page-part" v-show="invoiceDetail.category=='增值税普通发票' ||invoiceDetail.category=='增值税专用发票'">
@@ -58,9 +58,9 @@
 </template>
 
 <script>
-  import { getInvoice } from "../../api/invoice";
+  import {getInvoice} from "../../api/invoice";
   import Header from "../../components/header.vue";
-  import { MessageBox } from "mint-ui";
+  import {MessageBox} from "mint-ui";
   import Clipboard from "clipboard";
 
   export default {
@@ -116,17 +116,17 @@
       goAssociatedOrder() {
         this.$router.push({
           path: "/invoice/out-order",
-          query: { id: this.$route.query.id }
+          query: {id: this.$route.query.id}
         });
       },
       copyLink() {
         let _this = this;
         let clipboard = new this.clipboard(".copyPdfUrl");
-        clipboard.on("success", function() {
-          _this.$toast({ message: "复制成功", className: "top-toast" });
+        clipboard.on("success", function () {
+          _this.$toast({message: "复制成功", className: "top-toast"});
         });
-        clipboard.on("error", function() {
-          _this.$toast({ message: "复制失败", className: "top-toast" });
+        clipboard.on("error", function () {
+          _this.$toast({message: "复制失败", className: "top-toast"});
         });
       }
     },
