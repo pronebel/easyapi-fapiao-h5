@@ -36,9 +36,9 @@
         </div>
       </div>
     </div>
-    <div class="bottom">
-      <van-button type="info" class="submit" @click="gotoWechat">同步微信抬头</van-button>
-      <van-button type="info" class="submit" @click="gotoEditCompany">新增抬头</van-button>
+    <div class="bottom_button">
+      <van-button type="info" class="button" @click="gotoWechat">同步微信抬头</van-button>
+      <van-button type="info" class="button" @click="gotoEditCompany">新增抬头</van-button>
     </div>
   </div>
 </template>
