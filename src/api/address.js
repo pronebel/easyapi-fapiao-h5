@@ -33,7 +33,7 @@ export const getAddress = (id) => axios.post(`${baseUrl}/address/{$id}`, {
  */
 export const createAddress = (id, data) => axios.post(`${baseUrl}/address`, {
   data: {
-    data,
+    ...data,
     accessToken: localStorage.getItem("accessToken"),
     ifDefault: true
   }
@@ -46,7 +46,7 @@ export const createAddress = (id, data) => axios.post(`${baseUrl}/address`, {
  */
 export const updateAddress = (id, data) => axios.put(`${baseUrl}/address/${id}`, {
   data: {
-    data,
+    ...data,
     accessToken: localStorage.getItem("accessToken"),
     ifDefault: true
   }

@@ -19,26 +19,22 @@ export const getCompanyList = (params) => axios.get(`${baseUrl}/companies`, {
  *
  * @see https://www.easyai.com
  */
-export const createCompany = (id, data) => axios.post(`${baseUrl}/company`, {
-  data: {
-    data,
-    accessToken: localStorage.getItem("accessToken"),
-    ifDefault: true
-  }
-});
+export const createCompany = (data) => {
+  data.accessToken = localStorage.getItem("accessToken")
+  data.ifDefault = true
+  return axios.post(`${baseUrl}/company`, data);
+}
 
 /**
  * 修改公司抬头信息
  *
  * @see https://www.easyai.com
  */
-export const updateCompany = (id, data) => axios.put(`${baseUrl}/company/${id}`, {
-  data: {
-    data,
-    accessToken: localStorage.getItem("accessToken"),
-    ifDefault: true
-  }
-});
+export const updateCompany = (id, data) => {
+  data.accessToken = localStorage.getItem("accessToken")
+  data.ifDefault = true
+  return axios.post(`${baseUrl}/company/${id}`, data);
+}
 
 /**
  * 删除公司抬头信息
