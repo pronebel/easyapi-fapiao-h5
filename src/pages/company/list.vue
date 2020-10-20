@@ -37,14 +37,14 @@
       </div>
     </div>
     <div class="bottom">
+      <van-button type="info" class="submit" @click="gotoWechat">同步微信抬头</van-button>
       <van-button type="info" class="submit" @click="gotoEditCompany">新增抬头</van-button>
     </div>
   </div>
 </template>
-
 <script>
   import Header from "../../components/header.vue";
-  import {defaultCompany, getCompanyList} from "../../api/company";
+  import { defaultCompany, getCompanyList } from "../../api/company";
 
   export default {
     name: "Company",
@@ -79,7 +79,7 @@
         });
       },
       select(item) {
-        if (this.from != 'make') {
+        if (this.from != "make") {
           return;
         }
         this.defaultCompany(item.companyId);
@@ -93,23 +93,31 @@
           console.log(error);
         });
       },
+      gotoWechat(){
+        var _that = this
+        wx.getSetting({
+          success(res) {
+
+          }
+        })
+      },
       gotoEditCompany() {
         this.back = true;
-        this.$router.push({name: "EditCompany", path: "/company/edit"});
+        this.$router.push({ name: "EditCompany", path: "/company/edit" });
       },
       edit(index) {
         this.back = true;
         this.$router.push({
           name: "EditCompany",
           path: "/company/edit",
-          params: {id: this.companyList[index].companyId}
+          params: { id: this.companyList[index].companyId }
         });
       }
     },
     computed: {
       show() {
-        return this.$store.state.ifShowH5NavBar
-      },
+        return this.$store.state.ifShowH5NavBar;
+      }
     },
     created() {
       this.accessToken = localStorage.getItem("accessToken");
@@ -122,10 +130,10 @@
       this.getCompanyList();
     },
     beforeRouteLeave(to, from, next) {
-      if (to.name === 'EditCompany' && !this.back) {
-        next({name: 'Index'});
-      } else if (to.name === 'Company') {
-        next({name: 'Index'});
+      if (to.name === "EditCompany" && !this.back) {
+        next({ name: "Index" });
+      } else if (to.name === "Company") {
+        next({ name: "Index" });
       } else {
         next();
       }

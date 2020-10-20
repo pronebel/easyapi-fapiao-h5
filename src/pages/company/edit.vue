@@ -6,7 +6,8 @@
         <div class="address-bottom2" @click="select(item)">
           <van-cell-group>
             <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" border required @keyup="searchRiseList"
-                       @focus="listShow = true" @blur="inputBlur"/>
+                       @focus="listShow = true" @blur="inputBlur">
+            </van-field>
             <div class="rise-list" v-if="listShow && searchList !== ''">
               <ul>
                 <li

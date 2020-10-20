@@ -15,11 +15,13 @@ import { InfiniteScroll } from "mint-ui";
 import VueWechatTitle from "vue-wechat-title";
 import "./assets/css/resetVantUI.css";
 import "@vant/touch-emulator";
+import wx from 'weixin-js-sdk'
 
 import axios from "./api/request";
 
 Vue.prototype.$ajax = axios;
 
+Vue.use(wx);
 Vue.use(InfiniteScroll);
 Vue.use(MintUI);
 Vue.use(Vant);

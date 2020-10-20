@@ -10,12 +10,12 @@
   width: 100%;
   background-color: #fff;
   padding-top: 10px;
+  display: flex;
+  justify-content: space-around;
 }
 
 .bottom .submit {
-  left: 50%;
-  transform: translateX(-50%);
-  width: 95%;
+  width: 45%;
   border: none;
   height: 40px;
   border-radius: 5px;

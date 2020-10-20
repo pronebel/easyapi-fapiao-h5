@@ -378,6 +378,7 @@
             this.company = [];
           } else {
             this.company = res.data.content;
+            console.log(this.company)
             this.invoiceForm.purchaserName = this.company.name;
             this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
             this.invoiceForm.address = this.company.address;
@@ -710,7 +711,7 @@
           this.getDefaultCompany();
           this.getDefaultAddress()
         } else if (this.invoiceForm.type === "个人") {
-          this.invoiceForm.purchaserName = "个人";
+          this.invoiceForm.purchaserName = "";
           this.invoiceForm.purchaserTaxpayerNumber = "";
           this.invoiceForm.address = "";
           this.invoiceForm.phone = "";

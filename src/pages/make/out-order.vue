@@ -169,6 +169,7 @@
         this.selectList.length === this.outOrderList.length ? (this.allCheck = true) : (this.allCheck = false);
       },
       goElectronicInvoice() {
+        console.log(this.selectList)
         localStorage.setItem("tot", this.totalPrice);
         localStorage.setItem("seleted", JSON.stringify(this.selectList));
         this.$router.push({path: "/make/merge-order"});
