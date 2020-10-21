@@ -23,7 +23,7 @@ export const createCompany = (data) => {
   data.accessToken = localStorage.getItem("accessToken")
   data.ifDefault = true
   return axios.post(`${baseUrl}/company`, data);
-}
+};
 
 /**
  * 修改公司抬头信息
@@ -33,8 +33,8 @@ export const createCompany = (data) => {
 export const updateCompany = (id, data) => {
   data.accessToken = localStorage.getItem("accessToken")
   data.ifDefault = true
-  return axios.post(`${baseUrl}/company/${id}`, data);
-}
+  return axios.put(`${baseUrl}/company/${id}`, data);
+};
 
 /**
  * 删除公司抬头信息

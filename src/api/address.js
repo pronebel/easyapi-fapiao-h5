@@ -31,26 +31,22 @@ export const getAddress = (id) => axios.post(`${baseUrl}/address/{$id}`, {
  **
  * @see https://www.easyai.com
  */
-export const createAddress = (id, data) => axios.post(`${baseUrl}/address`, {
-  data: {
-    ...data,
-    accessToken: localStorage.getItem("accessToken"),
-    ifDefault: true
-  }
-});
+export const createAddress = (data) => {
+  data.accessToken = localStorage.getItem("accessToken")
+  data.ifDefault = true
+  return axios.post(`${baseUrl}/address`, data);
+};
 
 /**
  * 修改地址信息
  *
  * @see https://www.easyai.com
  */
-export const updateAddress = (id, data) => axios.put(`${baseUrl}/address/${id}`, {
-  data: {
-    ...data,
-    accessToken: localStorage.getItem("accessToken"),
-    ifDefault: true
-  }
-});
+export const updateAddress = (id, data) => {
+  data.accessToken = localStorage.getItem("accessToken")
+  data.ifDefault = true
+  return axios.put(`${baseUrl}/address/${id}`, data);
+};
 
 /**
  * 删除地址信息
