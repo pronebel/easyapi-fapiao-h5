@@ -8,12 +8,12 @@
     </div>
     <div class="page-part invoice-con">
       <p>发票详情</p>
-      <van-field v-model="invoiceDetail.purchaserName" label="发票抬头"/>
-      <van-field v-model="invoiceDetail.purchaserTaxpayerNumber" label="税号"/>
+      <van-cell :value="invoiceDetail.purchaserName" title="发票抬头"/>
+      <van-cell :value="invoiceDetail.purchaserTaxpayerNumber" title="税号"/>
       <van-cell :value="invoiceDetail.purchaserAddress+invoiceDetail.purchaserPhone" title="地址、电话"/>
       <van-cell :value="invoiceDetail.purchaserBank+invoiceDetail.purchaserBankAccount" title="开户行及账号"/>
-      <van-field v-model="invoiceDetail.price" label="发票金额"/>
-      <van-field label="备注" placeholder="业务需要，类别开票车牌号"/>
+      <van-cell :value="invoiceDetail.price" title="发票金额"/>
+      <van-cell :value="invoiceDetail.remark" title="备注" />
     </div>
     <div class="page-part" v-show="invoiceDetail.category=='增值税电子普通发票'">
       <p>接收方式</p>
