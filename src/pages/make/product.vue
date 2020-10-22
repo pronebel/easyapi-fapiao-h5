@@ -3,7 +3,7 @@
     <Header @head-back="goBack()" :headerTitle="headerTitle"></Header>
     <div class="nav">
       <div id="loading">
-        <van-loading  v-show="loadingList" type="spinner" color="#56cbf6" />
+        <van-loading v-show="loadingList" type="spinner" color="#56cbf6"/>
       </div>
       <p>请选择发票类型</p>
       <van-row type="flex" justify="space-between" class="twoBox">
@@ -253,16 +253,16 @@
 </template>
 
 <script>
-  import {getProductList} from "../../api/product";
-  import {getCustomer} from "../../api/customer";
+  import { getProductList } from "../../api/product";
+  import { getCustomer } from "../../api/customer";
   import Header from "../../components/header.vue";
-  import {Navbar, TabItem} from "mint-ui";
-  import {Toast} from "mint-ui";
-  import {MessageBox} from "mint-ui";
+  import { Navbar, TabItem } from "mint-ui";
+  import { Toast } from "mint-ui";
+  import { MessageBox } from "mint-ui";
   import Isemail from "isemail";
-  import axios from '../../api/request'
-  import {getDefaultCompany} from "../../api/company";
-  import {getDefaultAddress} from "../../api/address";
+  import axios from "../../api/request";
+  import { getDefaultCompany } from "../../api/company";
+  import { getDefaultAddress } from "../../api/address";
 
   export default {
     name: "MakeProduct",
@@ -307,7 +307,7 @@
         // number: "",
         productListAll: [],
         calcProductList: [],
-        searchValue: '',
+        searchValue: "",
         showPopup: false,
         radio: null,
         totalPrice: 0,
@@ -378,7 +378,7 @@
             this.company = [];
           } else {
             this.company = res.data.content;
-            console.log(this.company)
+            console.log(this.company);
             this.invoiceForm.purchaserName = this.company.name;
             this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
             this.invoiceForm.address = this.company.address;
@@ -477,7 +477,7 @@
                 return Toast("商品服务不能为空");
               }
               //验证手机号
-              axios.post('/invoice/product/make', {
+              axios.post("/invoice/product/make", {
                 products: this.productList,
                 accessToken: this.accessToken,
                 type: this.invoiceForm.type,
@@ -507,7 +507,7 @@
               });
 
             }
-          })
+          });
         } else {
           MessageBox({
             title: "提示",
@@ -520,7 +520,7 @@
                 return Toast("商品服务不能为空");
               }
               //验证手机号
-              axios.post('/invoice/product/make', {
+              axios.post("/invoice/product/make", {
                 products: this.productList,
                 accessToken: this.accessToken,
                 type: this.invoiceForm.type,
@@ -529,7 +529,7 @@
                 property: this.invoiceForm.property,
                 ifUseMergeVm: "false",
                 remark: this.invoiceForm.inputValue,
-                companyId: this.company.companyId,
+                companyId: this.company.companyId
                 // email: this.email,
                 // addrMobile: this.address.mobile
               }).then(res => {
@@ -610,7 +610,7 @@
         });
       },
       addTo() {
-        let obj = {}
+        let obj = {};
         for (var i = 0; i < this.productListAll.length; i++) {
           if (this.productListAll[i].number > 0) {
             obj = {
@@ -621,9 +621,9 @@
               name: this.productListAll[i].name,
               number: this.productListAll[i].number
             };
-            let oldList = JSON.parse(localStorage.getItem("productList")) || []
-            oldList.push(obj)
-            localStorage.setItem("productList", JSON.stringify(oldList))
+            let oldList = JSON.parse(localStorage.getItem("productList")) || [];
+            oldList.push(obj);
+            localStorage.setItem("productList", JSON.stringify(oldList));
           }
 
         }
@@ -658,21 +658,21 @@
         //   Toast.fail("单价不能为空");
         //   // return true
         // }
-        this.resetPage()
-        this.calculatedAmount()
-        this.showPopup = false
+        this.resetPage();
+        this.calculatedAmount();
+        this.showPopup = false;
       },
       showSearchPopup() {
-        this.totalPrice = 0
-        this.showPopup = true
-        this.searchValue = ''
-        this.getProductList()
+        this.totalPrice = 0;
+        this.showPopup = true;
+        this.searchValue = "";
+        this.getProductList();
       },
       chooseRadio(id) {
-        this.radio = id
+        this.radio = id;
         for (var i = 0; i < this.productListAll.length; i++) {
           if (this.radio === this.productListAll[i].productId) {
-            this.productId = this.productListAll[i].productId
+            this.productId = this.productListAll[i].productId;
             this.specification = this.productListAll[i].specification;
             this.unit = this.productListAll[i].unit;
             this.price = this.productListAll[i].price;
@@ -681,8 +681,8 @@
         }
       },
       onSearch() {
-        var searchVal = {name: this.searchValue}
-        this.getProductList(searchVal)
+        var searchVal = { name: this.searchValue };
+        this.getProductList(searchVal);
       },
       calcTotalPrice() {
         let total = 0;
@@ -709,7 +709,7 @@
         localStorage.setItem("type", this.invoiceForm.type);
         if (this.invoiceForm.type === "企业") {
           this.getDefaultCompany();
-          this.getDefaultAddress()
+          this.getDefaultAddress();
         } else if (this.invoiceForm.type === "个人") {
           this.invoiceForm.purchaserName = "";
           this.invoiceForm.purchaserTaxpayerNumber = "";
@@ -761,13 +761,13 @@
             }
           });
         }
-      },
+      }
     },
     mounted() {
       this.getProductList();
     },
     created() {
-      this.resetPage()
+      this.resetPage();
       this.make = localStorage.getItem("make");
       this.order = localStorage.getItem("order");
       this.accessToken = localStorage.getItem("accessToken");
@@ -838,7 +838,7 @@
   }
 
   .blueBox {
-    box-sizing:border-box;
+    box-sizing: border-box;
     padding: 17px 0;
     font-size: 15px;
     height: 70px;
@@ -846,8 +846,9 @@
     color: #1989fa;
     border-radius: 4px;
   }
+
   .grayBox {
-    box-sizing:border-box;
+    box-sizing: border-box;
     padding: 17px 0;
     font-size: 15px;
     height: 70px;
