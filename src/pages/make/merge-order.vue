@@ -11,13 +11,13 @@
       </div>
       <p>请选择发票类型</p>
       <van-row type="flex" justify="space-between" class="twoBox">
-        <van-col span="12">
+        <van-col span="12" v-show="showElectronic">
           <div :class="{'blueBox': isEInvoice, 'grayBox': isPInvoice }" style="margin-right:5px" @click="getEtr">
             <p style="font-size: 16px; margin-top: -6px">电子发票</p>
             <p style="font-size: 12px; margin-top: 6px">最快1分钟开具</p>
           </div>
         </van-col>
-        <van-col span="12" v-show="showPaper=this.ifPaper">
+        <van-col span="12" v-show="showPaper">
           <div :class="{'blueBox': !isEInvoice, 'grayBox': !isPInvoice }" style="margin-left:5px" @click="getPaper">
             <p style="font-size: 16px; margin-top: -6px">纸质发票</p>
             <p style="font-size: 12px; margin-top: 6px">预计一周送达</p>
@@ -39,7 +39,7 @@
             <van-radio name="个人">个人</van-radio>
           </van-radio-group>
         </van-cell>
-        <van-cell title="发票类型" center v-show="!this.isEInvoice">
+        <van-cell title="发票类型" center v-show="!this.isEInvoice || !this.showElectronic">
           <van-radio-group
             class="van-radio-group_type"
             v-model="paperForm.type"
@@ -184,7 +184,6 @@
 <script>
   import { getDefaultCompany } from "../../api/company";
   import { getDefaultAddress } from "../../api/address";
-  import { getShop} from "../../api/shop";
   import { getCustomer } from "../../api/customer";
   import Header from "../../components/header.vue";
   import { Navbar, TabItem } from "mint-ui";
@@ -198,9 +197,10 @@
     },
     data() {
       return {
-        showPaper:"",
-        ifElectronic:"",
-        ifPaper:"",
+        showPaper: "",
+        showElectronic: "",
+        ifElectronic: "",
+        ifPaper: "",
         isShow: false,
         isHide: true,
         loadingList: true,
@@ -249,12 +249,6 @@
     },
     methods: {
       //获取发票类型
-      getShop() {
-        getShop().then(res => {
-          this.ifElectronic=res.data.content.ifElectronic
-          this.ifPaper=res.data.content.ifPaper
-        });
-      },
       getRadioVal() {
         this.invoiceForm.category = this.paperForm.type;
       },
@@ -540,6 +534,12 @@
       } else {
         this.invoiceForm.type = "企业";
       }
+      this.showElectronic = JSON.parse(localStorage.getItem("ifElectronic"));
+      this.showPaper = JSON.parse(localStorage.getItem("ifPaper"));
+      if (this.showElectronic == false && this.showPaper == true) {
+        this.isEInvoice = false;
+        this.isPInvoice = true;
+      }
     },
     // beforeRouteLeave(to,from,next){
     // from.meta.keepAlive = false;
@@ -560,7 +560,6 @@
       this.getCustomer();
       this.getInvoiceRemark();
       this.getInvoiceSupport();
-      this.getShop()
     }
   };
 </script>

@@ -394,6 +394,7 @@
         Toast("accessToken不能为空！");
       }
       if (this.$route.query.outOrderNo) {
+        console.log(this.$route.query.outOrderNo);
         localStorage.setItem("outOrderNo", this.$route.query.outOrderNo);
         this.outOrderNo = localStorage.getItem("outOrderNo");
       } else if (this.outOrderNo === "") {

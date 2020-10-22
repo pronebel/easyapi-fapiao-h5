@@ -25,18 +25,29 @@
   import { Indicator } from "mint-ui";
   import { Toast } from "mint-ui";
   import { getOrderTypeList } from "../api/order-type";
-  import { getShopSupport} from "../api/shop";
+  import { getShopSupport, getShop } from "../api/shop";
 
   export default {
     name: "Index",
     data() {
       return {
+        ifElectronic:"",
+        ifPaper:"",
         make: "",
         order: "",
         orderTypeList: ""
       };
     },
     methods: {
+      //获取发票类型
+      getShop() {
+        getShop().then(res => {
+          this.ifElectronic=res.data.content.ifElectronic
+          this.ifPaper=res.data.content.ifPaper
+          localStorage.setItem("ifElectronic", this.ifElectronic);
+          localStorage.setItem("ifPaper", this.ifPaper);
+        });
+      },
       /**
        * 获取订单类型列表
        */
@@ -73,6 +84,7 @@
       }
     },
     created() {
+      this.getShop()
       localStorage.removeItem("make");
       localStorage.removeItem("order");
       if (this.$route.query.accessToken) {
