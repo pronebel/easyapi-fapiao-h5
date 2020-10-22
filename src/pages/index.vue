@@ -22,10 +22,10 @@
   </div>
 </template>
 <script>
-  import {Indicator} from "mint-ui";
-  import {Toast} from "mint-ui";
-  import {getOrderTypeList} from "../api/order-type";
-  import {getShopSupport} from "../api/shop";
+  import { Indicator } from "mint-ui";
+  import { Toast } from "mint-ui";
+  import { getOrderTypeList } from "../api/order-type";
+  import { getShopSupport} from "../api/shop";
 
   export default {
     name: "Index",
@@ -44,7 +44,7 @@
         getOrderTypeList().then(res => {
           if (res.status === 200) {
             this.orderTypeList = res.data.content;
-            setTimeout(function () {
+            setTimeout(function() {
               Indicator.close();
             }, 1500);
           }
@@ -90,10 +90,10 @@
         spinnerType: "fading-circle"
       });
       that.getOrderTypeList();
-      setTimeout(function () {
+      setTimeout(function() {
         that.getShopSupport();
       }, 1000);
-    }
+    },
   };
 </script>
 

@@ -17,7 +17,7 @@
             <p style="font-size: 12px; margin-top: 6px">最快1分钟开具</p>
           </div>
         </van-col>
-        <van-col span="12">
+        <van-col span="12" v-show="showPaper=this.ifPaper">
           <div :class="{'blueBox': !isEInvoice, 'grayBox': !isPInvoice }" style="margin-left:5px" @click="getPaper">
             <p style="font-size: 16px; margin-top: -6px">纸质发票</p>
             <p style="font-size: 12px; margin-top: 6px">预计一周送达</p>
@@ -184,6 +184,7 @@
 <script>
   import { getDefaultCompany } from "../../api/company";
   import { getDefaultAddress } from "../../api/address";
+  import { getShop} from "../../api/shop";
   import { getCustomer } from "../../api/customer";
   import Header from "../../components/header.vue";
   import { Navbar, TabItem } from "mint-ui";
@@ -197,6 +198,9 @@
     },
     data() {
       return {
+        showPaper:"",
+        ifElectronic:"",
+        ifPaper:"",
         isShow: false,
         isHide: true,
         loadingList: true,
@@ -244,6 +248,13 @@
       }
     },
     methods: {
+      //获取发票类型
+      getShop() {
+        getShop().then(res => {
+          this.ifElectronic=res.data.content.ifElectronic
+          this.ifPaper=res.data.content.ifPaper
+        });
+      },
       getRadioVal() {
         this.invoiceForm.category = this.paperForm.type;
       },
@@ -549,6 +560,7 @@
       this.getCustomer();
       this.getInvoiceRemark();
       this.getInvoiceSupport();
+      this.getShop()
     }
   };
 </script>
