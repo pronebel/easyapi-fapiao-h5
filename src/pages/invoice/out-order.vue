@@ -41,7 +41,7 @@
         getInvoice(this.$route.query.id).then(res => {
           this.invoiceItems = res.data.content.invoiceItems;
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
         });
       }
     },

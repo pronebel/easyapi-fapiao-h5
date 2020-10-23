@@ -124,6 +124,9 @@
 <script>
   import {getDefaultCompany} from "../../api/company";
   import {getCustomer} from "../../api/customer";
+  import {getShopSupport} from "../../api/shop";
+  import {getRule} from "../../api/info";
+  import {mergeMakeInvoice} from "../../api/make";
   import Header from "../../components/header.vue";
   import {Navbar, TabItem} from "mint-ui";
   import {Toast} from "mint-ui";
@@ -300,19 +303,13 @@
             }
           }
         }
-        this.invoiceForm.accessToken = this.accessToken;
         this.invoiceForm.addrMobile = this.contactInformation;
         this.invoiceForm.email = this.email;
         this.invoiceForm.type = this.invoiceForm.type;
         this.invoiceForm.category = "增值税电子普通发票";
         this.invoiceForm.property = "电子";
         this.invoiceForm.outOrderIds = this.outOrder.outOrderId;
-        this.$ajax({
-          method: "POST",
-          url: 'https://fapiao-api.easyapi.com/merge-make',
-          data: this.invoiceForm
-        })
-          .then(res => {
+        mergeMakeInvoice(this.invoiceForm).then(res => {
             if (res.data.code === 1) {
               this.$messagebox.alert(res.data.message);
               this.$router.push({
@@ -334,20 +331,12 @@
       },
       //获取备注
       getSpecifications() {
-        this.$ajax.get("/api/invoice/rule", {
-          params: {
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        getRule().then(res => {
           this.remark = res.data.content.remark;
         })
       },
       getInvoicingService() {
-        this.$ajax.get("/api/shop/0/support", {
-          params: {
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        getShopSupport().then(res => {
           this.ifNeedMobile = res.data.content.ifNeedMobile;
           this.ifNeedEmail = res.data.content.ifNeedEmail;
         })

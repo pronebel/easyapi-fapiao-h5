@@ -93,7 +93,7 @@
             // this.name = res.data.content.name;
             this.addressForm.area = this.addressForm.province + this.addressForm.city + this.addressForm.district
           }).catch(error => {
-            console.log(error);
+            Toast(error.response.data.message);
           });
         }
       },
@@ -110,7 +110,7 @@
                 this.$router.go(-1)
               }
             }).catch(error => {
-              console.log(error);
+              Toast(error.response.data.message);
             });
           }
         });

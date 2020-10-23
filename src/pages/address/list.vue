@@ -71,7 +71,7 @@
             this.loading = false;
           }
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
           this.loading = false;
         });
       },
@@ -88,7 +88,7 @@
       defaultAddress(addressId) {
         defaultAddress(addressId).then(res => {
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
         });
       },
       gotoEditAddress() {

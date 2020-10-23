@@ -253,16 +253,17 @@
 </template>
 
 <script>
-  import { getProductList } from "../../api/product";
-  import { getCustomer } from "../../api/customer";
+  import {getProductList} from "../../api/product";
+  import {getCustomer} from "../../api/customer";
+  import {getDefaultCompany} from "../../api/company";
+  import {getDefaultAddress} from "../../api/address";
+  import {getShopSupport} from "../../api/shop";
+  import {getRule} from "../../api/info";
   import Header from "../../components/header.vue";
-  import { Navbar, TabItem } from "mint-ui";
-  import { Toast } from "mint-ui";
-  import { MessageBox } from "mint-ui";
+  import {Navbar, TabItem} from "mint-ui";
+  import {Toast} from "mint-ui";
+  import {MessageBox} from "mint-ui";
   import Isemail from "isemail";
-  import axios from "../../api/request";
-  import { getDefaultCompany } from "../../api/company";
-  import { getDefaultAddress } from "../../api/address";
 
   export default {
     name: "MakeProduct",
@@ -300,11 +301,6 @@
         isShow: false,
         isHide: true,
 
-        // productId: "",
-        // specification: "",
-        // unit: "",
-        // price: "",
-        // number: "",
         productListAll: [],
         calcProductList: [],
         searchValue: "",
@@ -378,7 +374,6 @@
             this.company = [];
           } else {
             this.company = res.data.content;
-            console.log(this.company);
             this.invoiceForm.purchaserName = this.company.name;
             this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
             this.invoiceForm.address = this.company.address;
@@ -566,14 +561,10 @@
       },
       //获取备注
       getSpecifications() {
-        axios.get("/api/invoice/rule", {
-          params: {
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        getRule().then(res => {
           this.remark = res.data.content.remark;
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
         });
       },
       //删除内容
@@ -589,15 +580,11 @@
         this.calculatedAmount();
       },
       getInvoicingService() {
-        axios.get("/api/shop/0/support", {
-          params: {
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        getShopSupport().then(res => {
           this.NeedMobile = res.data.content.ifNeedMobile;
           this.NeedEmail = res.data.content.ifNeedEmail;
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
         });
       },
       //跳转添加内容
@@ -681,7 +668,7 @@
         }
       },
       onSearch() {
-        var searchVal = { name: this.searchValue };
+        var searchVal = {name: this.searchValue};
         this.getProductList(searchVal);
       },
       calcTotalPrice() {

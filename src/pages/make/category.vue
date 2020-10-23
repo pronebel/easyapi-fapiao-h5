@@ -3,7 +3,7 @@
     <Header @head-back="goBack()" :headerTitle="headerTitle"></Header>
     <div class="nav">
       <div id="loading">
-        <van-loading  v-show="loadingList" type="spinner" color="#56cbf6" />
+        <van-loading v-show="loadingList" type="spinner" color="#56cbf6"/>
       </div>
       <p>请选择发票类型</p>
       <van-row type="flex" justify="space-between" class="twoBox">
@@ -41,9 +41,10 @@
               </van-radio-group>
             </van-cell>
             <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位"
-                   v-model="invoiceForm.purchaserName"/>
-            <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="toAddressManage" right-icon="arrow"
-                   placeholder="请选择发票抬头" v-model="company.name"/>
+                       v-model="invoiceForm.purchaserName"/>
+            <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="toAddressManage"
+                       right-icon="arrow"
+                       placeholder="请选择发票抬头" v-model="company.name"/>
             <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企    业'" v-model="company.taxNumber"/>
             <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type    === '企业'" @click="showMore"
                        v-show="isHide"
@@ -132,10 +133,12 @@
   import {Navbar, TabItem} from "mint-ui";
   import {Toast} from "mint-ui";
   import {MessageBox} from "mint-ui";
-  import Isemail from "isemail";
   import {getDefaultCompany} from "../../api/company";
   import {getCustomer} from "../../api/customer";
   import {getCustomCategoryList} from "../../api/custom-category";
+  import {getShopSupport} from "../../api/shop";
+  import {getRule} from "../../api/info";
+  import {categoryMakeInvoice} from "../../api/make";
 
   export default {
     name: "singleOrder",
@@ -186,8 +189,8 @@
         isShow: false,
         isHide: true,
         value: '',
-      showPicker: false,
-      columns: ['杭州', '宁波', '温州', '绍兴', '湖州', '嘉兴', '金华', '衢州'],
+        showPicker: false,
+        columns: ['杭州', '宁波', '温州', '绍兴', '湖州', '嘉兴', '金华', '衢州'],
       };
     },
 
@@ -245,13 +248,14 @@
         };
         getCustomCategoryList(params).then(res => {
           this.categoryName = res.data.content;
-          for (var i = 0; i < this.categoryName.length; i++) {
+          for (let i = 0; i < this.categoryName.length; i++) {
             this.categoryNameArray[i] = this.categoryName[i].name
-          };
+          }
+          ;
           this.productList = res.data.content.invoiceItems;
           this.remark = this.scanContent.remark;
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
         });
       },
       getCustomer() {
@@ -259,7 +263,7 @@
           (this.loadingList = false), (this.email = res.data.content.email);
           this.contactInformation = res.data.content.mobile;
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
         });
       }
       ,
@@ -273,7 +277,6 @@
             this.showDisabled = true;
             return Toast("请输入邮箱");
           } else if (!regEmail.test(this.email)) {
-
             this.showDisabled = true;
             return Toast("邮箱格式不正确");
           }
@@ -305,20 +308,18 @@
         }
         if (this.productList !== null) {
         }
-        this.$ajax.post('/invoice/category/make', {
-          data: {
-            type: this.invoiceForm.type,
-            companyId: this.company.companyId,
-            category: "增值税电子普通发票",
-            property: "电子",
-            email: this.email,
-            taxNumber: this.taxNumber,
-            price: this.price,
-            customCategoryId: this.customCategory,
-            addrMobile: this.contactInformation,
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        let data = {
+          type: this.invoiceForm.type,
+          companyId: this.company.companyId,
+          category: "增值税电子普通发票",
+          property: "电子",
+          email: this.email,
+          taxNumber: this.taxNumber,
+          price: this.price,
+          customCategoryId: this.customCategory,
+          addrMobile: this.contactInformation,
+        };
+        categoryMakeInvoice(data).then(res => {
           if (res.data.code === 1) {
             this.$messagebox.alert(res.data.message);
             this.$router.push({
@@ -338,27 +339,19 @@
       ,
       //获取备注
       getSpecifications() {
-        this.$ajax.get("/api/invoice/rule", {
-          params: {
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        getRule().then(res => {
           this.remark = res.data.content.remark;
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
         });
       }
       ,
       getInvoicingService() {
-        this.$ajax.get("/api/shop/0/support", {
-          params: {
-            accessToken: this.accessToken
-          }
-        }).then(res => {
+        getShopSupport().then(res => {
           this.ifNeedMobile = res.data.content.ifNeedMobile;
           this.ifNeedEmail = res.data.content.ifNeedEmail;
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
         });
       },
       //跳转添加内容
@@ -404,9 +397,9 @@
         this.isHide = true;
       },
       onConfirm(value) {
-      this.customCategory = value;
-      this.showPicker = false;
-    },
+        this.customCategory = value;
+        this.showPicker = false;
+      },
     },
     watch: {},
     created() {
@@ -449,6 +442,7 @@
 
 <style scoped>
   @import 'make.css';
+
   .twoBox {
     height: 70px;
     /* border: 2px solid blue; */
@@ -458,7 +452,7 @@
   }
 
   .blueBox {
-    box-sizing:border-box;
+    box-sizing: border-box;
     padding: 17px 0;
     font-size: 15px;
     height: 70px;
@@ -466,8 +460,9 @@
     color: #1989fa;
     border-radius: 4px;
   }
+
   .grayBox {
-    box-sizing:border-box;
+    box-sizing: border-box;
     padding: 17px 0;
     font-size: 15px;
     height: 70px;

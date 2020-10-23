@@ -128,7 +128,7 @@
       getProductList(params) {
         getProductList(params).then(res => {
           this.productList = res.data.content;
-          for (var i = 0; i < this.productList.length; i++) {
+          for (let i = 0; i < this.productList.length; i++) {
             this.productListColumns[i] = this.productList[i].name + ' ' + this.productList[i].specification
           }
         });
@@ -161,15 +161,15 @@
         }
       },
       showSearchPopup() {
-        this.showPopup = true
-        this.searchValue = ''
-        this.getProductList()
+        this.showPopup = true;
+        this.searchValue = '';
+        this.getProductList({})
       },
       chooseRadio(id) {
-        this.radio = id
-        for (var i = 0; i < this.productList.length; i++) {
+        this.radio = id;
+        for (let i = 0; i < this.productList.length; i++) {
           if (this.radio === this.productList[i].productId) {
-            this.productId = this.productList[i].productId
+            this.productId = this.productList[i].productId;
             this.specification = this.productList[i].specification;
             this.unit = this.productList[i].unit;
             this.price = this.productList[i].price;
@@ -179,12 +179,11 @@
         this.showPopup = false
       },
       onSearch() {
-        var searchVal = {name: this.searchValue}
-        this.getProductList(searchVal)
+        this.getProductList({name: this.searchValue})
       },
     },
     mounted() {
-      this.getProductList();
+      this.getProductList({});
     },
     created() {
       this.accessToken = localStorage.getItem("accessToken");

@@ -182,13 +182,16 @@
 </template>
 
 <script>
-  import { getDefaultCompany } from "../../api/company";
-  import { getDefaultAddress } from "../../api/address";
-  import { getCustomer } from "../../api/customer";
+  import {getDefaultCompany} from "../../api/company";
+  import {getDefaultAddress} from "../../api/address";
+  import {getShopSupport} from "../../api/shop";
+  import {getCustomer} from "../../api/customer";
+  import {getRule} from "../../api/info";
+  import {mergeMakeInvoice} from "../../api/make";
   import Header from "../../components/header.vue";
-  import { Navbar, TabItem } from "mint-ui";
-  import { Toast } from "mint-ui";
-  import { MessageBox } from "mint-ui";
+  import {Navbar, TabItem} from "mint-ui";
+  import {Toast} from "mint-ui";
+  import {MessageBox} from "mint-ui";
 
   export default {
     name: "MergeOrder",
@@ -448,21 +451,17 @@
                 }
               }
               if (this.order === "true") {
-                this.invoiceForm.accessToken = this.accessToken;
                 this.invoiceForm.addrMobile = this.contactInformation;
                 this.invoiceForm.email = this.email;
-                this.$ajax
-                  .post("/merge-make", this.invoiceForm, {})
-                  .then((res) => {
-                    if (res.data.code === 1) {
-                      this.$router.push(`/make/success`);
-                    }
-                  })
-                  .catch((error) => {
-                    this.showDisabled = false;
-                    Toast(error.response.data.message);
-                    this.showDisabled = true;
-                  });
+                mergeMakeInvoice(this.invoiceForm).then((res) => {
+                  if (res.data.code === 1) {
+                    this.$router.push(`/make/success`);
+                  }
+                }).catch((error) => {
+                  this.showDisabled = false;
+                  Toast(error.response.data.message);
+                  this.showDisabled = true;
+                });
               }
             }
           });
@@ -474,19 +473,15 @@
           }).then((action) => {
             if (action === "confirm") {
               if (this.order === "true") {
-                this.invoiceForm.accessToken = this.accessToken;
-                this.$ajax
-                  .post("/merge-make", this.invoiceForm, {})
-                  .then((res) => {
-                    if (res.data.code === 1) {
-                      this.$router.push(`/make/success`);
-                    }
-                  })
-                  .catch((error) => {
-                    this.showDisabled = false;
-                    Toast(error.response.data.message);
-                    this.showDisabled = true;
-                  });
+                mergeMakeInvoice(this.invoiceForm).then((res) => {
+                  if (res.data.code === 1) {
+                    this.$router.push(`/make/success`);
+                  }
+                }).catch((error) => {
+                  this.showDisabled = false;
+                  Toast(error.response.data.message);
+                  this.showDisabled = true;
+                });
               }
             }
           });
@@ -497,28 +492,16 @@
        * 获取发票备注填写说明
        */
       getInvoiceRemark() {
-        this.$ajax
-          .get("/api/invoice/rule", {
-            params: {
-              accessToken: this.accessToken
-            }
-          })
-          .then((res) => {
-            this.remark = res.data.content.remark ? res.data.content.remark : "";
-          });
+        getRule().then((res) => {
+          this.remark = res.data.content.remark ? res.data.content.remark : "";
+        });
       },
 
       getInvoiceSupport() {
-        this.$ajax
-          .get("/api/shop/0/support", {
-            params: {
-              accessToken: this.accessToken
-            }
-          })
-          .then((res) => {
-            this.NeedMobile = res.data.content.ifNeedMobile;
-            this.NeedEmail = res.data.content.ifNeedEmail;
-          });
+        getShopSupport().then((res) => {
+          this.NeedMobile = res.data.content.ifNeedMobile;
+          this.NeedEmail = res.data.content.ifNeedEmail;
+        });
       }
     },
     watch: {},
@@ -548,7 +531,7 @@
     // },
     activated() {
       this.selectCompany();
-      event.$on("select", function(data) {
+      event.$on("select", function (data) {
         this.address = data;
         this.$forceUpdate();
       });

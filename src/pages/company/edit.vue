@@ -98,7 +98,7 @@
             this.companyForm = res.data.content;
             this.name = res.data.content.name;
           }).catch(error => {
-            console.log(error);
+            this.$messagebox.alert(error.response.data.message);
           });
         }
       },
@@ -115,7 +115,7 @@
                 this.$router.go(-1)
               }
             }).catch(error => {
-              console.log(error);
+              this.$messagebox.alert(error.response.data.message);
             });
           }
         });
@@ -132,7 +132,7 @@
         }).then(res => {
           this.searchList = res.data.content;
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
         });
       },
       chooseRise(index) {

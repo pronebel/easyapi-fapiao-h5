@@ -74,7 +74,7 @@
             this.loading = false;
           }
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
           this.loading = false;
         });
       },
@@ -90,7 +90,7 @@
       defaultCompany(companyId) {
         defaultCompany(companyId).then(res => {
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
         });
       },
       gotoWechat(){

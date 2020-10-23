@@ -4,6 +4,7 @@ import {baseUrl} from "./request";
 
 
 /**
+ * 获取商户支持信息
  *
  * @see https://www.easyai.com
  */
@@ -15,7 +16,7 @@ export const getShopSupport = () => axios.get(`${baseUrl}/api/shop/0/support`, {
 
 
 /**
- *
+ * 获取商户详情信息
  * @see https://www.easyai.com
  */
 export const getShop = () => axios.get(`${baseUrl}/api/shop`, {

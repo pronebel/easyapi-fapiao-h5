@@ -110,7 +110,7 @@
           this.serviceType = res.data.content.serviceType;
           this.invoiceItems = this.invoiceDetail.invoiceItems;
         }).catch(error => {
-          console.log(error);
+          this.$messagebox.alert(error.response.data.message);
         });
       },
       goAssociatedOrder() {
