@@ -38,3 +38,13 @@ export const queryInvoice = (outOrderNo) => {
     params: params
   });
 }
+
+/**
+ * 获取外部订单列表
+ * @param invoiceId 发票ID
+ */
+export const getOutOrderList = (params) => axios.get(`${baseUrl}/out-orders`, {
+  params: {
+    ...params
+  }
+});

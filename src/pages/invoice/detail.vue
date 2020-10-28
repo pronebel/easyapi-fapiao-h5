@@ -58,7 +58,7 @@
 </template>
 
 <script>
-  import {getInvoice} from "../../api/invoice";
+  import {getInvoice,getOutOrderList} from "../../api/invoice";
   import Header from "../../components/header.vue";
   import {MessageBox} from "mint-ui";
   import Clipboard from "clipboard";
@@ -74,6 +74,7 @@
         active: "tab-container1",
         invoiceDetail: {},
         invoiceItems: [],
+        invoiceDetailItems:[],
         serviceType: "",
         url: "",
         imgUrl: "",
@@ -113,6 +114,17 @@
           this.$messagebox.alert(error.response.data.message);
         });
       },
+      getOutOrderList() {
+        console.log(11)
+        let params = {
+          invoiceId: this.$route.query.id
+        };
+        getOutOrderList(params).then(res => {
+          this.invoiceDetailItems = res.data.content
+        }).catch(error => {
+          this.$messagebox.alert(error.response.data.message);
+        });
+      },
       goAssociatedOrder() {
         this.$router.push({
           path: "/invoice/out-order",
@@ -136,6 +148,7 @@
     watch: {},
     mounted() {
       this.getInvoiceDetail();
+      this.getOutOrderList()
     }
   };
 </script>
