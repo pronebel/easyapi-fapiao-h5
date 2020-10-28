@@ -255,6 +255,10 @@
   line-height: 50px;
 }
 
+.minusBox{
+  background: white;
+}
+
 .mint-cell-wrapper {
   background: none !important;
 }
@@ -532,6 +536,10 @@
 
 .merge-order_price .van-field__control{
   color:red;
+}
+
+.pd-left{
+  padding: 5px;
 }
 
 
