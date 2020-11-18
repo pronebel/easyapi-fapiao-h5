@@ -17,12 +17,7 @@
         this.$router.replace(`/invoice/`);
       },
       gotoIndex() {
-        this.$router.replace({
-          path: "/",
-          query: {
-            accessToken: localStorage.getItem("accessToken")
-          }
-        });
+        this.$router.replace("/");
       }
     }
   };

@@ -71,7 +71,7 @@
 <!--</van-cell-group>-->
 <!--</form>-->
 <!--</div>-->
-<!--<div class="invoice-contents">-->
+<!--<div class="product-item">-->
 <!--<van-cell-group title="发票内容">-->
 <!--<van-field name="rate" label="发票内容">-->
 <!--<template #input>-->
