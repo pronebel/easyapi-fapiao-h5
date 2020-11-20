@@ -40,10 +40,10 @@
 </template>
 <script>
   import Header from "../../components/header.vue";
-  import {MessageBox} from "mint-ui";
-  import {Toast} from "mint-ui";
-  import AreaList from './area';
-  import {createAddress, updateAddress, deleteAddress} from "../../api/address";
+  import { MessageBox } from "mint-ui";
+  import { Toast } from "mint-ui";
+  import { createAddress, updateAddress, deleteAddress } from "../../api/address";
+  import axios from "axios";
 
   export default {
     name: "EditAddress",
@@ -59,11 +59,23 @@
         accessToken: "",
         name: "",
         showPopup: false,
-        areaList: AreaList,
+        areaList: {}
       };
     },
 
     methods: {
+      getAreaList() {
+        axios({
+          url: "https://qiniu.easyapi.com/area.json",
+          dataType: "json",
+          async: true,
+          type: "GET"
+        }).then(res => {
+          if (res.data.status == 1) {
+
+          }
+        });
+      },
       goBack() {
         history.go(-1);
       },
@@ -91,7 +103,7 @@
           }).then(res => {
             this.addressForm = res.data.content;
             // this.name = res.data.content.name;
-            this.addressForm.area = this.addressForm.province + this.addressForm.city + this.addressForm.district
+            this.addressForm.area = this.addressForm.province + this.addressForm.city + this.addressForm.district;
           }).catch(error => {
             Toast(error.response.data.message);
           });
@@ -107,7 +119,7 @@
           if (action === "confirm") {
             deleteAddress(this.id).then(res => {
               if (res.data.code === 1) {
-                this.$router.go(-1)
+                this.$router.go(-1);
               }
             }).catch(error => {
               Toast(error.response.data.message);
@@ -129,7 +141,7 @@
             if (this.title === "edit") {
               updateAddress(this.id, this.addressForm).then(res => {
                 if (res.data.code === 1) {
-                  this.$router.go(-1)
+                  this.$router.go(-1);
                 }
               }).catch(error => {
                 this.$messagebox.alert(error.response.data.message);
@@ -137,7 +149,7 @@
             } else {
               createAddress(this.addressForm).then(res => {
                 if (res.data.code === 1) {
-                  this.$router.go(-1)
+                  this.$router.go(-1);
                 }
               }).catch(error => {
                 this.$messagebox.alert(error.response.data.message);
@@ -151,7 +163,7 @@
         this.addressForm.city = e[1].name;
         this.addressForm.district = e[2].name;
         this.addressForm.area = this.addressForm.province + this.addressForm.city + this.addressForm.district;
-        this.showPopup = false
+        this.showPopup = false;
       }
     },
     computed: {
@@ -164,6 +176,7 @@
     },
     mounted() {
       this.getId();
+      this.getAreaList();
     }
   };
 </script>

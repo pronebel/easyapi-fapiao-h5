@@ -17,7 +17,7 @@
             <p style="font-size: 12px; margin-top: 6px">最快1分钟开具</p>
           </div>
         </van-col>
-        <van-col span="12" v-show="showPaper">
+        <van-col span="12" >
           <div :class="{'blueBox': !isEInvoice, 'grayBox': !isPInvoice }" style="margin-left:5px" @click="getPaper">
             <p style="font-size: 16px; margin-top: -6px">纸质发票</p>
             <p style="font-size: 12px; margin-top: 6px">预计一周送达</p>
