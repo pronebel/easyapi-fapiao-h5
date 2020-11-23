@@ -1,7 +1,7 @@
 <template>
   <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;">
-    <Header @head-back="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
-    <div class="nav">
+    <Header @head-back="goBack()" :headerTitle="headerTitle"></Header>
+    <div class="nav" style="margin-top: 10px;">
       <div id="loading">
         <van-loading v-show="loadingList" type="spinner" color="#56cbf6"/>
       </div>
@@ -79,6 +79,10 @@
         </van-popup>
         <van-field class="merge-order_price" label="发票金额" v-model="price"></van-field>
         <van-field label="备注" placeholder="请输入备注信息" v-model="invoiceForm.inputValue"></van-field>
+        <van-cell title="附件">
+          <van-uploader v-model="fileList" multiple>
+          </van-uploader>
+        </van-cell>
       </div>
       <div class="page-part" style="margin-bottom: 60px" v-show="this.isEInvoice">
         <p>接收方式</p>
@@ -130,7 +134,7 @@
 
 <script>
   import Header from "../../components/header.vue";
-  import {getDefaultAddress} from "../../api/address";
+  import { getDefaultAddress } from "../../api/address";
   import { Navbar, TabItem } from "mint-ui";
   import { Toast } from "mint-ui";
   import { MessageBox } from "mint-ui";
@@ -148,8 +152,8 @@
     },
     data() {
       return {
-        showPaper:"",
-        showElectronic:"",
+        showPaper: "",
+        showElectronic: "",
         loadingList: true,
         customCategory: "软件开发服务",
         price: 1,
@@ -157,7 +161,7 @@
         productList: [],
         contentList: "",
         outOrderNo: "",
-        address:{},
+        address: {},
         order: "",
         make: true,
         accessToken: "",
@@ -183,7 +187,9 @@
         returnUrl: "",
         priceSplicing: "",
         invoiceForm: {
-          type: ""
+          isPaper: false,
+          type: "",
+          purchaserName: ""
         },
         isEInvoice: true,
         isPInvoice: false,
@@ -194,11 +200,16 @@
         isHide: true,
         value: "",
         showPicker: false,
-        columns: ["杭州", "宁波", "温州", "绍兴", "湖州", "嘉兴", "金华", "衢州"]
+        columns: ["杭州", "宁波", "温州", "绍兴", "湖州", "嘉兴", "金华", "衢州"],
+        fileList: []
       };
     },
 
     methods: {
+      //获取发票类型
+      getRadioVal() {
+        this.invoiceForm.category = this.paperForm.type;
+      },
       selectType() {
         localStorage.setItem("type", this.invoiceForm.type);
         if (this.invoiceForm.type === "企业") {
@@ -213,6 +224,8 @@
           this.invoiceForm.purchaserBankAccount = "";
           this.invoiceForm.companyId = "";
         }
+        console.log(this.invoiceForm.type)
+        console.log(this.invoiceForm.purchaserName)
       },
       goBack() {
         history.go(-1);
@@ -222,7 +235,6 @@
       },
       seletedOrder(item) {
         this.loadingList = false;
-        this.company = item;
       },
       gotoAddress() {
         if (this.address) {
@@ -246,10 +258,8 @@
         }
       },
       getDefaultCompany() {
-        getDefaultCompany().then(res => {
-          if (res.data.code === 0) {
-            this.company = [];
-          } else {
+        getDefaultCompany().then((res) => {
+          if (res.data.code === 1) {
             this.company = res.data.content;
             this.invoiceForm.purchaserName = this.company.name;
             this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
@@ -481,17 +491,16 @@
       }
     },
     activated() {
-      this.getDefaultCompany();
       this.seletedOrder();
-      event.$on("select", function (data) {
+      event.$on("select", function(data) {
         this.address = data;
         this.$forceUpdate();
       });
     },
     mounted() {
       this.getDefaultAddress();
-      this.getCustomer();
       this.getDefaultCompany();
+      this.getCustomer();
       this.getSpecifications();
       this.getInvoicingService();
       this.getCustomCategories();
@@ -538,5 +547,9 @@
   .page-part .van-cell__value {
     flex: 3;
     text-align: left;
+  }
+
+  .van-cell__value{
+    min-width: 74%;
   }
 </style>

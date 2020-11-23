@@ -310,6 +310,8 @@
           this.invoiceForm.purchaserBankAccount = "";
           this.invoiceForm.companyId = "";
         }
+        console.log(this.invoiceForm.type)
+        console.log(this.invoiceForm.purchaserName)
       },
       selectCompany() {
         this.loadingList = false;
