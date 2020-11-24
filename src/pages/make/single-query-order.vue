@@ -148,7 +148,7 @@
             class="van-radio-group_type"
             v-model="invoiceForm.type"
             direction="horizontal"
-            @change="selectType"
+            @change="selectInvoiceType"
           >
             <van-radio name="企业">企业</van-radio>
             <van-radio name="个人">个人</van-radio>
@@ -335,29 +335,22 @@
         loadingList: true,
         amountOfMoney: 0,
         outOrder: "",
-        outOrderNo: "",
+        outOrderNo: "",//商户外部订单号
         address: {},
-        accessToken: "",
-        scanContent: "",
+        company: {},
         showDisabled: true,
         selected: "1",
         headerTitle: "开具电子发票",
         contactInformation: "",
         ifNeedMobile: "",
         ifNeedEmail: "",
-        company: {},
-        email: "",
         sum: 0,
         item: {},
         remark: "",
         invoiceForm: {
-          type: ""
+          type: "",
+          email: "",
         },
-        paperForm: {
-          type: "增值税普通发票"
-        },
-        isEInvoice: true,
-        isPInvoice: false
       };
     },
     computed: {
@@ -368,7 +361,6 @@
     methods: {
       //获取发票类型
       getRadioVal() {
-        this.invoiceForm.category = this.paperForm.type;
       },
       selectCompany() {
         this.loadingList = false;
@@ -399,7 +391,7 @@
           });
         }
       },
-      selectType() {
+      selectInvoiceType() {
         localStorage.setItem("type", this.invoiceForm.type);
         if (this.invoiceForm.type === "企业") {
           this.getDefaultCompany();
@@ -625,9 +617,13 @@
     created() {
       if (this.$route.query.accessToken) {
         localStorage.setItem("accessToken", this.$route.query.accessToken);
-        this.accessToken = localStorage.getItem("accessToken");
-      } else if (this.accessToken === "") {
-        Toast("accessToken不能为空！");
+      }
+      if (this.$route.query.taxNumber) {
+        localStorage.setItem("taxNumber", this.$route.query.taxNumber);
+      }
+      if (localStorage.getItem("type")) {
+        this.invoiceForm.type = localStorage.getItem("type");
+        this.selectInvoiceType();
       }
       if (this.$route.query.outOrderNo) {
         localStorage.setItem("outOrderNo", this.$route.query.outOrderNo);
@@ -635,24 +631,13 @@
       } else if (this.outOrderNo === "") {
         Toast("outOrderNo不能为空！");
       }
-      this.accessToken = localStorage.getItem("accessToken");
-      this.taxNumber = localStorage.getItem("taxNumber");
       this.outOrderNo = localStorage.getItem("outOrderNo");
-      this.invoiceForm.type = localStorage.getItem("type");
-      if (this.invoiceForm.type) {
-        this.invoiceForm.type = localStorage.getItem("type");
-      } else {
-        this.invoiceForm.type = "企业";
-        localStorage.setItem("type", "企业");
-      }
     },
     activated() {
       this.selectCompany();
-      this.getDefaultCompany();
     },
     mounted() {
       this.getCustomer();
-      this.getDefaultCompany();
       this.getSpecifications();
       this.getInvoicingService();
       this.getShopOrder()

@@ -6,14 +6,17 @@
       </div>
       <p>请选择发票类型</p>
       <van-row type="flex" justify="space-between" class="twoBox">
-        <van-col span="12" v-show="showElectronic">
-          <div :class="{'blueBox': ifElectronic, 'grayBox': ifPaper }" style="margin-right:5px" @click="getElectronic">
+        <van-col span="12" v-show="ifElectronic ==='true'">
+          <div :class="{'blueBox': invoiceForm.property=='电子', 'grayBox': invoiceForm.property!='电子' }"
+               style="margin-right:5px"
+               @click="changeElectronic">
             <p style="font-size: 16px; margin-top: -6px">电子发票</p>
             <p style="font-size: 12px; margin-top: 6px">最快1分钟开具</p>
           </div>
         </van-col>
-        <van-col span="12">
-          <div :class="{'blueBox': !ifElectronic, 'grayBox': !ifPaper }" style="margin-left:5px" @click="getPaper">
+        <van-col span="12" v-show="this.ifPaper ==='true'">
+          <div :class="{'blueBox': invoiceForm.property=='纸质', 'grayBox': invoiceForm.property!='纸质' }"
+               style="margin-left:5px" @click="changePaper">
             <p style="font-size: 16px; margin-top: -6px">纸质发票</p>
             <p style="font-size: 12px; margin-top: 6px">预计一周送达</p>
           </div>
@@ -31,11 +34,11 @@
               <van-radio name="个人">个人/事业单位</van-radio>
             </van-radio-group>
           </van-cell>
-          <van-cell title="发票类型" center v-show="!this.ifElectronic || !this.showElectronic">
+          <van-cell title="发票类型" center v-show="invoiceForm.property == '纸质'">
             <van-radio-group class="van-radio-group_type" v-model="invoiceForm.category" direction="horizontal"
             >
-              <van-radio style="margin-bottom: 5px;" name="增值税普通发票" @click="getRadioVal">增值税普通发票</van-radio>
-              <van-radio name="增值税专用发票" @click="getRadioVal">增值税专用发票</van-radio>
+              <van-radio style="margin-bottom: 5px;" name="增值税普通发票">增值税普通发票</van-radio>
+              <van-radio name="增值税专用发票" v-if="invoiceForm.type==='企业'">增值税专用发票</van-radio>
             </van-radio-group>
           </van-cell>
           <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位"
@@ -153,8 +156,6 @@
       return {
         showCustomCategory: false,
         keyboardShow: false,
-        showPaper: "",
-        showElectronic: "",
         loadingList: true,
         ifElectronic: localStorage.getItem("ifElectronic"),
         ifPaper: localStorage.getItem("ifPaper"),
@@ -174,7 +175,7 @@
         invoiceForm: {
           ifPaper: false,
           category: '增值税电子普通发票',
-          property: '电子',
+          property: localStorage.getItem("ifElectronic") === 'true' ? "电子" : "纸质",
           type: '个人',
           purchaserName: "",
           purchaserTaxpayerNumber: "",
@@ -192,9 +193,6 @@
     },
 
     methods: {
-      //获取发票类型
-      getRadioVal() {
-      },
       selectInvoiceType() {
         localStorage.setItem("type", this.invoiceForm.type);
         if (this.invoiceForm.type === "企业") {
@@ -219,7 +217,7 @@
             path: "/address/",
             name: "Address",
             params: {
-              id: this.address.addressID,
+              id: this.address.addressId,
               from: "make"
             }
           });
@@ -285,7 +283,7 @@
             }
           }
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
         });
       },
       getCustomer() {
@@ -293,7 +291,7 @@
           (this.loadingList = false), (this.invoiceForm.email = res.data.content.email);
           this.invoiceForm.addrMobile = res.data.content.mobile;
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
         });
       }
       ,
@@ -362,48 +360,29 @@
         });
       },
       //获取备注
-      getSpecifications() {
+      getInvoiceRemark() {
         getRule().then(res => {
           this.invoiceForm.remark = res.data.content.remark;
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
         });
       }
       ,
-      getInvoicingService() {
+      getShopSupport() {
         getShopSupport().then(res => {
           this.ifNeedMobile = res.data.content.ifNeedMobile;
           this.ifNeedEmail = res.data.content.ifNeedEmail;
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
         });
       },
-      getElectronic() {
-        this.ifElectronic = true;
-        this.ifPaper = false;
-        localStorage.setItem("ifPaper", false);
-        this.orderType = localStorage.getItem("orderType");
-        this.invoiceForm.mergeSum = localStorage.getItem("tot");
-        this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
-        for (let i = 0; i < this.seletedOutOrderList.length; i++) {
-          this.outOrderIds += this.seletedOutOrderList[i].outOrderId + ",";
-          this.invoiceForm.outOrderIds = this.outOrderIds;
-          this.invoiceForm.category = "增值税电子普通发票";
-          this.invoiceForm.property = "电子";
-        }
+      changeElectronic() {
+        this.invoiceForm.category = "增值税电子普通发票";
+        this.invoiceForm.property = "电子";
       },
-      getPaper() {
-        this.ifElectronic = false;
-        this.ifPaper = true;
-        localStorage.setItem("ifPaper", true);
-        this.orderType = localStorage.getItem("orderType");
-        this.invoiceForm.mergeSum = localStorage.getItem("tot");
-        this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
-        for (let j = 0; j < this.seletedOutOrderList.length; j++) {
-          this.outOrderIds += this.seletedOutOrderList[j].outOrderId + ",";
-          this.invoiceForm.outOrderIds = this.outOrderIds;
-          this.invoiceForm.property = "纸质";
-        }
+      changePaper() {
+        this.invoiceForm.property = "纸质";
+        this.invoiceForm.category = "增值税普通发票";
       },
       /** 购买方更多信息 */
       purchaserMore() {
@@ -433,19 +412,13 @@
         this.invoiceForm.type = localStorage.getItem("type");
         this.selectInvoiceType();
       }
-      this.showElectronic = localStorage.getItem("ifElectronic");
-      this.showPaper = localStorage.getItem("ifPaper");
-      if (this.showElectronic == false && this.showPaper == true) {
-        this.ifElectronic = false;
-        this.ifPaper = true;
-      }
     },
     activated() {
     },
     mounted() {
       this.getCustomer();
-      this.getSpecifications();
-      this.getInvoicingService();
+      this.getInvoiceRemark();
+      this.getShopSupport();
       this.getCustomCategories();
     }
   };

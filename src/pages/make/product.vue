@@ -7,14 +7,17 @@
       </div>
       <p>请选择发票类型</p>
       <van-row type="flex" justify="space-between" class="twoBox">
-        <van-col span="12">
-          <div :class="{'blueBox': ifElectronic, 'grayBox': ifPaper }" style="margin-right:5px">
+        <van-col span="12" v-show="ifElectronic ==='true'">
+          <div :class="{'blueBox': invoiceForm.property=='电子', 'grayBox': invoiceForm.property!='电子' }"
+               style="margin-right:5px"
+               @click="changeElectronic">
             <p style="font-size: 16px; margin-top: -6px">电子发票</p>
             <p style="font-size: 12px; margin-top: 6px">最快1分钟开具</p>
           </div>
         </van-col>
-        <van-col span="12">
-          <div :class="{'blueBox': !ifElectronic, 'grayBox': !ifPaper }" style="margin-left:5px">
+        <van-col span="12" v-show="this.ifPaper ==='true'">
+          <div :class="{'blueBox': invoiceForm.property=='纸质', 'grayBox': invoiceForm.property!='纸质' }"
+               style="margin-left:5px" @click="changePaper">
             <p style="font-size: 16px; margin-top: -6px">纸质发票</p>
             <p style="font-size: 12px; margin-top: 6px">预计一周送达</p>
           </div>
@@ -130,7 +133,7 @@
       </van-button>
     </div>
     <div>
-      <router-view @seletedOrder="seletedOrder"></router-view>
+      <router-view @select-company="selectCompany"></router-view>
     </div>
     <van-popup
       class="popupClass"
@@ -200,7 +203,6 @@
         ifPaper: localStorage.getItem("ifPaper"),
         showPopup: false,
         productList: "",//商品列表
-        selected: 1,
         ifNeedMobile: false,//手机号码是否必填
         ifNeedEmail: false,//邮箱是否必填
         company: {},//抬头对象
@@ -208,7 +210,7 @@
         invoiceForm: {
           type: "企业",
           category: "增值税电子普通发票",
-          property: "电子",
+          property: localStorage.getItem("ifElectronic") === 'true' ? "电子" : "纸质",
           purchaserName: "",
           purchaserTaxpayerNumber: "",
           purchaserAddress: "",
@@ -244,7 +246,7 @@
       goBack() {
         history.go(-1);
       },
-      seletedOrder(company) {
+      selectCompany(company) {
         this.loadingList = false;
         this.company = company;
       },
@@ -448,6 +450,14 @@
           this.invoiceForm.companyId = null;
         }
       },
+      changeElectronic() {
+        this.invoiceForm.category = "增值税电子普通发票";
+        this.invoiceForm.property = "电子";
+      },
+      changePaper() {
+        this.invoiceForm.property = "纸质";
+        this.invoiceForm.category = "增值税普通发票";
+      },
       /** 前往抬头管理页 */
       gotoCompany() {
         if (this.company) {
@@ -504,7 +514,7 @@
       }
     },
     activated() {
-      this.seletedOrder();
+      this.selectCompany();
     },
     mounted() {
       this.calcAmount();
