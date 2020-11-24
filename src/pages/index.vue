@@ -16,8 +16,8 @@
       </van-cell-group>
     </div>
 
-    <div v-if="make === true" class="bottom">
-      <van-button type="info" class="submit" block to="/make/product">我要开票</van-button>
+    <div v-if="ifProductMake || ifMoneyMake" class="bottom">
+      <van-button type="info" class="submit" block @click="gotoMake">我要开票</van-button>
     </div>
   </div>
 </template>
@@ -32,12 +32,20 @@
     data() {
       return {
         ifProductMake: false,//是否支持商品清单开票
-        ifCategoryMake: false,//是否支持自定义分类开票
+        ifMoneyMake: false,//是否支持金额开票
         ifOrderMake: false,//是否支持订单开票
         orderTypeList: ""//订单开票类型列表
       };
     },
     methods: {
+      gotoMake() {
+        if (this.ifProductMake) {
+          this.$router.push(`/make/product`);
+        }
+        if (this.ifMoneyMake) {
+          this.$router.push(`/make/category`);
+        }
+      },
       /**
        * 获取发票类型
        */
@@ -70,12 +78,16 @@
       getShopSupport() {
         getShopSupport().then(res => {
           if (res.data.content.ifProduct !== false) {
-            this.make = res.data.content.ifProduct;
-            localStorage.setItem("make", this.make);
+            this.ifProductMake = res.data.content.ifProduct;
+            localStorage.setItem("ifProductMake", this.ifProductMake);
+          }
+          if (res.data.content.ifMoney !== false) {
+            this.ifMoneyMake = res.data.content.ifMoney;
+            localStorage.setItem("ifMoneyMake", this.ifMoneyMake);
           }
           if (res.data.content.ifOrder !== false) {
             this.ifOrderMake = res.data.content.ifOrder;
-            localStorage.setItem("order", this.ifOrderMake);
+            localStorage.setItem("ifOrderMake", this.ifOrderMake);
           }
         }).catch(error => {
           console.log(error);
@@ -84,7 +96,8 @@
     },
     created() {
       this.getShop()
-      localStorage.removeItem("make");
+      localStorage.removeItem("ifProductMake");
+      localStorage.removeItem("ifMoneyMake");
       localStorage.removeItem("ifOrderMake");
       if (this.$route.query.accessToken) {
         localStorage.setItem("accessToken", this.$route.query.accessToken);

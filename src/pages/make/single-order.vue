@@ -95,7 +95,7 @@
         <div class="page-part">
           <van-cell-group title="接收方式">
             <van-field label="电子邮件" value="" v-model="email"/>
-            <van-field label="手机号码" type="tel" value="" v-model="contactInformation"/>
+            <van-field label="手机号码" type="tel" value="" v-model="invoiceForm.addrMobile"/>
           </van-cell-group>
           <div class="bottom">
             <van-button
@@ -140,6 +140,7 @@
     },
     data() {
       return {
+        headerTitle: "开具电子发票",
         isShow: false,
         isHide: true,
         loadingList: true,
@@ -151,15 +152,10 @@
         scanContent: "",
         showDisabled: true,
         selected: "1",
-        headerTitle: "开具电子发票",
         active: "tab-container1",
-        contactInformation: "",
-        ifNeedMobile: "",
-        ifNeedEmail: "",
         company: {},
         itemIds: "",
         email: "",
-        seletedOrderList: [],
         sum: 0,
         item: {},
         mergeTax: 0,
@@ -171,6 +167,8 @@
           type: "",
           purchaserName: ""
         },
+        ifNeedMobile: "",
+        ifNeedEmail: "",
         isEInvoice: true,
         isPInvoice: false
       };
@@ -261,7 +259,7 @@
         getCustomer({taxNumber: this.taxNumber}).then(res => {
           this.loadingList = false;
           this.email = res.data.content.email ? res.data.content.email : "";
-          this.contactInformation = res.data.content.mobile ? res.data.content.mobile : "";
+          this.invoiceForm.addrMobile = res.data.content.mobile ? res.data.content.mobile : "";
         })
       },
       goInvoiceSuccess() {
@@ -286,22 +284,22 @@
         //手机号验证
         let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
         if (this.ifNeedMobile === true) {
-          if (this.contactInformation === "") {
+          if (this.invoiceForm.addrMobile === "") {
             this.showDisabled = true;
             return Toast("请输入手机号码");
-          } else if (!reg.test(this.contactInformation)) {
+          } else if (!reg.test(this.invoiceForm.addrMobile)) {
             this.showDisabled = true;
             return Toast("手机格式不正确");
           }
         } else {
-          if (this.contactInformation) {
-            if (!reg.test(this.contactInformation)) {
+          if (this.invoiceForm.addrMobile) {
+            if (!reg.test(this.invoiceForm.addrMobile)) {
               this.showDisabled = true;
               return Toast("手机格式不正确");
             }
           }
         }
-        this.invoiceForm.addrMobile = this.contactInformation;
+        this.invoiceForm.addrMobile = this.invoiceForm.addrMobile;
         this.invoiceForm.email = this.email;
         this.invoiceForm.type = this.invoiceForm.type;
         this.invoiceForm.category = "增值税电子普通发票";
