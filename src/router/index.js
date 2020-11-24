@@ -74,7 +74,7 @@ export default new Router({
     },
     {
       path: "/make/category",
-      name: "Category",
+      name: "MakeCategory",
       component: resolve => require(["../pages/make/category.vue"], resolve),
       meta: {title: "开具发票", keepAlive: false}
     },
