@@ -45,7 +45,6 @@
       <div class="no-record-con" v-show="empty">
         <van-empty image="search" description="暂无订单数据"/>
       </div>
-
       <div
         class="mint-checklist page-part"
         v-for="(item, index) in outOrderList"
@@ -103,12 +102,12 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex";
+  import {mapGetters} from "vuex";
   import Header from "../../components/header.vue";
   import Vue from "vue";
-  import { List } from "vant";
-  import { getOutOrderList } from "../../api/out-order";
-  import { getShop } from "../../api/shop";
+  import {List} from "vant";
+  import {getOutOrderList} from "../../api/out-order";
+  import {getShop} from "../../api/shop";
   import axios from "axios";
 
   Vue.use(List);
@@ -156,14 +155,14 @@
         } else {
           this.outOrderList[index].satus = true;
         }
-        this.selectList = this.outOrderList.filter(function(satus, index, outOrderList) {
+        this.selectList = this.outOrderList.filter(function (satus, index, outOrderList) {
           return outOrderList[index].satus === true;
         });
         this.selectList.length === this.outOrderList.length ? (this.allCheck = true) : (this.allCheck = false);
       },
       getOutOrderList() {
         this.loading = true;
-        getOutOrderList({ type: this.orderType }, this.page).then(res => {
+        getOutOrderList({type: this.orderType}, this.page).then(res => {
           if (res.data.code === 1) {
             let data = res.data.content;
             this.page.total = res.data.totalPages;
@@ -222,9 +221,9 @@
         this.page.page++;
       },
       //全选
-      change: function() {
+      change: function () {
         let _this = this;
-        _this.outOrderList.forEach(function(v) {
+        _this.outOrderList.forEach(function (v) {
           return (v.satus = _this.allCheck);
         });
         if (_this.allCheck === true) {
@@ -234,8 +233,8 @@
         }
       },
       //单选勾住后全选
-      itemChange: function() {
-        this.selectList = this.outOrderList.filter(function(v) {
+      itemChange: function () {
+        this.selectList = this.outOrderList.filter(function (v) {
           return v.satus === true;
         });
         this.selectList.length === this.outOrderList.length ? (this.allCheck = true) : (this.allCheck = false);
@@ -244,7 +243,7 @@
         console.log(this.selectList);
         localStorage.setItem("tot", this.totalPrice);
         localStorage.setItem("seleted", JSON.stringify(this.selectList));
-        this.$router.push({ path: "/make/merge-order" });
+        this.$router.push({path: "/make/merge-order"});
       },
       //获取发票类型
       getShop() {
@@ -263,7 +262,7 @@
         "sidebar"
       ]),
       //计算总价
-      totalPrice: function() {
+      totalPrice: function () {
         let totalPrice = 0;
         if (this.outOrderList.length == 0) {
           return totalPrice;
