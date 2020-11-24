@@ -90,7 +90,7 @@
           close-button-text="完成"
           @blur="keyboardShow = false"
         />
-        <van-field label="备注" placeholder="请输入备注信息" v-model="invoiceForm.remark"></van-field>
+        <van-field label="备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
         <van-cell title="附件">
           <van-uploader v-model="fileList" multiple>
           </van-uploader>
@@ -172,6 +172,7 @@
           customCategoryId: null,
           name: ""
         },
+        remarkPlaceholder: "",
         invoiceForm: {
           ifPaper: false,
           category: '增值税电子普通发票',
@@ -362,7 +363,7 @@
       //获取备注
       getInvoiceRemark() {
         getRule().then(res => {
-          this.invoiceForm.remark = res.data.content.remark;
+          this.remarkPlaceholder = res.data.content.remark;
         }).catch(error => {
           Toast(error.response.data.message);
         });

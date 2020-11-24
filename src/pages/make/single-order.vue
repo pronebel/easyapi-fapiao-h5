@@ -3,7 +3,7 @@
     <Header @head-back="goBack()" :headerTitle="headerTitle"></Header>
     <div class="nav">
       <div id="loading">
-        <van-loading  v-show="loadingList" type="spinner" color="#56cbf6" />
+        <van-loading v-show="loadingList" type="spinner" color="#56cbf6"/>
       </div>
       <p>请选择发票类型</p>
       <van-row type="flex" justify="space-between" class="twoBox">
@@ -28,22 +28,22 @@
           <form action="" id="formBox" ref="invoiceForm" :model="invoiceForm">
             <van-cell title="抬头类型" center>
               <van-radio-group class="van-radio-group_type" v-model="invoiceForm.type" direction="horizontal"
-                           @change="selectType">
+                               @change="selectType">
                 <van-radio name="企业">企业</van-radio>
                 <van-radio name="个人">个人</van-radio>
               </van-radio-group>
             </van-cell>
             <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位"
-                   v-model="invoiceForm.purchaserName"/>
+                       v-model="invoiceForm.purchaserName"/>
             <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany" right-icon="arrow"
-                   placeholder="请选择发票抬头" v-model="company.name"/>
+                       placeholder="请选择发票抬头" v-model="company.name"/>
             <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企    业'" v-model="company.taxNumber"/>
             <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type    === '企业'" @click="showMore"
-                   v-show="isHide"
-                   readonly placeholder="地址、电话、开户行等"/>
+                       v-show="isHide"
+                       readonly placeholder="地址、电话、开户行等"/>
             <div v-show="isShow">
               <van-field v-if="invoiceForm.type === '企业'" @click="hide" label="税号" value="" readonly
-                     v-model="company.taxNumber" right-icon="arrow-up"/>
+                         v-model="company.taxNumber" right-icon="arrow-up"/>
               <van-field v-if="invoiceForm.type === '企业'" label="地址" value="" readonly v-model="company.address"/>
               <van-field v-if="invoiceForm.type === '企业'" label="电话" value="" readonly v-model="company.phone"/>
               <van-field v-if="invoiceForm.type === '企业'" label="开户行" value="" readonly v-model="company.bank"/>
@@ -90,7 +90,7 @@
           </div> -->
           <van-cell class="line"/>
           <van-field class="merge-order_price" label="发票金额" v-model="amountOfMoney" readonly></van-field>
-          <van-field label="备注" placeholder="请输入备注信息" v-model="invoiceForm.inputValue"></van-field>
+          <van-field label="备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
         </div>
         <div class="page-part">
           <van-cell-group title="接收方式">
@@ -158,12 +158,13 @@
         item: {},
         mergeTax: 0,
         howMany: "",
-        remark: "",
+        remarkPlaceholder: "",
         returnUrl: "",
         invoiceForm: {
           ifPaper: false,
           type: "",
-          purchaserName: ""
+          purchaserName: "",
+          remark: ""
         },
         ifNeedMobile: "",
         ifNeedEmail: "",
@@ -304,14 +305,14 @@
         this.invoiceForm.property = "电子";
         this.invoiceForm.outOrderIds = this.outOrder.outOrderId;
         mergeMakeInvoice(this.invoiceForm).then(res => {
-            if (res.data.code === 1) {
-              this.$messagebox.alert(res.data.message);
-              this.$router.push({
-                path: "/single-order-success",
-                query: {returnUrl: this.returnUrl}
-              });
-            }
-          }).catch(error => {
+          if (res.data.code === 1) {
+            this.$messagebox.alert(res.data.message);
+            this.$router.push({
+              path: "/single-order-success",
+              query: {returnUrl: this.returnUrl}
+            });
+          }
+        }).catch(error => {
           this.showDisabled = false;
           Toast(error.response.data.message);
           this.showDisabled = true;
@@ -324,12 +325,12 @@
         }
       },
       //获取备注
-      getSpecifications() {
+      getInvoiceRemark() {
         getRule().then(res => {
-          this.remark = res.data.content.remark;
+          this.remarkPlaceholder = res.data.content.remark;
         })
       },
-      getInvoicingService() {
+      getShopSupport() {
         getShopSupport().then(res => {
           this.ifNeedMobile = res.data.content.ifNeedMobile;
           this.ifNeedEmail = res.data.content.ifNeedEmail;
@@ -446,9 +447,8 @@
     },
     mounted() {
       this.getCustomer();
-      this.getDefaultCompany();
-      this.getSpecifications();
-      this.getInvoicingService();
+      this.getInvoiceRemark();
+      this.getShopSupport();
       this.getOutOrder();
     }
   };
@@ -456,6 +456,7 @@
 
 <style scoped>
   @import 'make.css';
+
   .twoBox {
     height: 70px;
     /* border: 2px solid blue; */
@@ -465,7 +466,7 @@
   }
 
   .blueBox {
-    box-sizing:border-box;
+    box-sizing: border-box;
     padding: 17px 0;
     font-size: 15px;
     height: 70px;
@@ -473,8 +474,9 @@
     color: #1989fa;
     border-radius: 4px;
   }
+
   .grayBox {
-    box-sizing:border-box;
+    box-sizing: border-box;
     padding: 17px 0;
     font-size: 15px;
     height: 70px;

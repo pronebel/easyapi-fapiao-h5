@@ -46,16 +46,20 @@
                    v-model="invoiceForm.purchaserName"/>
         <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany" right-icon="arrow"
                    placeholder="请选择发票抬头" v-model="invoiceForm.purchaserName"/>
-        <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企业'" v-model="invoiceForm.purchaserTaxpayerNumber"/>
+        <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企业'"
+                   v-model="invoiceForm.purchaserTaxpayerNumber"/>
         <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type === '企业'" @click="purchaserMore"
                    v-show="isHide"
                    readonly placeholder="地址、电话、开户行等"/>
         <div v-show="isShow">
           <van-field v-if="invoiceForm.type === '企业'" @click="purchaserMoreHide" label="地址" value="" readonly
                      v-model="invoiceForm.purchaserAddress" right-icon="arrow-up"/>
-          <van-field v-if="invoiceForm.type === '企业'" label="电话" value="" readonly v-model="invoiceForm.purchaserPhone"/>
-          <van-field v-if="invoiceForm.type === '企业'" label="开户行" value="" readonly v-model="invoiceForm.purchaserBank"/>
-          <van-field v-if="invoiceForm.type === '企业'" label="银行账号" value="" readonly v-model="invoiceForm.purchaserBankAccount"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="电话" value="" readonly
+                     v-model="invoiceForm.purchaserPhone"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="开户行" value="" readonly
+                     v-model="invoiceForm.purchaserBank"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="银行账号" value="" readonly
+                     v-model="invoiceForm.purchaserBankAccount"/>
         </div>
       </form>
     </div>
@@ -99,7 +103,7 @@
 
       <van-cell class="line"/>
       <van-field class="merge-order_price" label="发票金额" v-model="invoiceForm.price" readonly></van-field>
-      <van-field label="备注" placeholder="请输入备注信息" v-model="invoiceForm.remark"></van-field>
+      <van-field label="备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
     </div>
 
     <div>
@@ -207,6 +211,7 @@
         ifNeedEmail: false,//邮箱是否必填
         company: {},//抬头对象
         address: {},//地址对象
+        remarkPlaceholder: "",
         invoiceForm: {
           type: "企业",
           category: "增值税电子普通发票",
@@ -347,7 +352,7 @@
       /** 获取开票备注 */
       getInvoiceRemark() {
         getRule().then(res => {
-          this.invoiceForm.remark = res.data.content.remark;
+          this.remarkPlaceholder = res.data.content.remark;
         }).catch(error => {
           this.$messagebox.alert(error.response.data.message);
         });
