@@ -35,27 +35,27 @@
             <van-radio name="个人">个人/事业单位</van-radio>
           </van-radio-group>
         </van-cell>
-        <van-cell title="发票类型" center v-show="!this.ifElectronic">
+        <van-cell title="发票类型" center v-show="invoiceForm.property == '纸质'">
           <van-radio-group class="van-radio-group_type" v-model="invoiceForm.type" direction="horizontal"
           >
-            <van-radio style="margin-bottom: 5px;" name="增值税普通发票" @click="getRadioVal">增值税普通发票</van-radio>
-            <van-radio name="增值税专用发票" @click="getRadioVal">增值税专用发票</van-radio>
+            <van-radio style="margin-bottom: 5px;" name="增值税普通发票">增值税普通发票</van-radio>
+            <van-radio name="增值税专用发票" v-if="invoiceForm.type==='企业'">增值税专用发票</van-radio>
           </van-radio-group>
         </van-cell>
         <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位"
                    v-model="invoiceForm.purchaserName"/>
         <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany" right-icon="arrow"
-                   placeholder="请选择发票抬头" v-model="company.name"/>
-        <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企业'" v-model="company.taxNumber"/>
+                   placeholder="请选择发票抬头" v-model="invoiceForm.purchaserName"/>
+        <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企业'" v-model="invoiceForm.purchaserTaxpayerNumber"/>
         <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type === '企业'" @click="purchaserMore"
                    v-show="isHide"
                    readonly placeholder="地址、电话、开户行等"/>
         <div v-show="isShow">
           <van-field v-if="invoiceForm.type === '企业'" @click="purchaserMoreHide" label="地址" value="" readonly
-                     v-model="company.address" right-icon="arrow-up"/>
-          <van-field v-if="invoiceForm.type === '企业'" label="电话" value="" readonly v-model="company.phone"/>
-          <van-field v-if="invoiceForm.type === '企业'" label="开户行" value="" readonly v-model="company.bank"/>
-          <van-field v-if="invoiceForm.type === '企业'" label="银行账号" value="" readonly v-model="company.bankAccount"/>
+                     v-model="invoiceForm.purchaserAddress" right-icon="arrow-up"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="电话" value="" readonly v-model="invoiceForm.purchaserPhone"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="开户行" value="" readonly v-model="invoiceForm.purchaserBank"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="银行账号" value="" readonly v-model="invoiceForm.purchaserBankAccount"/>
         </div>
       </form>
     </div>
@@ -231,8 +231,6 @@
     },
 
     methods: {
-      getRadioVal() {
-      },
       /** 购买方更多信息 */
       purchaserMore() {
         this.isShow = true;
