@@ -233,7 +233,7 @@
         remark: "",
         priceSplicing: "",
         invoiceForm: {
-          isPaper: false,
+          ifPaper: false,
           type: "",
           purchaserName: ""
         },
@@ -258,7 +258,7 @@
       getEtr() {
         this.isEInvoice = true;
         this.isPInvoice = false;
-        localStorage.setItem("isPaper", false);
+        localStorage.setItem("ifPaper", false);
         this.orderType = localStorage.getItem("orderType");
         this.invoiceForm.mergeSum = localStorage.getItem("tot");
         this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
@@ -272,7 +272,7 @@
       getPaper() {
         this.isEInvoice = false;
         this.isPInvoice = true;
-        localStorage.setItem("isPaper", true);
+        localStorage.setItem("ifPaper", true);
         this.orderType = localStorage.getItem("orderType");
         this.invoiceForm.mergeSum = localStorage.getItem("tot");
         this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
@@ -403,9 +403,9 @@
         });
       },
       goInvoiceSuccess() {
-        this.invoiceForm.isPaper = JSON.parse(localStorage.getItem("isPaper"));
-        this.invoiceForm.property = this.invoiceForm.isPaper ? "纸质" : "电子";
-        this.invoiceForm.category = !this.invoiceForm.isPaper
+        this.invoiceForm.ifPaper = JSON.parse(localStorage.getItem("ifPaper"));
+        this.invoiceForm.property = this.invoiceForm.ifPaper ? "纸质" : "电子";
+        this.invoiceForm.category = !this.invoiceForm.ifPaper
           ? "增值税电子普通发票"
           : this.paperForm.type;
         if (this.selected == 1) {
@@ -511,8 +511,8 @@
       this.make = localStorage.getItem("make");
       this.ifOrderMake = localStorage.getItem("ifOrderMake");
       this.accessToken = localStorage.getItem("accessToken");
-      this.invoiceForm.isPaper = JSON.parse(localStorage.getItem("isPaper"));
-      this.selected = this.invoiceForm.isPaper ? "2" : "1";
+      this.invoiceForm.ifPaper = JSON.parse(localStorage.getItem("ifPaper"));
+      this.selected = this.invoiceForm.ifPaper ? "2" : "1";
       this.invoiceForm.type = localStorage.getItem("type");
       if (this.invoiceForm.type) {
         this.invoiceForm.type = localStorage.getItem("type");

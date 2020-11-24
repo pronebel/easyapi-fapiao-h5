@@ -194,7 +194,7 @@
         returnUrl: "",
         priceSplicing: "",
         invoiceForm: {
-          isPaper: false,
+          ifPaper: false,
           type: "",
           purchaserName: "",
           price: '',
@@ -423,7 +423,7 @@
       getElectronic() {
         this.isEInvoice = true;
         this.isPInvoice = false;
-        localStorage.setItem("isPaper", false);
+        localStorage.setItem("ifPaper", false);
         this.orderType = localStorage.getItem("orderType");
         this.invoiceForm.mergeSum = localStorage.getItem("tot");
         this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
@@ -437,7 +437,7 @@
       getPaper() {
         this.isEInvoice = false;
         this.isPInvoice = true;
-        localStorage.setItem("isPaper", true);
+        localStorage.setItem("ifPaper", true);
         this.orderType = localStorage.getItem("orderType");
         this.invoiceForm.mergeSum = localStorage.getItem("tot");
         this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
