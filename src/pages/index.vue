@@ -77,18 +77,12 @@
        */
       getShopSupport() {
         getShopSupport().then(res => {
-          if (res.data.content.ifProduct !== false) {
-            this.ifProductMake = res.data.content.ifProduct;
-            localStorage.setItem("ifProductMake", this.ifProductMake);
-          }
-          if (res.data.content.ifMoney !== false) {
-            this.ifMoneyMake = res.data.content.ifMoney;
-            localStorage.setItem("ifMoneyMake", this.ifMoneyMake);
-          }
-          if (res.data.content.ifOrder !== false) {
-            this.ifOrderMake = res.data.content.ifOrder;
-            localStorage.setItem("ifOrderMake", this.ifOrderMake);
-          }
+          this.ifProductMake = res.data.content.ifProduct;
+          localStorage.setItem("ifProductMake", this.ifProductMake);
+          this.ifMoneyMake = res.data.content.ifMoney;
+          localStorage.setItem("ifMoneyMake", this.ifMoneyMake);
+          this.ifOrderMake = res.data.content.ifOrder;
+          localStorage.setItem("ifOrderMake", this.ifOrderMake);
         }).catch(error => {
           console.log(error);
         });
