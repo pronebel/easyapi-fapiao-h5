@@ -9,6 +9,7 @@ import {baseUrl} from "./request";
  */
 export const getCustomCategoryList = (params) => {
   params.accessToken = localStorage.getItem("accessToken")
+  params.taxNumber = localStorage.getItem("taxNumber")
   return axios.get(`${baseUrl}/custom-categories`, {
     params: params
   });

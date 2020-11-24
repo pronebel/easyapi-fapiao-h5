@@ -187,7 +187,6 @@
                 size: res.data.totalElements
               }
             }).then(res => {
-              console.log(res);
               if (res.data.code == 1) {
                 this.minusOutOrderList = res.data.content;
                 for (let v of res.data.content) {

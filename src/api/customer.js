@@ -10,6 +10,7 @@ import {baseUrl} from "./request";
 export const getCustomer = (params) => axios.get(`${baseUrl}/customer`, {
   params: {
     ...params,
-    accessToken: localStorage.getItem("accessToken")
+    accessToken: localStorage.getItem("accessToken"),
+    taxNumber: localStorage.getItem("taxNumber")
   }
 });

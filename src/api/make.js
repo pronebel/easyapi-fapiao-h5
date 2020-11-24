@@ -31,6 +31,7 @@ export const mergeMakeInvoice = (data) => {
  */
 export const categoryMakeInvoice = (data) => {
   data.accessToken = localStorage.getItem("accessToken")
+  data.taxNumber = localStorage.getItem("taxNumber")
   return axios.post(`${baseUrl}/invoice/category/make`, data);
 };
 

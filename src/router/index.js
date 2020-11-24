@@ -69,8 +69,7 @@ export default new Router({
     {
       path: "/make/single-order-success",
       name: "SingleOrderSuccess",
-      component: resolve =>
-        require(["../pages/make/single-order-success.vue"], resolve),
+      component: resolve => require(["../pages/make/single-order-success.vue"], resolve),
       meta: {title: "提交成功", keepAlive: false}
     },
     {
@@ -78,6 +77,12 @@ export default new Router({
       name: "Category",
       component: resolve => require(["../pages/make/category.vue"], resolve),
       meta: {title: "开具发票", keepAlive: false}
+    },
+    {
+      path: "/make/category-success",
+      name: "MakeCategorySuccess",
+      component: resolve => require(["../pages/make/category-success.vue"], resolve),
+      meta: {title: "提交成功", keepAlive: false}
     },
     {
       path: "/make/product",
