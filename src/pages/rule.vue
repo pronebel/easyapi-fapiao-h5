@@ -13,9 +13,7 @@
       };
     },
     mounted() {
-      /**
-       * 获取开票规则
-       */
+      /**  获取开票规则 */
       getRule().then(res => {
         this.content = res.data.content.content ? res.data.content.content : "请管理员设置开票规则";
       }).catch(error => {

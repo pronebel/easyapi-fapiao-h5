@@ -17,7 +17,7 @@
 
 <script>
   import Header from "../../components/header.vue";
-  import { getOutOrderList } from "../../api/invoice";
+  import {getOutOrderList} from "../../api/invoice";
 
   export default {
     name: "OutOrder",
@@ -35,10 +35,7 @@
         history.go(-1);
       },
       getOutOrderList() {
-        let params = {
-          invoiceId: this.$route.query.id
-      };
-        getOutOrderList().then(res => {
+        getOutOrderList({invoiceId: this.$route.query.id}).then(res => {
           this.invoiceItems = res.data.content
         }).catch(error => {
           this.$messagebox.alert(error.response.data.message);

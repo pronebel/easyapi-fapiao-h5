@@ -337,7 +337,6 @@
         outOrder: "",
         outOrderNo: "",
         address: {},
-        order: "",
         accessToken: "",
         scanContent: "",
         showDisabled: true,

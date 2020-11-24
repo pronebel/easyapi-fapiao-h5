@@ -147,8 +147,6 @@
         outOrder: '',
         contentList: "",
         outOrderNo: "",
-        order: "",
-        make: true,
         accessToken: "",
         scanContent: "",
         showDisabled: true,

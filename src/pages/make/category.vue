@@ -162,8 +162,6 @@
         contentList: "",
         outOrderNo: "",
         address: {},
-        order: "",
-        make: true,
         accessToken: "",
         scanContent: "",
         showDisabled: true,

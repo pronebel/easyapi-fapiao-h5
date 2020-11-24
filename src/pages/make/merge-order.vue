@@ -211,7 +211,7 @@
         accessToken: "",
         contentList: "",
         make: "",
-        order: "",
+        ifOrderMake: false,//是否支持订单开票
         showDisabled: true,
         selected: "1",
         headerTitle: "开具电子发票",
@@ -452,7 +452,7 @@
                   }
                 }
               }
-              if (this.order === "true") {
+              if (this.ifOrderMake === true) {
                 this.invoiceForm.addrMobile = this.contactInformation;
                 this.invoiceForm.email = this.email;
                 mergeMakeInvoice(this.invoiceForm).then((res) => {
@@ -474,7 +474,7 @@
             showCancelButton: true
           }).then((action) => {
             if (action === "confirm") {
-              if (this.order === "true") {
+              if (this.ifOrderMake === true) {
                 mergeMakeInvoice(this.invoiceForm).then((res) => {
                   if (res.data.code === 1) {
                     this.$router.push(`/make/success`);
@@ -509,7 +509,7 @@
     watch: {},
     created() {
       this.make = localStorage.getItem("make");
-      this.order = localStorage.getItem("order");
+      this.ifOrderMake = localStorage.getItem("ifOrderMake");
       this.accessToken = localStorage.getItem("accessToken");
       this.invoiceForm.isPaper = JSON.parse(localStorage.getItem("isPaper"));
       this.selected = this.invoiceForm.isPaper ? "2" : "1";

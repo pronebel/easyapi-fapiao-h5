@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="order === true">
+    <div v-if="ifOrderMake === true">
       <van-cell-group title="订单开票">
         <van-cell v-for="(type) in orderTypeList" :key="type.orderTypeId" :value="type.name" is-link
                   :to="{ path: '/make/out-order', query: { orderType: type.name }}"
@@ -22,30 +22,29 @@
   </div>
 </template>
 <script>
-  import { Indicator } from "mint-ui";
-  import { Toast } from "mint-ui";
-  import { getOrderTypeList } from "../api/order-type";
-  import { getShopSupport, getShop } from "../api/shop";
+  import {Indicator} from "mint-ui";
+  import {Toast} from "mint-ui";
+  import {getOrderTypeList} from "../api/order-type";
+  import {getShopSupport, getShop} from "../api/shop";
 
   export default {
     name: "Index",
     data() {
       return {
-        ifElectronic:"",
-        ifPaper:"",
-        make: "",
-        order: "",
-        orderTypeList: ""
+        ifProductMake: false,//是否支持商品清单开票
+        ifCategoryMake: false,//是否支持自定义分类开票
+        ifOrderMake: false,//是否支持订单开票
+        orderTypeList: ""//订单开票类型列表
       };
     },
     methods: {
-      //获取发票类型
+      /**
+       * 获取发票类型
+       */
       getShop() {
         getShop().then(res => {
-          this.ifElectronic=res.data.content.ifElectronic
-          this.ifPaper=res.data.content.ifPaper
-          localStorage.setItem("ifElectronic", this.ifElectronic);
-          localStorage.setItem("ifPaper", this.ifPaper);
+          localStorage.setItem("ifElectronic", res.data.content.ifElectronic);
+          localStorage.setItem("ifPaper", res.data.content.ifPaper);
         });
       },
       /**
@@ -55,7 +54,7 @@
         getOrderTypeList().then(res => {
           if (res.status === 200) {
             this.orderTypeList = res.data.content;
-            setTimeout(function() {
+            setTimeout(function () {
               Indicator.close();
             }, 1500);
           }
@@ -75,8 +74,8 @@
             localStorage.setItem("make", this.make);
           }
           if (res.data.content.ifOrder !== false) {
-            this.order = res.data.content.ifOrder;
-            localStorage.setItem("order", this.order);
+            this.ifOrderMake = res.data.content.ifOrder;
+            localStorage.setItem("order", this.ifOrderMake);
           }
         }).catch(error => {
           console.log(error);
@@ -86,7 +85,7 @@
     created() {
       this.getShop()
       localStorage.removeItem("make");
-      localStorage.removeItem("order");
+      localStorage.removeItem("ifOrderMake");
       if (this.$route.query.accessToken) {
         localStorage.setItem("accessToken", this.$route.query.accessToken);
       } else {
@@ -102,7 +101,7 @@
         spinnerType: "fading-circle"
       });
       that.getOrderTypeList();
-      setTimeout(function() {
+      setTimeout(function () {
         that.getShopSupport();
       }, 1000);
     },

@@ -201,8 +201,6 @@
         amountOfMoney: 0,
         productList: "",
         accessToken: "",
-        make: "",
-        order: "",
         showDisabled: true,
         selected: 1,
         ifNeedMobile: false,
@@ -522,8 +520,6 @@
         }
       },
       resetPage() {
-        this.make = localStorage.getItem("make");
-        this.order = localStorage.getItem("order");
         this.accessToken = localStorage.getItem("accessToken");
         this.productList = JSON.parse(localStorage.getItem("productList"));
         this.invoiceForm.type = localStorage.getItem("type");
@@ -596,8 +592,6 @@
     },
     created() {
       this.resetPage();
-      this.make = localStorage.getItem("make");
-      this.order = localStorage.getItem("order");
       this.accessToken = localStorage.getItem("accessToken");
       this.invoiceForm.isPaper = JSON.parse(localStorage.getItem("isPaper"));
       this.selected = this.invoiceForm.isPaper ? 2 : 1;
