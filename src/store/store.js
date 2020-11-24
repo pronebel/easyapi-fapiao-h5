@@ -6,20 +6,10 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   // 定义状态
   state: {
-    author: "我是store里的内容",
-    userType: null,
     username: localStorage.getItem("username"),
     ifShowH5NavBar: false //是否隐藏顶部
   },
-  //改变转台操作
-  mutations: {
-    changeAdmin(state) {
-      state.userType = 0;
-    },
-    changeUser(state) {
-      state.userType = 1;
-    }
-  }
+  mutations: {}
 });
 
 export default store;
