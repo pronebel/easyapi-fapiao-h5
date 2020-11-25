@@ -92,6 +92,7 @@
         <div v-show="isShow">
           <van-field
             v-if="invoiceForm.type === '企业'"
+            @click="purchaserMoreHide"
             label="地址"
             value=""
             readonly
@@ -146,7 +147,7 @@
         <li>{{ product.price }}</li>
         <li
           style="color: #1989fa"
-          @click="deleteContent(product.productId)"
+          @click="deleteProduct(product.productId)"
         >
           删除
         </li>
@@ -212,11 +213,6 @@
       </van-button>
       <van-button class="submit" v-else>开票中...</van-button>
     </div>
-    <div v-show="!this.isEInvoice">
-      <div class="paper-capacitor">
-        正在开发中...
-      </div>
-    </div>
     <div>
       <router-view @seletedOrder="seletedOrder"></router-view>
     </div>
@@ -225,6 +221,7 @@
 
 <script>
   import { getDefaultCompany } from "../../api/company";
+  import {getDefaultAddress} from "../../api/address";
   import { getCustomer } from "../../api/customer";
   import { getShopSupport } from "../../api/shop";
   import { getRule } from "../../api/info";
@@ -249,6 +246,7 @@
         isHide: true,
         loadingList: true,
         amountOfMoney: 0,
+        productList: "",//商品列表
         address:{},
         outOrder: "",
         contentList: "",
@@ -281,27 +279,11 @@
         },
         ifNeedMobile: "",
         ifNeedEmail: "",
-        isEInvoice: true,
-        isPInvoice: false
       };
     },
     methods: {
       goBack() {
         history.go(-1);
-      },
-      SaveType(type) {
-        localStorage.setItem("type", type);
-        if (type == "企业") {
-          this.getDefaultCompany();
-        } else if (type == "个人") {
-          this.invoiceForm.purchaserName = "个人";
-          this.invoiceForm.purchaserTaxpayerNumber = "";
-          this.invoiceForm.address = "";
-          this.invoiceForm.phone = "";
-          this.invoiceForm.purchaserBank = "";
-          this.invoiceForm.purchaserBankAccount = "";
-          this.invoiceForm.companyId = "";
-        }
       },
       seletedOrder(item) {
         this.loadingList = false;
@@ -489,6 +471,14 @@
         this.isShow = false;
         this.isHide = true;
       },
+      getDefaultAddress() {
+        getDefaultAddress().then((res) => {
+          if (res.data.code === 1) {
+            this.address = res.data.content;
+            this.invoiceForm.addressId = this.address.addressId;
+          }
+        });
+      },
       gotoCompany() {
         if (this.company) {
           this.$router.push({
@@ -509,7 +499,40 @@
             }
           });
         }
-      }
+      },
+      gotoAddress() {
+        if (this.address) {
+          this.$router.push({
+            path: "/address/",
+            name: "Address",
+            params: {
+              id: this.address.addressID,
+              from: "make"
+            }
+          });
+        } else {
+          this.$router.push({
+            path: "/address/",
+            name: "Address",
+            params: {
+              id: "",
+              from: "make"
+            }
+          });
+        }
+      },
+      /** 删除商品 */
+      deleteProduct(id) {
+        for (let i = 0; i < this.productList.length; i++) {
+          if (id === this.productList[i].productId) {
+            this.productList.splice(i, 1);
+          }
+          localStorage.setItem("productList", JSON.stringify(this.productList));
+          this.productList = JSON.parse(localStorage.getItem("productList"));
+        }
+        this.invoiceForm.price = 0;
+        this.calcAmount();
+      },
     },
     watch: {},
     created() {
