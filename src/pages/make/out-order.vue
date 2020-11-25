@@ -2,7 +2,7 @@
   <div style="padding: 0 10px;height: 100%;">
     <Header @head-back="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <div class="page-checklist header-d">
-      <div style="margin-bottom: 30px;">
+      <div style="margin-bottom: 30px;" v-if="minusPage.total>0">
         <p class="pd-left">有{{minusPage.total}}笔欠费金额，欠费金额小计：¥{{minusAmount}}元</p>
         <div
           class="mint-checklist page-part"
