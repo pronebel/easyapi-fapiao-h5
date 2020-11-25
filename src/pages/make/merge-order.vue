@@ -232,7 +232,8 @@
           purchaserBankAccount: "",
           addrMobile: "",
           email: "",
-          remark: ""
+          remark: "",
+          mergeSum:""
         },
       };
     },
