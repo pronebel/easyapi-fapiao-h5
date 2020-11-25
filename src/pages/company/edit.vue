@@ -3,7 +3,7 @@
     <Header @head-back="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <form action ref="companyForm" :model="companyForm" class="formClass">
       <div class="">
-        <div class="address-bottom2" @click="select(item)">
+        <div class="address-bottom2">
           <van-cell-group>
             <van-field label="公司名称" v-model="name" placeholder="请输入公司名称" border required @keyup="searchRiseList"
                        @focus="listShow = true" @blur="inputBlur">
@@ -46,9 +46,10 @@
 </template>
 <script>
   import Header from "../../components/header.vue";
-  import {MessageBox} from "mint-ui";
-  import {Toast} from "mint-ui";
-  import {createCompany, updateCompany, deleteCompany} from "../../api/company";
+  import { MessageBox } from "mint-ui";
+  import { Toast } from "mint-ui";
+  import { createCompany, updateCompany, deleteCompany } from "../../api/company";
+  import axios from 'axios'
 
 
   export default {
@@ -90,7 +91,7 @@
         this.headerTitle = "修改抬头";
         this.id = this.$route.params.id;
         if (this.title === "edit") {
-          this.$ajax.get("/company/" + this.id, {
+          axios.get("/company/" + this.id, {
             params: {
               accessToken: this.accessToken
             }
@@ -112,7 +113,7 @@
           if (action === "confirm") {
             deleteCompany(this.id).then(res => {
               if (res.data.code === 1) {
-                this.$router.go(-1)
+                this.$router.go(-1);
               }
             }).catch(error => {
               this.$messagebox.alert(error.response.data.message);
@@ -124,12 +125,13 @@
         if (this.name.length < 4) {
           return;
         }
-        this.$ajax.get("/company/codes", {
+        axios.get("/company/codes", {
           params: {
             accessToken: this.accessToken,
             name: this.name
           }
         }).then(res => {
+          console.log(res,111)
           this.searchList = res.data.content;
         }).catch(error => {
           this.$messagebox.alert(error.response.data.message);
@@ -142,7 +144,7 @@
         this.companyForm.bankAccount = this.searchList[index].bankAccount;
         this.companyForm.address = this.searchList[index].address;
         this.companyForm.phone = this.searchList[index].phone;
-        this.listShow = false
+        this.listShow = false;
       },
       confirm() {
         if (!this.name && !this.companyForm.taxNumber) {
@@ -159,7 +161,7 @@
             if (this.title === "edit") {
               updateCompany(this.id, this.companyForm).then(res => {
                 if (res.data.code === 1) {
-                  this.$router.go(-1)
+                  this.$router.go(-1);
                 }
               }).catch(error => {
                 this.$messagebox.alert(error.response.data.message);
@@ -167,7 +169,7 @@
             } else {
               createCompany(this.companyForm).then(res => {
                 if (res.data.code === 1) {
-                  this.$router.go(-1)
+                  this.$router.go(-1);
                 }
               }).catch(error => {
                 this.$messagebox.alert(error.response.data.message);
@@ -177,7 +179,7 @@
         });
       },
       inputBlur() {
-        this.listShow = false
+        this.listShow = false;
         // var has;
         // has = false;
         // for(var i = 0; i < this.searchList.length; i++){
