@@ -3,7 +3,6 @@
     <Header
       @head-back="goBack()"
       :headerTitle="headerTitle"
-      v-if="show"
     ></Header>
     <div class="nav" style="margin-top: 0px">
       <div id="loading">
