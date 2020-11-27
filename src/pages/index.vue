@@ -22,8 +22,8 @@
   </div>
 </template>
 <script>
-  import {Indicator} from "mint-ui";
-  import {Toast} from "mint-ui";
+  // import {Indicator} from "mint-ui";
+  // import {Toast} from "mint-ui";
   import {getOrderTypeList} from "../api/order-type";
   import {getShopSupport, getShop} from "../api/shop";
 

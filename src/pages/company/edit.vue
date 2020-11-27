@@ -46,8 +46,8 @@
 </template>
 <script>
   import Header from "../../components/header.vue";
-  import { MessageBox } from "mint-ui";
-  import { Toast } from "mint-ui";
+  import { Dialog } from "vant";
+  import { Toast } from "vant";
   import { createCompany, updateCompany, deleteCompany } from "../../api/company";
   import axios from 'axios'
 
@@ -105,9 +105,9 @@
       },
       //删除
       deleteDate() {
-        MessageBox({
-          title: "提示",
-          message: "确定删除?",
+        Dialog.confirm({
+          title: '提示',
+          message: '确定删除?',
           showCancelButton: true
         }).then(action => {
           if (action === "confirm") {

@@ -97,7 +97,7 @@
 <script>
   import {getProductList} from "../../../api/product";
   import Header from "../../../components/header.vue";
-  import {MessageBox} from "mint-ui";
+  import { Dialog } from "vant";
 
   export default {
     name: "Product",
@@ -151,13 +151,22 @@
               localStorage.setItem("productList", JSON.stringify(oldList));
               this.$router.push({path: "/make/product"});
             } else {
-              MessageBox("提示", "数量,单价不能为0");
+              Dialog.alert({
+                title: '提示',
+                message: '数量,单价不能为0',
+              })
             }
           } else {
-            MessageBox("提示", "数量不能为空");
+            Dialog.alert({
+              title: '提示',
+              message: '数量不能为空',
+            })
           }
         } else {
-          MessageBox("提示", "单价不能为空");
+          Dialog.alert({
+            title: '提示',
+            message: '单价不能为空',
+          })
         }
       },
       showSearchPopup() {

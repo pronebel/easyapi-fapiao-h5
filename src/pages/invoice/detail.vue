@@ -60,7 +60,6 @@
 <script>
   import {getInvoice,getOutOrderList} from "../../api/invoice";
   import Header from "../../components/header.vue";
-  import {MessageBox} from "mint-ui";
   import Clipboard from "clipboard";
 
   export default {

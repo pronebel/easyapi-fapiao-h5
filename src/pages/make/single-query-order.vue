@@ -198,9 +198,8 @@
   import {getShopSupport} from "../../api/shop";
   import {getRule} from "../../api/info";
   import {makeInvoice} from "../../api/make";
-  import {Navbar, TabItem} from "mint-ui";
-  import {Toast} from "mint-ui";
-  import {MessageBox} from "mint-ui";
+  import {Toast} from "vant";
+  import { Dialog } from "vant";
   import Isemail from "isemail";
 
   export default {
@@ -409,9 +408,9 @@
         });
       },
       makeInvoice() {
-        MessageBox({
-          title: "提示",
-          message: "确认抬头正确并开票吗？",
+        Dialog.confirm({
+          title: '提示',
+          message: '确认抬头正确并开票吗',
           showCancelButton: true
         }).then(action => {
           if (action === "confirm") {

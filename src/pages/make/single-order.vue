@@ -227,9 +227,8 @@
   import { getRule } from "../../api/info";
   import { mergeMakeInvoice } from "../../api/make";
   import Header from "../../components/header.vue";
-  import { Navbar, TabItem } from "mint-ui";
-  import { Toast } from "mint-ui";
-  import { MessageBox } from "mint-ui";
+  import { Toast } from "vant";
+  import { Dialog } from "vant";
   import Isemail from "isemail";
 
   export default {
