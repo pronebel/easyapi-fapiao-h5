@@ -92,7 +92,7 @@
         />
         <van-field label="备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
         <van-cell title="附件">
-          <van-uploader v-model="fileList" multiple>
+          <van-uploader v-model="fileList" multiple :max-count="1">
           </van-uploader>
         </van-cell>
       </div>
