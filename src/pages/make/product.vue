@@ -1,7 +1,7 @@
 <template>
   <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;">
-    <Header @head-back="goBack()" headerTitle="开具电子发票"></Header>
-    <div class="nav">
+    <Header @head-back="goBack()" headerTitle="开具电子发票" v-if="show"></Header>
+    <div class="nav" style="margin-top: 0px">
       <div id="loading">
         <van-loading v-show="loadingList" type="spinner" color="#56cbf6"/>
       </div>
@@ -181,16 +181,16 @@
 </template>
 
 <script>
-  import {getProductList} from "../../api/product";
-  import {getCustomer} from "../../api/customer";
-  import {getDefaultCompany} from "../../api/company";
-  import {getDefaultAddress} from "../../api/address";
-  import {getShopSupport} from "../../api/shop";
-  import {getRule} from "../../api/info";
-  import {productMakeInvoice} from "../../api/make";
+  import { getProductList } from "../../api/product";
+  import { getCustomer } from "../../api/customer";
+  import { getDefaultCompany } from "../../api/company";
+  import { getDefaultAddress } from "../../api/address";
+  import { getShopSupport } from "../../api/shop";
+  import { getRule } from "../../api/info";
+  import { productMakeInvoice } from "../../api/make";
   import Header from "../../components/header.vue";
-  import {Toast} from "vant";
-  import {Dialog} from 'vant';
+  import { Toast } from "vant";
+  import { Dialog } from "vant";
   import Isemail from "isemail";
 
   export default {
@@ -215,7 +215,7 @@
         invoiceForm: {
           type: "企业",
           category: "增值税电子普通发票",
-          property: localStorage.getItem("ifElectronic") === 'true' ? "电子" : "纸质",
+          property: localStorage.getItem("ifElectronic") === "true" ? "电子" : "纸质",
           purchaserName: "",
           purchaserTaxpayerNumber: "",
           purchaserAddress: "",
@@ -231,7 +231,7 @@
         },
         productListAll: [],
         productKeyword: "",//商品服务搜索关键字
-        productPrice: 0,//选择商品总价
+        productPrice: 0//选择商品总价
       };
     },
 
@@ -318,12 +318,12 @@
           return Toast("商品服务不能为空");
         }
         Dialog.confirm({
-          title: '提示',
-          message: '确认抬头正确并开票吗？',
+          title: "提示",
+          message: "确认抬头正确并开票吗？"
         }).then(() => {
           Toast.loading({
-            message: '开票中...',
-            forbidClick: true,
+            message: "开票中...",
+            forbidClick: true
           });
           this.invoiceForm.products = this.productList;
           productMakeInvoice(this.invoiceForm).then(res => {
@@ -415,7 +415,7 @@
       },
       /** */
       onProductSearch() {
-        this.getProductList({name: this.productKeyword});
+        this.getProductList({ name: this.productKeyword });
       },
       /** */
       calcTotalPrice() {
@@ -524,6 +524,11 @@
       this.getCustomer();
       this.getInvoiceRemark();
       this.getShopSupport();
+    },
+    computed: {
+      show() {
+        return this.$store.state.ifShowH5NavBar;
+      }
     }
   };
 </script>
