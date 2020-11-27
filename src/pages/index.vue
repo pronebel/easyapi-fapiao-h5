@@ -22,8 +22,7 @@
   </div>
 </template>
 <script>
-  // import {Indicator} from "mint-ui";
-  // import {Toast} from "mint-ui";
+  import {Toast} from "vant";
   import {getOrderTypeList} from "../api/order-type";
   import {getShopSupport, getShop} from "../api/shop";
 
@@ -63,12 +62,12 @@
           if (res.status === 200) {
             this.orderTypeList = res.data.content;
             setTimeout(function () {
-              Indicator.close();
+              Toast.clear();
             }, 1500);
           }
         }).catch(error => {
           console.log(error);
-          Indicator.close();
+          Toast.clear();
           Toast(error.response.data.message);
         });
       },
@@ -103,9 +102,9 @@
     },
     mounted() {
       let that = this;
-      Indicator.open({
-        text: "加载中...",
-        spinnerType: "fading-circle"
+      Toast.loading({
+        message: '加载中...',
+        forbidClick: true,
       });
       that.getOrderTypeList();
       setTimeout(function () {
