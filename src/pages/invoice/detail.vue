@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Header @head-back="goBack()" :headerTitle="headerTitle"></Header>
-    <div class="invoiced">
+    <Header @head-back="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
+    <div class="invoiced" style="margin-top: 5px">
       <a @click="viewPicture">
         <van-cell :title=" invoiceDetail.category+ '（' + invoiceDetail.statements + '）'" is-link></van-cell>
       </a>
@@ -145,6 +145,11 @@
       this.id = this.$route.query.id;
     },
     watch: {},
+    computed: {
+      show() {
+        return this.$store.state.ifShowH5NavBar;
+      }
+    },
     mounted() {
       this.getInvoiceDetail();
       this.getOutOrderList()

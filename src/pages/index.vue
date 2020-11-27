@@ -30,6 +30,7 @@
     name: "Index",
     data() {
       return {
+        index:"",
         ifProductMake: false,//是否支持商品清单开票
         ifMoneyMake: false,//是否支持金额开票
         ifOrderMake: false,//是否支持订单开票
