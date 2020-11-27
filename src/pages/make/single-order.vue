@@ -356,7 +356,11 @@
         });
       },
       goInvoiceSuccess() {
-        this.showDisabled = false;
+        if(this.invoiceForm.type === '个人'){
+          if (this.invoiceForm.purchaserName == "") {
+            return Toast("请输入发票抬头");
+          }
+        }
         Dialog.confirm({
           title: '提示',
           message: '确认抬头和金额正确并申请开票吗？',

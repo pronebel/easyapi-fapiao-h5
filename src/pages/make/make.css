@@ -43,10 +43,6 @@
   margin-top: 10px;
 }
 
-.mint-cell-wrapper {
-  background: none !important;
-}
-
 #radio-1-2 {
   margin-left: 30px;
 }
@@ -61,7 +57,7 @@
 }
 
 .bottom .submit {
-  left:50%;
+  left: 50%;
   transform: translateX(-50%);
   width: 95%;
   border: none;
@@ -74,7 +70,7 @@
 .bottom .van-button__text {
   font-size: 17px;
   font-weight: 500;
-  letter-spacing:5px;
+  letter-spacing: 5px;
   text-indent: 5px
 }
 
@@ -141,8 +137,8 @@
 }
 
 .active {
-  border: 1px solid  #1989fa;
-  background: white ;
+  border: 1px solid #1989fa;
+  background: white;
   color: #1989fa;
 }
 
@@ -179,9 +175,6 @@
   margin-top: 10px;
 }
 
-.mint-cell-wrapper {
-  background: none !important;
-}
 
 #radio-1-2 {
   margin-left: 30px;
@@ -255,12 +248,13 @@
   line-height: 50px;
 }
 
-.minusBox{
+.minusBox {
   background: white;
 }
 
-.mint-cell-wrapper {
-  background: none !important;
+.mint-cell-wrapper{
+  background: white;
+  margin-bottom: 15px;
 }
 
 .mint-checklist-label {
@@ -309,7 +303,7 @@
   color: #fff;
 }
 
-.clear{
+.clear {
   clear: both;
 }
 
@@ -334,8 +328,8 @@
 }
 
 .nav {
-   margin-top: 53px;
- }
+  margin-top: 53px;
+}
 
 .nav > p,
 .page-part p {
@@ -362,9 +356,6 @@
   border-bottom: 1px solid #ebedf0;
 }
 
-.mint-cell-wrapper {
-  background: none !important;
-}
 
 #radio-1-2 {
   margin-left: 30px;
@@ -481,10 +472,6 @@
   color: #1989fa !important;
 }
 
-.mint-cell-wrapper {
-  background: none !important;
-}
-
 #radio-1-2 {
   margin-left: 30px;
 }
@@ -519,7 +506,7 @@
 }
 
 .price .van-cell__value {
-  color: #ff4848 ;
+  color: #ff4848;
 }
 
 .order-right .orderNum .van-cell__title {
@@ -530,15 +517,15 @@
   overflow: hidden;
   word-break: keep-all;
   text-overflow: ellipsis;
-  width:260px;
+  width: 260px;
   display: inline-block;
 }
 
-.merge-order_price .van-field__control{
-  color:red;
+.merge-order_price .van-field__control {
+  color: red;
 }
 
-.pd-left{
+.pd-left {
   padding: 5px;
 }
 

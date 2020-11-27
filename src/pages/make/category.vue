@@ -341,8 +341,18 @@
       }
       ,
       makeInvoice() {
-        if (this.customCategory == null || this.customCategory.customCategoryId == null) {
-          return Toast("请选择发票类别");
+        if(this.invoiceForm.type === '个人'){
+          if (this.invoiceForm.purchaserName == "") {
+            return Toast("请输入发票抬头");
+          }else{
+            if (this.customCategory == null || this.customCategory.customCategoryId == null) {
+              return Toast("请选择发票类别");
+            }
+          }
+        }else{
+          if (this.customCategory == null || this.customCategory.customCategoryId == null) {
+            return Toast("请选择发票类别");
+          }
         }
         let regPrice = /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/;
         if (this.invoiceForm.price == null || this.invoiceForm.price <= 0) {
