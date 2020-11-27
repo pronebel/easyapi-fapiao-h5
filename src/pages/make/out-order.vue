@@ -104,10 +104,10 @@
 <script>
   import {mapGetters} from "vuex";
   import Header from "../../components/header.vue";
-  import Vue from "vue";
-  import {List} from "vant";
   import {getOutOrderList} from "../../api/out-order";
   import {getShop} from "../../api/shop";
+  import Vue from "vue";
+  import {List} from "vant";
   import axios from "axios";
 
   Vue.use(List);

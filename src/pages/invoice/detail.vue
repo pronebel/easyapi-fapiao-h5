@@ -13,7 +13,7 @@
       <van-cell :value="invoiceDetail.purchaserAddress+invoiceDetail.purchaserPhone" title="地址、电话"/>
       <van-cell :value="invoiceDetail.purchaserBank+invoiceDetail.purchaserBankAccount" title="开户行及账号"/>
       <van-cell :value="invoiceDetail.price" title="发票金额"/>
-      <van-cell :value="invoiceDetail.remark" title="备注" />
+      <van-cell :value="invoiceDetail.remark" title="备注"/>
     </div>
     <div class="page-part" v-show="invoiceDetail.category=='增值税电子普通发票'">
       <p>接收方式</p>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-  import {getInvoice,getOutOrderList} from "../../api/invoice";
+  import {getInvoice, getOutOrderList} from "../../api/invoice";
   import Header from "../../components/header.vue";
   import Clipboard from "clipboard";
 
@@ -73,7 +73,7 @@
         active: "tab-container1",
         invoiceDetail: {},
         invoiceItems: [],
-        invoiceDetailItems:[],
+        invoiceDetailItems: [],
         serviceType: "",
         url: "",
         imgUrl: "",

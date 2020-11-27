@@ -199,7 +199,7 @@
   import {getRule} from "../../api/info";
   import {makeInvoice} from "../../api/make";
   import {Toast} from "vant";
-  import { Dialog } from "vant";
+  import {Dialog} from "vant";
   import Isemail from "isemail";
 
   export default {

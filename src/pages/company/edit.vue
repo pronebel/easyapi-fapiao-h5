@@ -46,11 +46,10 @@
 </template>
 <script>
   import Header from "../../components/header.vue";
-  import { Dialog } from "vant";
-  import { Toast } from "vant";
-  import { createCompany, updateCompany, deleteCompany } from "../../api/company";
+  import {createCompany, updateCompany, deleteCompany} from "../../api/company";
+  import {Dialog} from "vant";
+  import {Toast} from "vant";
   import axios from 'axios'
-
 
   export default {
     name: "EditCompany",
@@ -131,7 +130,7 @@
             name: this.name
           }
         }).then(res => {
-          console.log(res,111)
+          console.log(res, 111)
           this.searchList = res.data.content;
         }).catch(error => {
           this.$messagebox.alert(error.response.data.message);

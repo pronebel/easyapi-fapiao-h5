@@ -220,15 +220,15 @@
 </template>
 
 <script>
-  import { getDefaultCompany } from "../../api/company";
+  import {getDefaultCompany} from "../../api/company";
   import {getDefaultAddress} from "../../api/address";
-  import { getCustomer } from "../../api/customer";
-  import { getShopSupport } from "../../api/shop";
-  import { getRule } from "../../api/info";
-  import { mergeMakeInvoice } from "../../api/make";
+  import {getCustomer} from "../../api/customer";
+  import {getShopSupport} from "../../api/shop";
+  import {getRule} from "../../api/info";
+  import {mergeMakeInvoice} from "../../api/make";
   import Header from "../../components/header.vue";
-  import { Toast } from "vant";
-  import { Dialog } from "vant";
+  import {Toast} from "vant";
+  import {Dialog} from "vant";
   import Isemail from "isemail";
 
   export default {
@@ -246,7 +246,7 @@
         loadingList: true,
         amountOfMoney: 0,
         productList: "",//商品列表
-        address:{},
+        address: {},
         outOrder: "",
         contentList: "",
         outOrderNo: "",
@@ -341,7 +341,7 @@
           if (res.data.code == 1) {
             this.$router.push({
               path: "/invoice/detail",
-              query: { id: res.data.content.invoice.invoiceId }
+              query: {id: res.data.content.invoice.invoiceId}
             });
           }
           this.outOrder = res.data.content[0];
@@ -349,7 +349,7 @@
         });
       },
       getCustomer() {
-        getCustomer({ taxNumber: this.taxNumber }).then(res => {
+        getCustomer({taxNumber: this.taxNumber}).then(res => {
           this.loadingList = false;
           this.email = res.data.content.email ? res.data.content.email : "";
           this.invoiceForm.addrMobile = res.data.content.mobile ? res.data.content.mobile : "";
@@ -407,7 +407,7 @@
               this.$messagebox.alert(res.data.message);
               this.$router.push({
                 path: "/single-order-success",
-                query: { returnUrl: this.returnUrl }
+                query: {returnUrl: this.returnUrl}
               });
             }
           }).catch(error => {
@@ -415,7 +415,7 @@
             Toast(error.response.data.message);
             this.showDisabled = true;
           });
-        }).catch(error=>{
+        }).catch(error => {
 
         })
       },

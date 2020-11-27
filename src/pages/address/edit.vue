@@ -40,9 +40,9 @@
 </template>
 <script>
   import Header from "../../components/header.vue";
-  import { Dialog } from "vant";
-  import { Toast } from "vant";
-  import { createAddress, updateAddress, deleteAddress } from "../../api/address";
+  import {Dialog} from "vant";
+  import {Toast} from "vant";
+  import {createAddress, updateAddress, deleteAddress} from "../../api/address";
   import axios from "axios";
 
   export default {
@@ -72,7 +72,6 @@
           type: "GET"
         }).then(res => {
           if (res.data.status == 1) {
-
           }
         });
       },

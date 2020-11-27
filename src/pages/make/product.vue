@@ -181,16 +181,16 @@
 </template>
 
 <script>
-  import { getProductList } from "../../api/product";
-  import { getCustomer } from "../../api/customer";
-  import { getDefaultCompany } from "../../api/company";
-  import { getDefaultAddress } from "../../api/address";
-  import { getShopSupport } from "../../api/shop";
-  import { getRule } from "../../api/info";
-  import { productMakeInvoice } from "../../api/make";
+  import {getProductList} from "../../api/product";
+  import {getCustomer} from "../../api/customer";
+  import {getDefaultCompany} from "../../api/company";
+  import {getDefaultAddress} from "../../api/address";
+  import {getShopSupport} from "../../api/shop";
+  import {getRule} from "../../api/info";
+  import {productMakeInvoice} from "../../api/make";
   import Header from "../../components/header.vue";
-  import { Toast } from "vant";
-  import { Dialog } from "vant";
+  import {Toast} from "vant";
+  import {Dialog} from "vant";
   import Isemail from "isemail";
 
   export default {
@@ -415,7 +415,7 @@
       },
       /** */
       onProductSearch() {
-        this.getProductList({ name: this.productKeyword });
+        this.getProductList({name: this.productKeyword});
       },
       /** */
       calcTotalPrice() {

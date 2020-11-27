@@ -147,8 +147,6 @@
 
 <script>
   import { getDefaultAddress } from "../../api/address";
-  import { Toast } from "vant";
-  import { Dialog } from "vant";
   import { getDefaultCompany } from "../../api/company";
   import { getCustomer } from "../../api/customer";
   import { getQiniuToken, getQiniuKey } from "../../api/qiniu";
@@ -156,6 +154,8 @@
   import { getShopSupport } from "../../api/shop";
   import { getRule } from "../../api/info";
   import { categoryMakeInvoice } from "../../api/make";
+  import { Toast } from "vant";
+  import { Dialog } from "vant";
   import axios from "axios";
 
   export default {

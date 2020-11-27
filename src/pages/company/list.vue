@@ -44,7 +44,7 @@
 </template>
 <script>
   import Header from "../../components/header.vue";
-  import { defaultCompany, getCompanyList } from "../../api/company";
+  import {defaultCompany, getCompanyList} from "../../api/company";
 
   export default {
     name: "Company",
@@ -93,7 +93,7 @@
           this.$messagebox.alert(error.response.data.message);
         });
       },
-      gotoWechat(){
+      gotoWechat() {
         var _that = this
         wx.getSetting({
           success(res) {
@@ -103,14 +103,14 @@
       },
       gotoEditCompany() {
         this.back = true;
-        this.$router.push({ name: "EditCompany", path: "/company/edit" });
+        this.$router.push({name: "EditCompany", path: "/company/edit"});
       },
       edit(index) {
         this.back = true;
         this.$router.push({
           name: "EditCompany",
           path: "/company/edit",
-          params: { id: this.companyList[index].companyId }
+          params: {id: this.companyList[index].companyId}
         });
       }
     },
@@ -131,9 +131,9 @@
     },
     beforeRouteLeave(to, from, next) {
       if (to.name === "EditCompany" && !this.back) {
-        next({ name: "Index" });
+        next({name: "Index"});
       } else if (to.name === "Company") {
-        next({ name: "Index" });
+        next({name: "Index"});
       } else {
         next();
       }
