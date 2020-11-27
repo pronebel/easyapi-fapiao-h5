@@ -92,7 +92,13 @@
         />
         <van-field label="备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
         <van-cell title="附件">
-          <van-uploader v-model="fileList" multiple :max-count="1">
+          <van-uploader
+            v-model="fileList"
+            multiple
+            :max-count="1"
+            :data="{ key: qnKey, token: qnToken }"
+            :after-read="onRead"
+          >
           </van-uploader>
         </van-cell>
       </div>
@@ -140,15 +146,17 @@
 </template>
 
 <script>
-  import {getDefaultAddress} from "../../api/address";
-  import {Toast} from "vant";
-  import {Dialog} from 'vant';
-  import {getDefaultCompany} from "../../api/company";
-  import {getCustomer} from "../../api/customer";
-  import {getCustomCategoryList} from "../../api/custom-category";
-  import {getShopSupport} from "../../api/shop";
-  import {getRule} from "../../api/info";
-  import {categoryMakeInvoice} from "../../api/make";
+  import { getDefaultAddress } from "../../api/address";
+  import { Toast } from "vant";
+  import { Dialog } from "vant";
+  import { getDefaultCompany } from "../../api/company";
+  import { getCustomer } from "../../api/customer";
+  import { getQiniuToken, getQiniuKey } from "../../api/qiniu";
+  import { getCustomCategoryList } from "../../api/custom-category";
+  import { getShopSupport } from "../../api/shop";
+  import { getRule } from "../../api/info";
+  import { categoryMakeInvoice } from "../../api/make";
+  import axios from "axios";
 
   export default {
     name: "MakeCategory",
@@ -161,6 +169,8 @@
         ifPaper: localStorage.getItem("ifPaper"),
         isShow: false,
         isHide: true,
+        qnKey: "",
+        qnToken: "",
         ifNeedMobile: false,
         ifNeedEmail: false,
         company: {},
@@ -175,9 +185,9 @@
         remarkPlaceholder: "",
         invoiceForm: {
           ifPaper: false,
-          category: '增值税电子普通发票',
-          property: localStorage.getItem("ifElectronic") === 'true' ? "电子" : "纸质",
-          type: '个人',
+          category: "增值税电子普通发票",
+          property: localStorage.getItem("ifElectronic") === "true" ? "电子" : "纸质",
+          type: "个人",
           purchaserName: "",
           purchaserTaxpayerNumber: "",
           purchaserAddress: "",
@@ -187,13 +197,47 @@
           price: null,
           addrMobile: "",
           email: "",
-          remark: ""
+          remark: "",
+          extends: [{
+            fieldKey: "attch",
+            fieldName: "附件",
+            fieldValue: ""
+          }]
         },
         fileList: []
       };
     },
 
     methods: {
+      getToken() {
+        getQiniuToken().then(res => {
+          this.qnToken = res.data.content.uploadToken;
+        });
+      },
+      getKey() {
+        getQiniuKey().then(res => {
+          this.qnKey = res.data.content.key;
+          console.log(this.qnKey);
+        });
+      },
+      onRead(file) {
+        console.log(file);
+        this.uploadImgToQiniu(this.qnToken, this.qnKey, file);
+      },
+      uploadImgToQiniu(qnToken, qnKey, file) {
+        let data = new FormData();
+        data.append("token", qnToken);     //七牛需要的token，后台获取
+        data.append("key", qnKey);
+        data.append("file", file["file"]);
+        axios({
+          method: "POST",
+          url: "https://upload.qiniup.com/",  //上传地址
+          data: data,
+          timeout: 30000      //超时时间，因为图片上传时间有可能比较长
+        }).then(res => {
+          this.invoiceForm.extends[0].fieldValue = "https://qiniu.easyapi.com/" + res.data.key;
+        });
+      },
       selectInvoiceType() {
         localStorage.setItem("type", this.invoiceForm.type);
         if (this.invoiceForm.type === "企业") {
@@ -338,12 +382,12 @@
           }
         }
         Dialog.confirm({
-          title: '提示',
-          message: '确认抬头和金额正确并申请开票吗？',
+          title: "提示",
+          message: "确认抬头和金额正确并申请开票吗？"
         }).then(() => {
           Toast.loading({
-            message: '开票中...',
-            forbidClick: true,
+            message: "开票中...",
+            forbidClick: true
           });
           this.invoiceForm.customCategoryId = this.customCategory.customCategoryId;
           this.invoiceForm.companyId = this.company.companyId;
@@ -417,6 +461,8 @@
     activated() {
     },
     mounted() {
+      this.getToken();
+      this.getKey();
       this.getCustomer();
       this.getInvoiceRemark();
       this.getShopSupport();
