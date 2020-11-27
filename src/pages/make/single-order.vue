@@ -451,7 +451,7 @@
           this.getDefaultCompany();
           this.getDefaultAddress();
         } else if (this.invoiceForm.type === "个人") {
-          this.invoiceForm.purchaserName = "个人";
+          this.invoiceForm.purchaserName = "";
           this.invoiceForm.purchaserTaxpayerNumber = "";
           this.invoiceForm.address = "";
           this.invoiceForm.phone = "";

@@ -294,7 +294,7 @@
         if (this.invoiceForm.type === "企业") {
           this.getDefaultCompany();
         } else if (this.invoiceForm.type === "个人") {
-          this.invoiceForm.purchaserName = "个人";
+          this.invoiceForm.purchaserName = "";
           this.invoiceForm.purchaserTaxpayerNumber = "";
           this.invoiceForm.address = "";
           this.invoiceForm.phone = "";
@@ -319,7 +319,7 @@
         if (type == "企业") {
           this.getDefaultCompany();
         } else if (type == "个人") {
-          this.invoiceForm.purchaserName = "个人";
+          this.invoiceForm.purchaserName = "";
           this.invoiceForm.purchaserTaxpayerNumber = "";
           this.invoiceForm.address = "";
           this.invoiceForm.phone = "";
