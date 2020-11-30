@@ -3,6 +3,7 @@
 </template>
 
 <script>
+  import {Toast} from "vant";
   import {getRule} from "../api/info";
 
   export default {
@@ -17,7 +18,7 @@
       getRule().then(res => {
         this.content = res.data.content.content ? res.data.content.content : "请管理员设置开票规则";
       }).catch(error => {
-        console.log(error);
+        Toast(error.response.data.message);
       });
     }
   };
