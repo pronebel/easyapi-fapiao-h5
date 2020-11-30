@@ -150,7 +150,7 @@
           return Toast("发票抬头和税号不能为空！");
         }
         this.companyForm.name = this.name;
-        this.$messagebox({
+        Dialog.confirm({
           title: "提示",
           message: "确定提交吗？",
           showCancelButton: true
