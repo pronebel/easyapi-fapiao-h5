@@ -84,11 +84,11 @@
         }
         this.defaultCompany(item.companyId);
         this.$emit("select-company", item);
-        this.$router.back(-1);
       },
       //设置默认值
       defaultCompany(companyId) {
         defaultCompany(companyId).then(res => {
+          this.$router.back(-1);
         }).catch(error => {
           this.$messagebox.alert(error.response.data.message);
         });
@@ -137,6 +137,8 @@
       } else {
         next();
       }
+    },
+    watch: {
     }
   };
 </script>

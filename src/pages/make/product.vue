@@ -259,6 +259,7 @@
             this.company = [];
           } else {
             this.company = res.data.content;
+            console.log(this.company)
             this.invoiceForm.purchaserName = this.company.name;
             this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
             this.invoiceForm.purchaserAddress = this.company.address;
@@ -523,7 +524,7 @@
       this.resetPage();
       if (localStorage.getItem("type")) {
         this.invoiceForm.type = localStorage.getItem("type");
-        this.selectInvoiceType();
+        this.getDefaultCompany()
       }
     },
     activated() {
@@ -539,7 +540,11 @@
       show() {
         return this.$store.state.ifShowH5NavBar;
       }
-    }
+    },
+    watch: {
+      '$route' (to, from) {
+      }
+    },
   };
 </script>
 
