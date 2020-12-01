@@ -93,7 +93,7 @@
         <van-field label="发票备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
         <van-cell title="附件">
           <van-uploader
-            v-model="fileList"
+            v-model="invoiceForm.extends[0].fieldValue"
             multiple
             :max-count="1"
             :data="{ key: qnKey, token: qnToken }"
@@ -202,7 +202,6 @@
             fieldValue: ""
           }]
         },
-        fileList: []
       };
     },
 
