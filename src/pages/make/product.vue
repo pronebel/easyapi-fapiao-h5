@@ -103,7 +103,7 @@
 
       <van-cell class="line"/>
       <van-field class="merge-order_price" label="发票金额" v-model="invoiceForm.price" readonly></van-field>
-      <van-field label="备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
+      <van-field label="发票备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
     </div>
 
     <div>

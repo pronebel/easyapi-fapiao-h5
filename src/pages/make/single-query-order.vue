@@ -142,7 +142,7 @@
         v-model="invoiceForm.mergeSum"
         readonly
       ></van-field>
-      <van-field label="备注" placeholder="请输入备注信息"></van-field>
+      <van-field label="发票备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
     </div>
     <div class="page-part" style="margin-bottom: 60px" v-show="this.ifElectronic">
       <p>接收方式</p>
@@ -233,7 +233,7 @@
         ifNeedEmail: "",
         sum: 0,
         item: {},
-        remark: "",
+        remarkPlaceholder: "",
         invoiceForm: {
           type: "企业",
           category: "增值税电子普通发票",
@@ -408,7 +408,7 @@
         });
       },
       makeInvoice() {
-        if(this.invoiceForm.type === '个人'){
+        if (this.invoiceForm.type === '个人') {
           if (this.invoiceForm.purchaserName == "") {
             return Toast("请输入发票抬头");
           }
@@ -478,7 +478,7 @@
       //获取备注
       getSpecifications() {
         getRule().then(res => {
-          this.remark = res.data.content.remark;
+          this.remarkPlaceholder = res.data.content.remark;
         });
       },
       getInvoicingService() {

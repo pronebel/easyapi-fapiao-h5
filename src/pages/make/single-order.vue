@@ -167,7 +167,7 @@
         readonly
       ></van-field>
       <van-field
-        label="备注"
+        label="发票备注"
         :placeholder="remarkPlaceholder"
         v-model="invoiceForm.remark"
       ></van-field>

@@ -90,7 +90,7 @@
           close-button-text="完成"
           @blur="keyboardShow = false"
         />
-        <van-field label="备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
+        <van-field label="发票备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
         <van-cell title="附件">
           <van-uploader
             v-model="fileList"
@@ -123,9 +123,7 @@
         ></van-field>
         <van-cell
           title="邮寄地址"
-          :value="
-          address.province + address.city + address.district + address.addr
-        "
+          :value="address.province + address.city + address.district + address.addr"
           readonly
         ></van-cell>
       </div>
@@ -146,16 +144,16 @@
 </template>
 
 <script>
-  import { getDefaultAddress } from "../../api/address";
-  import { getDefaultCompany } from "../../api/company";
-  import { getCustomer } from "../../api/customer";
-  import { getQiniuToken, getQiniuKey } from "../../api/qiniu";
-  import { getCustomCategoryList } from "../../api/custom-category";
-  import { getShopSupport } from "../../api/shop";
-  import { getRule } from "../../api/info";
-  import { categoryMakeInvoice } from "../../api/make";
-  import { Toast } from "vant";
-  import { Dialog } from "vant";
+  import {getDefaultAddress} from "../../api/address";
+  import {getDefaultCompany} from "../../api/company";
+  import {getCustomer} from "../../api/customer";
+  import {getQiniuToken, getQiniuKey} from "../../api/qiniu";
+  import {getCustomCategoryList} from "../../api/custom-category";
+  import {getShopSupport} from "../../api/shop";
+  import {getRule} from "../../api/info";
+  import {categoryMakeInvoice} from "../../api/make";
+  import {Toast} from "vant";
+  import {Dialog} from "vant";
   import axios from "axios";
 
   export default {
@@ -217,11 +215,9 @@
       getKey() {
         getQiniuKey().then(res => {
           this.qnKey = res.data.content.key;
-          console.log(this.qnKey);
         });
       },
       onRead(file) {
-        console.log(file);
         this.uploadImgToQiniu(this.qnToken, this.qnKey, file);
       },
       uploadImgToQiniu(qnToken, qnKey, file) {
@@ -341,15 +337,15 @@
       }
       ,
       makeInvoice() {
-        if(this.invoiceForm.type === '个人'){
+        if (this.invoiceForm.type === '个人') {
           if (this.invoiceForm.purchaserName == "") {
             return Toast("请输入发票抬头");
-          }else{
+          } else {
             if (this.customCategory == null || this.customCategory.customCategoryId == null) {
               return Toast("请选择发票类别");
             }
           }
-        }else{
+        } else {
           if (this.customCategory == null || this.customCategory.customCategoryId == null) {
             return Toast("请选择发票类别");
           }
@@ -359,6 +355,9 @@
           return Toast("请输入开票金额");
         } else if (!regPrice.test(this.invoiceForm.price)) {
           return Toast("请输入合法开票金额，最多2位小数");
+        }
+        if (this.invoiceForm.extends[0].fieldValue === "") {
+          return Toast("附件一栏请上传付款记录凭证");
         }
         //验证邮箱
         let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;

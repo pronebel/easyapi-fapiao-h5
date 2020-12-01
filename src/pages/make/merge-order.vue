@@ -134,7 +134,7 @@
         v-model="invoiceForm.mergeSum"
         readonly
       ></van-field>
-      <van-field label="备注" v-model="invoiceForm.remark" :placeholder="remarkPlaceholder"></van-field>
+      <van-field label="发票备注" v-model="invoiceForm.remark" :placeholder="remarkPlaceholder"></van-field>
     </div>
     <div class="page-part" style="margin-bottom: 60px" v-show="this.ifElectronic">
       <p>接收方式</p>
