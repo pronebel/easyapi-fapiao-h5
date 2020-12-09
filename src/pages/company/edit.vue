@@ -160,7 +160,7 @@
             if (this.title === "edit") {
               updateCompany(this.id, this.companyForm).then(res => {
                 if (res.data.code === 1) {
-                  this.$router.go(-1);
+                  this.$router.push({name: "Company", path: "/company"});
                 }
               }).catch(error => {
                 this.$messagebox.alert(error.response.data.message);

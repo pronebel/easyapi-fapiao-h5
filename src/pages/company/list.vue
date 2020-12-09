@@ -79,9 +79,6 @@
         });
       },
       select(item) {
-        if (this.from != "make") {
-          return;
-        }
         this.defaultCompany(item.companyId);
         this.$emit("select-company", item);
       },
@@ -122,6 +119,7 @@
     created() {
       this.accessToken = localStorage.getItem("accessToken");
       this.from = this.$route.params.from;
+      console.log(this.from)
     },
     activated() {
       this.getCompanyList();
