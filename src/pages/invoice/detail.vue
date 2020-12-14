@@ -110,7 +110,7 @@
           this.serviceType = res.data.content.serviceType;
           this.invoiceItems = this.invoiceDetail.invoiceItems;
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
         });
       },
       getOutOrderList() {
@@ -121,7 +121,7 @@
         getOutOrderList(params).then(res => {
           this.invoiceDetailItems = res.data.content
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
         });
       },
       goAssociatedOrder() {

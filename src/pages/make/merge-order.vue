@@ -285,9 +285,14 @@
           this.invoiceForm.property = "电子";
         }
       },
+      /**
+       * 获取默认公司抬头信息
+       */
       getDefaultCompany() {
         getDefaultCompany().then((res) => {
-          if (res.data.code === 1) {
+          if (res.data.code === 0) {
+            this.company = {};
+          } else {
             this.company = res.data.content;
             this.invoiceForm.purchaserName = this.company.name;
             this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
@@ -299,6 +304,9 @@
           }
         });
       },
+      /**
+       * 获取默认收票地址信息
+       */
       getDefaultAddress() {
         getDefaultAddress().then((res) => {
           if (res.data.code === 1) {
@@ -307,7 +315,11 @@
           }
         });
       },
+      /**
+       * 前往抬头选择页面
+       */
       gotoCompany() {
+        localStorage.setItem("invoiceForm", JSON.stringify(this.invoiceForm));
         this.$router.push({
           path: "/company/",
           name: "Company",
@@ -317,7 +329,11 @@
           }
         });
       },
+      /**
+       * 前往地址选择页面
+       */
       gotoAddress() {
+        localStorage.setItem("invoiceForm", JSON.stringify(this.invoiceForm));
         this.$router.push({
           path: "/address/",
           name: "Address",
@@ -327,15 +343,25 @@
           }
         });
       },
+      /**
+       * 获取开票用户信息
+       */
       getCustomer() {
-        getCustomer({}).then((res) => {
-          this.loadingList = false;
-          this.invoiceForm.email = res.data.content.email ? res.data.content.email : "";
-          localStorage.setItem("email", this.invoiceForm.email);
-          this.invoiceForm.mobile = res.data.content.mobile ? res.data.content.mobile : "";
-          localStorage.setItem("mobile", this.invoiceForm.mobile);
-        });
+        this.loadingList = false;
+        if (localStorage.getItem("invoiceForm")) {
+          this.invoiceForm.email = JSON.parse(localStorage.getItem("invoiceForm")).email;
+          this.invoiceForm.mobile = JSON.parse(localStorage.getItem("invoiceForm")).mobile;
+        }
+        else {
+          getCustomer({}).then((res) => {
+            this.invoiceForm.email = res.data.content.email ? res.data.content.email : "";
+            this.invoiceForm.mobile = res.data.content.mobile ? res.data.content.mobile : "";
+          });
+        }
       },
+      /**
+       * 提交开票信息
+       */
       makeInvoice() {
         if (this.invoiceForm.type === '个人') {
           if (this.invoiceForm.purchaserName == "") {
@@ -397,9 +423,14 @@
        * 获取发票备注填写说明
        */
       getInvoiceRemark() {
-        getRule().then((res) => {
-          this.remarkPlaceholder = res.data.content.remark;
-        });
+        if (localStorage.getItem("invoiceForm")) {
+          this.invoiceForm.remark = JSON.parse(localStorage.getItem("invoiceForm")).remark;
+        }
+        else {
+          getRule().then((res) => {
+            this.remarkPlaceholder = res.data.content.remark;
+          });
+        }
       },
       getInvoiceSupport() {
         getShopSupport().then((res) => {

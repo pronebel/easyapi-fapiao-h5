@@ -105,7 +105,7 @@
   import {getShop} from "../../api/shop";
   import Vue from "vue";
   import {List} from "vant";
-  import axios from "axios";
+  import {Toast} from "vant";
 
   Vue.use(List);
 
@@ -166,7 +166,7 @@
             this.minusOutOrderList = [];
           }
         }).catch(error => {
-          console.log(error.response);
+          Toast(error.response.data.message);
         });
       },
       /**
@@ -195,7 +195,7 @@
           }
         }).catch(error => {
           this.loading = false;
-          console.log(error);
+          Toast(error.response.data.message);
         });
       },
       /**
@@ -239,7 +239,7 @@
         getShop().then(res => {
           this.minPrice = res.data.content.minPrice;
         }).catch(error => {
-          console.log(error);
+          Toast(error.response.data.message);
         });
       }
     },

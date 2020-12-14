@@ -45,6 +45,7 @@
 <script>
   import Header from "../../components/header.vue";
   import {defaultCompany, getCompanyList} from "../../api/company";
+  import {Toast} from "vant";
 
   export default {
     name: "Company",
@@ -74,7 +75,7 @@
             this.loading = false;
           }
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
           this.loading = false;
         });
       },
@@ -87,7 +88,7 @@
         defaultCompany(companyId).then(res => {
           this.$router.back(-1);
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
         });
       },
       gotoWechat() {

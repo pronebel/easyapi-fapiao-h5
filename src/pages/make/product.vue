@@ -181,16 +181,16 @@
 </template>
 
 <script>
-  import { getProductList } from "../../api/product";
-  import { getCustomer } from "../../api/customer";
-  import { getDefaultCompany } from "../../api/company";
-  import { getDefaultAddress } from "../../api/address";
-  import { getShopSupport } from "../../api/shop";
-  import { getRule } from "../../api/info";
-  import { productMakeInvoice } from "../../api/make";
+  import {getProductList} from "../../api/product";
+  import {getCustomer} from "../../api/customer";
+  import {getDefaultCompany} from "../../api/company";
+  import {getDefaultAddress} from "../../api/address";
+  import {getShopSupport} from "../../api/shop";
+  import {getRule} from "../../api/info";
+  import {productMakeInvoice} from "../../api/make";
   import Header from "../../components/header.vue";
-  import { Toast } from "vant";
-  import { Dialog } from "vant";
+  import {Toast} from "vant";
+  import {Dialog} from "vant";
   import Isemail from "isemail";
 
   export default {
@@ -256,10 +256,9 @@
       getDefaultCompany() {
         getDefaultCompany().then(res => {
           if (res.data.code === 0) {
-            this.company = [];
+            this.company = {};
           } else {
             this.company = res.data.content;
-            console.log(this.company)
             this.invoiceForm.purchaserName = this.company.name;
             this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
             this.invoiceForm.purchaserAddress = this.company.address;
@@ -272,7 +271,9 @@
       },
       getDefaultAddress() {
         getDefaultAddress().then(res => {
-          if (res.data.code === 1) {
+          if (res.data.code === 0) {
+            this.address = {};
+          } else {
             this.address = res.data.content;
             this.invoiceForm.addressId = this.address.addressId;
           }
@@ -315,15 +316,15 @@
             }
           }
         }
-        if(this.invoiceForm.type === '个人'){
+        if (this.invoiceForm.type === '个人') {
           if (this.invoiceForm.purchaserName == "") {
             return Toast("请输入发票抬头");
-          }else{
+          } else {
             if (this.productList === null) {
               return Toast("商品服务不能为空");
             }
           }
-        }else{
+        } else {
           if (this.productList === null) {
             return Toast("商品服务不能为空");
           }
@@ -347,7 +348,6 @@
           });
         }).catch(() => {
         });
-
         localStorage.removeItem("productList");
       },
       /** 计算发票金额 */
@@ -365,7 +365,7 @@
         getRule().then(res => {
           this.remarkPlaceholder = res.data.content.remark;
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
         });
       },
       /** 删除商品 */
@@ -386,7 +386,7 @@
           this.ifNeedMobile = res.data.content.ifNeedMobile;
           this.ifNeedEmail = res.data.content.ifNeedEmail;
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
         });
       },
       /** */
@@ -426,7 +426,7 @@
       },
       /** */
       onProductSearch() {
-        this.getProductList({ name: this.productKeyword });
+        this.getProductList({name: this.productKeyword});
       },
       /** */
       calcTotalPrice() {
@@ -542,7 +542,7 @@
       }
     },
     watch: {
-      '$route' (to, from) {
+      '$route'(to, from) {
       }
     },
   };

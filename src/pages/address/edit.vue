@@ -137,7 +137,7 @@
                   this.$router.go(-1);
                 }
               }).catch(error => {
-                this.$messagebox.alert(error.response.data.message);
+                Toast(error.response.data.message);
               });
             } else {
               createAddress(this.addressForm).then(res => {
@@ -145,7 +145,7 @@
                   this.$router.go(-1);
                 }
               }).catch(error => {
-                this.$messagebox.alert(error.response.data.message);
+                Toast(error.response.data.message);
               });
             }
           }

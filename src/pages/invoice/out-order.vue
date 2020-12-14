@@ -38,7 +38,7 @@
         getOutOrderList({invoiceId: this.$route.query.id}).then(res => {
           this.invoiceItems = res.data.content
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
         });
       }
     },

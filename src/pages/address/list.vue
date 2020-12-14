@@ -42,6 +42,7 @@
 <script>
   import Header from "../../components/header.vue";
   import {getAddressList, defaultAddress} from "../../api/address";
+  import {Toast} from "vant";
 
   export default {
     name: "Address",
@@ -71,7 +72,7 @@
             this.loading = false;
           }
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
           this.loading = false;
         });
       },
@@ -88,7 +89,7 @@
       defaultAddress(addressId) {
         defaultAddress(addressId).then(res => {
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
         });
       },
       gotoEditAddress() {
