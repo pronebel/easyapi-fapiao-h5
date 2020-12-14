@@ -233,7 +233,7 @@
           addrMobile: "",
           email: "",
           remark: "",
-          mergeSum:""
+          mergeSum: ""
         },
       };
     },
@@ -308,46 +308,24 @@
         });
       },
       gotoCompany() {
-        if (this.company) {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: this.company.companyId,
-              from: "make"
-            }
-          });
-        } else {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: "",
-              from: "make"
-            }
-          });
-        }
+        this.$router.push({
+          path: "/company/",
+          name: "Company",
+          params: {
+            id: this.company ? this.company.companyId : "",
+            from: "make"
+          }
+        });
       },
       gotoAddress() {
-        if (this.address) {
-          this.$router.push({
-            path: "/address/",
-            name: "Address",
-            params: {
-              id: this.address.addressID,
-              from: "make"
-            }
-          });
-        } else {
-          this.$router.push({
-            path: "/address/",
-            name: "Address",
-            params: {
-              id: "",
-              from: "make"
-            }
-          });
-        }
+        this.$router.push({
+          path: "/address/",
+          name: "Address",
+          params: {
+            id: this.address ? this.address.addressId : "",
+            from: "make"
+          }
+        });
       },
       getCustomer() {
         getCustomer({}).then((res) => {
@@ -359,7 +337,7 @@
         });
       },
       makeInvoice() {
-        if(this.invoiceForm.type === '个人'){
+        if (this.invoiceForm.type === '个人') {
           if (this.invoiceForm.purchaserName == "") {
             return Toast("请输入发票抬头");
           }

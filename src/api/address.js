@@ -20,7 +20,7 @@ export const getAddressList = (params) => axios.get(`${baseUrl}/addresses`, {
  *
  * @see https://www.easyai.com
  */
-export const getAddress = (id) => axios.post(`${baseUrl}/address/{$id}`, {
+export const getAddress = (id) => axios.get(`${baseUrl}/address/${id}`, {
   params: {
     accessToken: localStorage.getItem("accessToken")
   }

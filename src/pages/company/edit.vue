@@ -46,10 +46,9 @@
 </template>
 <script>
   import Header from "../../components/header.vue";
-  import {createCompany, updateCompany, deleteCompany} from "../../api/company";
+  import {getCompany, createCompany, updateCompany, deleteCompany, getCompanyCodeList} from "../../api/company";
   import {Dialog} from "vant";
   import {Toast} from "vant";
-  import axios from 'axios'
 
   export default {
     name: "EditCompany",
@@ -62,7 +61,6 @@
         companyForm: {},
         id: "",
         title: "",
-        accessToken: "",
         searchList: [],
         name: "",
         listShow: false
@@ -90,15 +88,11 @@
         this.headerTitle = "修改抬头";
         this.id = this.$route.params.id;
         if (this.title === "edit") {
-          axios.get("/company/" + this.id, {
-            params: {
-              accessToken: this.accessToken
-            }
-          }).then(res => {
+          getCompany(this.id).then(res => {
             this.companyForm = res.data.content;
             this.name = res.data.content.name;
           }).catch(error => {
-            this.$messagebox.alert(error.response.data.message);
+            Toast(error.response.data.message);
           });
         }
       },
@@ -115,7 +109,7 @@
                 this.$router.go(-1);
               }
             }).catch(error => {
-              this.$messagebox.alert(error.response.data.message);
+              Toast(error.response.data.message);
             });
           }
         });
@@ -124,16 +118,10 @@
         if (this.name.length < 4) {
           return;
         }
-        axios.get("/company/codes", {
-          params: {
-            accessToken: this.accessToken,
-            name: this.name
-          }
-        }).then(res => {
-          console.log(res, 111)
+        getCompanyCodeList({name: this.name}).then(res => {
           this.searchList = res.data.content;
         }).catch(error => {
-          this.$messagebox.alert(error.response.data.message);
+          Toast(error.response.data.message);
         });
       },
       chooseRise(index) {
@@ -163,7 +151,7 @@
                   this.$router.push({name: "Company", path: "/company"});
                 }
               }).catch(error => {
-                this.$messagebox.alert(error.response.data.message);
+                Toast(error.response.data.message);
               });
             } else {
               createCompany(this.companyForm).then(res => {
@@ -171,7 +159,7 @@
                   this.$router.go(-1);
                 }
               }).catch(error => {
-                this.$messagebox.alert(error.response.data.message);
+                Toast(error.response.data.message);
               });
             }
           }
@@ -201,7 +189,6 @@
       }
     },
     created() {
-      this.accessToken = localStorage.getItem("accessToken");
     },
     mounted() {
       this.getId();

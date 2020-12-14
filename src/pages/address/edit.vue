@@ -42,7 +42,7 @@
   import Header from "../../components/header.vue";
   import {Dialog} from "vant";
   import {Toast} from "vant";
-  import {createAddress, updateAddress, deleteAddress} from "../../api/address";
+  import {getAddress, createAddress, updateAddress, deleteAddress} from "../../api/address";
   import axios from "axios";
 
   export default {
@@ -56,7 +56,6 @@
         addressForm: {},
         id: "",
         title: "",
-        accessToken: "",
         name: "",
         showPopup: false,
         areaList: {}
@@ -94,15 +93,9 @@
         this.title = "edit";
         this.headerTitle = "修改地址";
         this.id = this.$route.params.id;
-        console.log(this.id)
         if (this.title === "edit") {
-          axios.get("/address/" + this.id, {
-            params: {
-              accessToken: this.accessToken
-            }
-          }).then(res => {
+          getAddress(this.id).then(res => {
             this.addressForm = res.data.content;
-            // this.name = res.data.content.name;
             this.addressForm.area = this.addressForm.province + this.addressForm.city + this.addressForm.district;
           }).catch(error => {
             Toast(error.response.data.message);
@@ -172,7 +165,6 @@
       }
     },
     created() {
-      this.accessToken = localStorage.getItem("accessToken");
     },
     mounted() {
       this.getId();

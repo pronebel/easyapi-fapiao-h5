@@ -119,7 +119,6 @@
     created() {
       this.accessToken = localStorage.getItem("accessToken");
       this.from = this.$route.params.from;
-      console.log(this.from)
     },
     activated() {
       this.getCompanyList();
@@ -136,8 +135,7 @@
         next();
       }
     },
-    watch: {
-    }
+    watch: {}
   };
 </script>
 

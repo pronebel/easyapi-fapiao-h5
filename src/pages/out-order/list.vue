@@ -2,8 +2,8 @@
   <div style="padding: 0 10px;height: 100%;">
     <Header @head-back="goBack()" :headerTitle="headerTitle" v-if="show"></Header>
     <div class="page-checklist header-d">
-      <div style="margin-bottom: 30px;" v-if="minusPage.total>0">
-        <p class="pd-left">有{{minusPage.total}}笔欠费金额，欠费金额小计：¥{{minusAmount}}元</p>
+      <div style="margin-bottom: 30px;" v-if="minusOutOrderList.length>0">
+        <p class="pd-left">有{{minusOutOrderList.length}}笔欠费金额，欠费金额小计：¥{{minusAmount}}元</p>
         <div
           class="mint-checklist page-part"
           v-for="(item, index) in minusOutOrderList"
@@ -37,9 +37,6 @@
               <div class="clear"></div>
             </div>
           </a>
-        </div>
-        <div v-if="showMinus" class="page-infinite-loading minusBox">
-          <p>没有欠费订单</p>
         </div>
       </div>
       <div class="no-record-con" v-show="empty">
@@ -113,31 +110,25 @@
   Vue.use(List);
 
   export default {
-    name: "InvoiceOutOrder",
+    name: "OutOrder",
     components: {
       Header: Header
     },
     data() {
       return {
         loadMoreText: "加载中...",
-        showMinus: false,
         loading: false, //下拉加载
         empty: false,//是否显示空页面
-        minusPage: {
-          page: 0,
-          size: 10,
-          total: 0
-        },
-        minusAmount: 0,
         page: {
           page: 0,
           size: 10,
           total: 0
         },
-        headerTitle: "开票",
+        headerTitle: "选择订单",
         selectList: [],
         outOrderList: [],//外部订单列表
         minusOutOrderList: [],//欠费订单列表
+        minusAmount: 0.0,
         allCheck: false,//全部选择
         minPrice: 0.01,//最小开票金额
         accessToken: "",
@@ -160,6 +151,27 @@
         });
         this.selectList.length === this.outOrderList.length ? (this.allCheck = true) : (this.allCheck = false);
       },
+      /**
+       * 获取全部负数（欠费）外部订单列表
+       */
+      getMinusOutOrderList() {
+        getOutOrderList({maxPrice: -0.01, type: this.orderType}, {page: 0, size: 10000}).then(res => {
+          if (res.data.code == 1) {
+            this.minusOutOrderList = res.data.content;
+            for (let i = 0; i < this.minusOutOrderList.length; i++) {
+              this.minusAmount += Number(this.minusOutOrderList[i].price);
+            }
+          } else {
+            this.minusAmount = 0.0;
+            this.minusOutOrderList = [];
+          }
+        }).catch(error => {
+          console.log(error.response);
+        });
+      },
+      /**
+       * 获取外部订单列表
+       */
       getOutOrderList() {
         this.loading = true;
         getOutOrderList({type: this.orderType}, this.page).then(res => {
@@ -175,29 +187,6 @@
               this.outOrderList = this.outOrderList.concat(data);
             }
             this.loading = false;
-            axios({
-              method: "GET",
-              url: "/out-orders",
-              params: {
-                maxPrice: -0.01,
-                accessToken: localStorage.getItem("accessToken"),
-                type: this.orderType,
-                state: 0,
-                page: this.minusPage.page - 1,
-                size: res.data.totalElements
-              }
-            }).then(res => {
-              if (res.data.code == 1) {
-                this.minusOutOrderList = res.data.content;
-                for (let v of res.data.content) {
-                  this.minusAmount += Number(v.price);
-                }
-              } else {
-                this.minusOutOrderList = [];
-                this.showMinus = true;
-                this.minusPage.total = 0;
-              }
-            });
           } else {
             this.empty = true;
             this.loading = true;
@@ -209,7 +198,9 @@
           console.log(error);
         });
       },
-      //上拉加载
+      /**
+       * 上拉加载
+       */
       loadMore() {
         this.allCheck = false;
         if (this.page.total != 0 && this.page.page > 0 && this.page.page >= this.page.total) {
@@ -239,7 +230,6 @@
         this.selectList.length === this.outOrderList.length ? (this.allCheck = true) : (this.allCheck = false);
       },
       goElectronicInvoice() {
-        console.log(this.selectList);
         localStorage.setItem("tot", this.totalPrice);
         localStorage.setItem("seleted", JSON.stringify(this.selectList));
         this.$router.push({path: "/make/merge-order"});
@@ -260,7 +250,9 @@
       ...mapGetters([
         "sidebar"
       ]),
-      //计算总价
+      /**
+       * 计算总价
+       */
       totalPrice: function () {
         let totalPrice = 0;
         if (this.outOrderList.length == 0) {
@@ -282,6 +274,7 @@
     },
     mounted() {
       this.getShop();
+      this.getMinusOutOrderList();
     }
   };
 </script>

@@ -15,6 +15,17 @@ export const getCompanyList = (params) => axios.get(`${baseUrl}/companies`, {
 });
 
 /**
+ * 获取公司抬头信息
+ *
+ * @see https://www.easyai.com
+ */
+export const getCompany = (id) => axios.get(`${baseUrl}/company/${id}`, {
+  params: {
+    accessToken: localStorage.getItem("accessToken")
+  }
+});
+
+/**
  * 添加公司抬头信息
  *
  * @see https://www.easyai.com
@@ -67,4 +78,15 @@ export const getDefaultCompany = () => axios.get(`${baseUrl}/company/default`, {
   params: {
     accessToken: localStorage.getItem("accessToken")
   }
+});
+
+
+/**
+ * 抬头信息查询（企业开票信息查询服务）
+ *
+ * @see https://www.easyai.com
+ */
+export const getCompanyCodeList = (params) => axios.get(`${baseUrl}/company/codes`, {
+  params,
+  accessToken: localStorage.getItem("accessToken")
 });

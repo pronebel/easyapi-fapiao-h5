@@ -51,8 +51,8 @@ export default new Router({
     {
       path: "/out-order",
       name: "OutOrder",
-      component: resolve => require(["../pages/out-order/out-order.vue"], resolve),
-      meta: {title: "开具发票", keepAlive: false}
+      component: resolve => require(["../pages/out-order/list.vue"], resolve),
+      meta: {title: "选择订单", keepAlive: false}
     },
     {
       path: "/make/single-order",
