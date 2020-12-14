@@ -94,8 +94,9 @@
         this.title = "edit";
         this.headerTitle = "修改地址";
         this.id = this.$route.params.id;
+        console.log(this.id)
         if (this.title === "edit") {
-          this.$ajax.get("/address/" + this.id, {
+          axios.get("/address/" + this.id, {
             params: {
               accessToken: this.accessToken
             }
