@@ -286,5 +286,5 @@
   };
 </script>
 <style scoped>
-  @import 'make.css';
+  @import '../make/make.css';
 </style>

@@ -49,9 +49,9 @@ export default new Router({
       meta: {title: "编辑地址", keepAlive: false}
     },
     {
-      path: "/make/out-order",
+      path: "/out-order",
       name: "OutOrder",
-      component: resolve => require(["../pages/make/out-order.vue"], resolve),
+      component: resolve => require(["../pages/out-order/out-order.vue"], resolve),
       meta: {title: "开具发票", keepAlive: false}
     },
     {

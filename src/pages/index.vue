@@ -3,7 +3,7 @@
     <div v-if="ifOrderMake === true">
       <van-cell-group title="订单开票">
         <van-cell v-for="(type) in orderTypeList" :key="type.orderTypeId" :value="type.name" is-link
-                  :to="{ path: '/make/out-order', query: { orderType: type.name }}"
+                  :to="{ path: '/out-order', query: { orderType: type.name }}"
                   size="large"/>
       </van-cell-group>
     </div>
