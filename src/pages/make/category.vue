@@ -43,7 +43,7 @@
           </van-cell>
           <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位"
                      v-model="invoiceForm.purchaserName"/>
-          <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="toCompany"
+          <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany"
                      right-icon="arrow"
                      placeholder="请选择发票抬头" v-model="company.name"/>
           <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企业'" v-model="company.taxNumber"/>
@@ -251,26 +251,27 @@
       goBack() {
         history.go(-1);
       },
+      /** 前往抬头管理页 */
+      gotoCompany() {
+        this.$router.push({
+          path: "/company/",
+          name: "Company",
+          params: {
+            id: this.company ? this.company.companyId : "",
+            from: "make"
+          }
+        });
+      },
+      /** 前往地址管理页 */
       gotoAddress() {
-        if (this.address) {
-          this.$router.push({
-            path: "/address/",
-            name: "Address",
-            params: {
-              id: this.address.addressId,
-              from: "make"
-            }
-          });
-        } else {
-          this.$router.push({
-            path: "/address/",
-            name: "Address",
-            params: {
-              id: "",
-              from: "make"
-            }
-          });
-        }
+        this.$router.push({
+          path: "/address/",
+          name: "Address",
+          params: {
+            id: this.address ? this.address.addressId : "",
+            from: "make"
+          }
+        });
       },
       getDefaultCompany() {
         getDefaultCompany().then((res) => {
@@ -293,27 +294,6 @@
             this.invoiceForm.addressId = this.address.addressId;
           }
         });
-      },
-      toCompany() {
-        if (this.company.length === 0) {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: "",
-              from: "make"
-            }
-          });
-        } else {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: this.company.companyId,
-              from: "make"
-            }
-          });
-        }
       },
       getCustomCategories() {
         getCustomCategoryList({}).then(res => {

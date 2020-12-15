@@ -136,9 +136,6 @@
       >提交
       </van-button>
     </div>
-    <div>
-      <router-view @select-company="selectCompany"></router-view>
-    </div>
     <van-popup
       class="popupClass"
       v-model="showPopup"
@@ -248,10 +245,6 @@
       },
       goBack() {
         history.go(-1);
-      },
-      selectCompany(company) {
-        this.loadingList = false;
-        this.company = company;
       },
       getDefaultCompany() {
         getDefaultCompany().then(res => {
@@ -441,8 +434,7 @@
       /** */
       resetPage() {
         this.productList = JSON.parse(localStorage.getItem("productList"));
-        this.invoiceForm.type = localStorage.getItem("type");
-        if (this.invoiceForm.type) {
+        if (localStorage.getItem("type")) {
           this.invoiceForm.type = localStorage.getItem("type");
         } else {
           this.invoiceForm.type = "企业";
@@ -474,47 +466,25 @@
       },
       /** 前往抬头管理页 */
       gotoCompany() {
-        if (this.company) {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: this.company.companyId,
-              from: "make"
-            }
-          });
-        } else {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: "",
-              from: "make"
-            }
-          });
-        }
+        this.$router.push({
+          path: "/company/",
+          name: "Company",
+          params: {
+            id: this.company ? this.company.companyId : "",
+            from: "make"
+          }
+        });
       },
       /** 前往地址管理页 */
       gotoAddress() {
-        if (this.address) {
-          this.$router.push({
-            path: "/address/",
-            name: "Address",
-            params: {
-              id: this.address.addressId,
-              from: "make"
-            }
-          });
-        } else {
-          this.$router.push({
-            path: "/address/",
-            name: "Address",
-            params: {
-              id: "",
-              from: "make"
-            }
-          });
-        }
+        this.$router.push({
+          path: "/address/",
+          name: "Address",
+          params: {
+            id: this.address ? this.address.addressId : "",
+            from: "make"
+          }
+        });
       }
     },
     mounted() {
@@ -524,11 +494,10 @@
       this.resetPage();
       if (localStorage.getItem("type")) {
         this.invoiceForm.type = localStorage.getItem("type");
-        this.getDefaultCompany()
+        this.selectInvoiceType()
       }
     },
     activated() {
-      this.selectCompany();
     },
     mounted() {
       this.calcAmount();

@@ -306,27 +306,6 @@
           }
         });
       },
-      toAddressManage() {
-        if (this.company.length === 0) {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: "",
-              from: "make"
-            }
-          });
-        } else {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: this.company.companyId,
-              from: "make"
-            }
-          });
-        }
-      },
       getOutOrder() {
         let outOrderNo = this.outOrderNo;
         this.$ajax.get("/out-orders", {
@@ -482,47 +461,27 @@
           }
         });
       },
+      /** 前往抬头管理页 */
       gotoCompany() {
-        if (this.company) {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: this.company.companyId,
-              from: "make"
-            }
-          });
-        } else {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: "",
-              from: "make"
-            }
-          });
-        }
+        this.$router.push({
+          path: "/company/",
+          name: "Company",
+          params: {
+            id: this.company ? this.company.companyId : "",
+            from: "make"
+          }
+        });
       },
+      /** 前往地址管理页 */
       gotoAddress() {
-        if (this.address) {
-          this.$router.push({
-            path: "/address/",
-            name: "Address",
-            params: {
-              id: this.address.addressID,
-              from: "make"
-            }
-          });
-        } else {
-          this.$router.push({
-            path: "/address/",
-            name: "Address",
-            params: {
-              id: "",
-              from: "make"
-            }
-          });
-        }
+        this.$router.push({
+          path: "/address/",
+          name: "Address",
+          params: {
+            id: this.address ? this.address.addressId : "",
+            from: "make"
+          }
+        });
       },
       /** 删除商品 */
       deleteProduct(id) {

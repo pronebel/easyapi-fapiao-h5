@@ -175,9 +175,6 @@
       >提交
       </van-button>
     </div>
-    <div>
-      <router-view @select-company="selectCompany"></router-view>
-    </div>
   </div>
 </template>
 
@@ -270,9 +267,6 @@
           this.invoiceForm.purchaserBankAccount = "";
           this.invoiceForm.companyId = "";
         }
-      },
-      selectCompany() {
-        this.loadingList = false;
       },
       getOrder() {
         this.orderType = localStorage.getItem("orderType");
@@ -455,7 +449,6 @@
       }
     },
     activated() {
-      this.selectCompany();
       event.$on("select", function (data) {
         this.address = data;
         this.$forceUpdate();

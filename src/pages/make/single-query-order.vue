@@ -185,9 +185,6 @@
       </van-button>
       <van-button type="info" class="submit" v-else>开票中</van-button>
     </div>
-    <div>
-      <router-view @select-company="selectCompany"></router-view>
-    </div>
   </div>
 </template>
 
@@ -257,37 +254,10 @@
       }
     },
     methods: {
-      //获取发票类型
-      getRadioVal() {
-      },
-      selectCompany() {
-        this.loadingList = false;
-      },
       //展示更多
       purchaserMore() {
         this.isShow = true;
         this.isHide = false;
-      },
-      gotoCompany() {
-        if (this.company) {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: this.company.companyId,
-              from: "make"
-            }
-          });
-        } else {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: "",
-              from: "make"
-            }
-          });
-        }
       },
       selectInvoiceType() {
         localStorage.setItem("type", this.invoiceForm.type);
@@ -346,59 +316,40 @@
           }
         });
       },
-      toAddressManage() {
-        if (this.company.length === 0) {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              from: "make"
-            }
-          });
-        } else {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: this.company.companyId,
-              from: "make"
-            }
-          });
-        }
+      /** 前往抬头管理页 */
+      gotoCompany() {
+        this.$router.push({
+          path: "/company/",
+          name: "Company",
+          params: {
+            id: this.company ? this.company.companyId : "",
+            from: "make"
+          }
+        });
+      },
+      /** 前往地址管理页 */
+      gotoAddress() {
+        this.$router.push({
+          path: "/address/",
+          name: "Address",
+          params: {
+            id: this.address ? this.address.addressId : "",
+            from: "make"
+          }
+        });
       },
       getShopOrder() {
         getState(this.outOrderNo).then(res => {
           if (res.data.code === 1 && res.data.content) {
             this.$router.replace({path: "/invoice/detail", query: {id: res.data.content[0].invoiceId}});
           }
-        })
+        });
         queryShopOrder(this.outOrderNo).then(res => {
           if (res.data.code == 1) {
             this.outOrder = res.data.content;
             this.amountOfMoney = res.data.content.price;
           }
         });
-      },
-      gotoAddress() {
-        if (this.address) {
-          this.$router.push({
-            path: "/address/",
-            name: "Address",
-            params: {
-              id: this.address.addressID,
-              from: "make"
-            }
-          });
-        } else {
-          this.$router.push({
-            path: "/address/",
-            name: "Address",
-            params: {
-              id: "",
-              from: "make"
-            }
-          });
-        }
       },
       getCustomer() {
         getCustomer({taxNumber: this.taxNumber}).then(res => {
@@ -517,7 +468,6 @@
       this.outOrderNo = localStorage.getItem("outOrderNo");
     },
     activated() {
-      this.selectCompany();
     },
     mounted() {
       this.getCustomer();

@@ -80,16 +80,12 @@
         });
       },
       select(item) {
-        this.defaultCompany(item.companyId);
-        this.$emit("select-company", item);
-      },
-      //设置默认值
-      defaultCompany(companyId) {
-        defaultCompany(companyId).then(res => {
+        defaultCompany(item.companyId).then(res => {
           this.$router.back(-1);
         }).catch(error => {
           Toast(error.response.data.message);
         });
+        // this.$emit("select-company", item);
       },
       gotoWechat() {
         var _that = this
