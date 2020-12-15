@@ -21,7 +21,7 @@
             <p>
               <span class="rise-text">{{ item.name }}</span>
               <van-tag plain type="warning" v-if="item.ifDefault">默认</van-tag>
-              <span class="edit" @click="edit(index)">编辑</span>
+              <span class="edit" @click="gotoEditCompany(item.companyId)">编辑</span>
             </p>
           </div>
           <div class="address-bottom" @click="select(item)">
@@ -38,7 +38,7 @@
     </div>
     <div class="bottom_button">
       <van-button type="info" class="button" @click="gotoWechat">同步微信抬头</van-button>
-      <van-button type="info" class="button" @click="gotoEditCompany">新增抬头</van-button>
+      <van-button type="info" class="button" @click="gotoEditCompany('')">新增抬头</van-button>
     </div>
   </div>
 </template>
@@ -57,7 +57,6 @@
         loading: true,
         headerTitle: "抬头管理",
         companyList: [],
-        accessToken: "",
         from: "make",
         back: false//是否可以后退
       };
@@ -80,12 +79,12 @@
         });
       },
       select(item) {
+        //设置为默认抬头
         defaultCompany(item.companyId).then(res => {
           this.$router.back(-1);
         }).catch(error => {
           Toast(error.response.data.message);
         });
-        // this.$emit("select-company", item);
       },
       gotoWechat() {
         var _that = this
@@ -95,16 +94,12 @@
           }
         })
       },
-      gotoEditCompany() {
-        this.back = true;
-        this.$router.push({name: "EditCompany", path: "/company/edit"});
-      },
-      edit(index) {
+      gotoEditCompany(companyId) {
         this.back = true;
         this.$router.push({
           name: "EditCompany",
           path: "/company/edit",
-          params: {id: this.companyList[index].companyId}
+          params: {id: companyId}
         });
       }
     },
@@ -114,7 +109,6 @@
       }
     },
     created() {
-      this.accessToken = localStorage.getItem("accessToken");
       this.from = this.$route.params.from;
     },
     activated() {
