@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import {baseUrl} from "./request";
+import {baseUrl} from "../utils/request";
 
 /**
  * 获取开票规则

@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import {baseUrl} from "./request";
+import {baseUrl} from "../utils/request";
 
 /**
  * 获取发票自定义分类列表

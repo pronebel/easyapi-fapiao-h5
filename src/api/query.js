@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import {baseUrl} from "./request";
+import {baseUrl} from "../utils/request";
 
 /**
  * 查询客户服务器订单信息
