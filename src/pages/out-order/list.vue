@@ -173,8 +173,12 @@
        * 获取外部订单列表
        */
       getOutOrderList() {
+        console.log(this.orderType)
         this.loading = true;
-        getOutOrderList({type: this.orderType}, this.page).then(res => {
+        let params={
+          type:this.orderType
+        }
+        getOutOrderList(params, this.page).then(res => {
           if (res.data.code === 1) {
             let data = res.data.content;
             this.page.total = res.data.totalPages;
@@ -269,7 +273,7 @@
     },
     created() {
       this.accessToken = localStorage.getItem("accessToken");
-      this.orderType = this.$route.query.orderType;
+      this.orderType = this.$route.query.type;
       localStorage.setItem("orderType", this.orderType);
     },
     mounted() {
