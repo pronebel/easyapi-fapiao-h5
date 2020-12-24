@@ -166,10 +166,6 @@
     mounted() {
       this.childForm = this.invoiceForm;
       this.childCompany = this.company;
-      console.log(this.ifElectronic);
-      console.log(this.invoiceForm);
-      console.log(this.company);
-
     }
   };
 </script>

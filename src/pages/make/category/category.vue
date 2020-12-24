@@ -1,10 +1,11 @@
 <template>
-  <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;">
+  <div>
     <div class="nav" style="margin-top: 10px;">
       <div id="loading">
         <van-loading v-show="loadingList" type="spinner" color="#56cbf6"/>
       </div>
-      <Invoice :isShow="isShow" :isHide="isHide" :ifElectronic="ifElectronic" :invoiceForm="invoiceForm" :ifPaper="ifPaper" :company="company"
+      <Invoice :isShow="isShow" :isHide="isHide" :ifElectronic="ifElectronic" :invoiceForm="invoiceForm"
+               :ifPaper="ifPaper" :company="company"
                @getcategorydata="receiveCategory" @getpropertydata="receiveProperty"></Invoice>
     </div>
     <div>
@@ -51,31 +52,7 @@
           </van-uploader>
         </van-cell>
       </div>
-      <div class="page-part" style="margin-bottom: 60px" v-show="this.ifElectronic">
-        <p>接收方式</p>
-        <van-field label="电子邮箱" v-model="invoiceForm.email"></van-field>
-        <van-field label="联系方式" v-model="invoiceForm.addrMobile"></van-field>
-      </div>
-      <div class="page-part" v-show="!this.ifElectronic">
-        <p>接收方式</p>
-        <van-field
-          right-icon="arrow"
-          label="收件人"
-          readonly
-          @click="gotoAddress"
-          v-model="address.name"
-        ></van-field>
-        <van-field
-          label="联系方式"
-          v-model="address.mobile"
-          readonly
-        ></van-field>
-        <van-cell
-          title="邮寄地址"
-          :value="address.province + address.city + address.district + address.addr"
-          readonly
-        ></van-cell>
-      </div>
+      <Receive :ifElectronic="ifElectronic" :invoiceForm="invoiceForm" :address="address"></Receive>
       <div class="page-part" style="margin-bottom: 60px" v-show="!this.ifElectronic">
         <p>开票金额不足200元，需支付邮费</p>
         <van-field label="支付方式" readonly></van-field>
@@ -105,10 +82,14 @@
   import { Dialog } from "vant";
   import axios from "axios";
   import Invoice from "../../../components/make/Invoice";
+  import Receive from "../../../components/make/Receive";
 
   export default {
     name: "MakeCategory",
-    components: { Invoice },
+    components: {
+      Invoice,
+      Receive
+    },
     data() {
       return {
         showCustomCategory: false,
@@ -213,22 +194,11 @@
           }
         });
       },
-      /** 前往地址管理页 */
-      gotoAddress() {
-        this.$router.push({
-          path: "/address/",
-          name: "Address",
-          params: {
-            id: this.address ? this.address.addressId : "",
-            from: "make"
-          }
-        });
-      },
       getDefaultCompany() {
         getDefaultCompany().then((res) => {
           if (res.data.code === 1) {
             this.company = res.data.content;
-            console.log(this.company)
+            console.log(this.company);
             this.invoiceForm.purchaserName = this.company.name;
             this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
             this.invoiceForm.purchaserAddress = this.company.address;
@@ -364,7 +334,7 @@
       receiveCategory(val) {
         this.invoiceForm.category = val;
       },
-      receiveProperty(val){
+      receiveProperty(val) {
         this.invoiceForm.property = val;
       },
       /** 购买方更多信息 */
