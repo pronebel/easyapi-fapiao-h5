@@ -183,17 +183,7 @@
       goBack() {
         history.go(-1);
       },
-      /** 前往抬头管理页 */
-      gotoCompany() {
-        this.$router.push({
-          path: "/company/",
-          name: "Company",
-          params: {
-            id: this.company ? this.company.companyId : "",
-            from: "make"
-          }
-        });
-      },
+
       getDefaultCompany() {
         getDefaultCompany().then((res) => {
           if (res.data.code === 1) {
@@ -336,16 +326,6 @@
       },
       receiveProperty(val) {
         this.invoiceForm.property = val;
-      },
-      /** 购买方更多信息 */
-      purchaserMore() {
-        this.isShow = true;
-        this.isHide = false;
-      },
-      /** 隐藏购买方更多信息 */
-      purchaserMoreHide() {
-        this.isShow = false;
-        this.isHide = true;
       },
       onConfirm(value) {
         this.customCategory.customCategoryId = value.customCategoryId;

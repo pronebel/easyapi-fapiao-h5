@@ -1,5 +1,5 @@
 <template>
-  <div style="position: absolute;top: 0;bottom: 0;left: 0;right: 0;">
+  <div>
     <Header
       @head-back="goBack()"
       :headerTitle="headerTitle"
@@ -9,118 +9,9 @@
       <div id="loading">
         <van-loading v-show="loadingList" type="spinner" color="#56cbf6"/>
       </div>
-      <p>请选择发票类型</p>
-      <van-row type="flex" justify="space-between" class="twoBox">
-        <van-col span="12" v-show="ifElectronic ==='true'">
-          <div :class="{'blueBox': invoiceForm.property=='电子', 'grayBox': invoiceForm.property!='电子' }"
-               style="margin-right:5px" @click="getEtr">
-            <p style="font-size: 16px; margin-top: -6px">电子发票</p>
-            <p style="font-size: 12px; margin-top: 6px">最快1分钟开具</p>
-          </div>
-        </van-col>
-        <van-col span="12" v-show="this.ifPaper ==='true'">
-          <div :class="{'blueBox': invoiceForm.property=='纸质', 'grayBox': invoiceForm.property!='纸质' }"
-               style="margin-left:5px" @click="getPaper">
-            <p style="font-size: 16px; margin-top: -6px">纸质发票</p>
-            <p style="font-size: 12px; margin-top: 6px">预计一周送达</p>
-          </div>
-        </van-col>
-      </van-row>
-    </div>
-    <div class="page-part invoice-con">
-      <p>发票详情</p>
-      <form action="" id="formBox" ref="invoiceForm" :model="invoiceForm">
-        <van-cell title="抬头类型" center>
-          <van-radio-group
-            class="van-radio-group_type"
-            v-model="invoiceForm.type"
-            direction="horizontal"
-            @change="selectInvoiceType">
-            <van-radio name="企业">企业</van-radio>
-            <van-radio name="个人">个人/事业单位</van-radio>
-          </van-radio-group>
-        </van-cell>
-        <van-cell title="发票类型" center v-show="invoiceForm.property == '纸质'">
-          <van-radio-group
-            class="van-radio-group_type"
-            v-model="invoiceForm.category"
-            direction="horizontal"
-          >
-            <van-radio
-              style="margin-bottom: 5px"
-              name="增值税普通发票"
-            >增值税普通发票
-            </van-radio
-            >
-            <van-radio name="增值税专用发票" v-if="invoiceForm.type==='企业'"
-            >增值税专用发票
-            </van-radio
-            >
-          </van-radio-group>
-        </van-cell>
-        <van-field
-          label="发票抬头"
-          v-if="invoiceForm.type === '个人'"
-          placeholder="请输入姓名/事业单位"
-          v-model="invoiceForm.purchaserName"
-        />
-        <van-field
-          label="发票抬头"
-          readonly
-          v-if="invoiceForm.type === '企业'"
-          @click="gotoCompany"
-          right-icon="arrow"
-          placeholder="请选择发票抬头"
-          v-model="invoiceForm.purchaserName"
-        />
-        <van-field
-          label="税号"
-          value=""
-          readonly
-          v-if="invoiceForm.type === '企业'"
-          v-model="invoiceForm.purchaserTaxpayerNumber"
-        />
-        <van-field
-          label="更多"
-          right-icon="arrow-down"
-          v-if="invoiceForm.type === '企业'"
-          @click="purchaserMore"
-          v-show="isHide"
-          readonly
-          placeholder="地址、电话、开户行等"
-        />
-        <div v-show="isShow">
-          <van-field
-            v-if="invoiceForm.type === '企业'"
-            @click="purchaserMoreHide"
-            label="地址"
-            value=""
-            readonly
-            v-model="invoiceForm.purchaserAddress"
-            right-icon="arrow-up"
-          />
-          <van-field
-            v-if="invoiceForm.type === '企业'"
-            label="电话" value=""
-            readonly
-            v-model="invoiceForm.purchaserPhone"
-          />
-          <van-field
-            v-if="invoiceForm.type === '企业'"
-            label="开户行"
-            value=""
-            readonly
-            v-model="invoiceForm.purchaserBank"
-          />
-          <van-field
-            v-if="invoiceForm.type === '企业'"
-            label="银行账号"
-            value=""
-            readonly
-            v-model="invoiceForm.purchaserBankAccount"
-          />
-        </div>
-      </form>
+      <Invoice :isShow="isShow" :isHide="isHide" :ifElectronic="ifElectronic" :invoiceForm="invoiceForm"
+               :ifPaper="ifPaper" :company="company"
+               @getcategorydata="receiveCategory" @getpropertydata="receiveProperty"></Invoice>
     </div>
     <div class="invoice-contents">
       <p>发票内容</p>
@@ -172,33 +63,7 @@
         v-model="invoiceForm.remark"
       ></van-field>
     </div>
-    <div class="page-part" style="margin-bottom: 60px" v-show="this.ifElectronic">
-      <p>接收方式</p>
-      <van-field label="电子邮箱" v-model="invoiceForm.email"></van-field>
-      <van-field label="联系方式" v-model="invoiceForm.mobile"></van-field>
-    </div>
-    <div class="page-part" v-show="!this.ifElectronic">
-      <p>接收方式</p>
-      <van-field
-        right-icon="arrow"
-        label="收件人"
-        readonly
-        @click="gotoAddress"
-        v-model="address.name"
-      ></van-field>
-      <van-field
-        label="联系方式"
-        v-model="address.mobile"
-        readonly
-      ></van-field>
-      <van-cell
-        title="邮寄地址"
-        :value="
-          address.province + address.city + address.district + address.addr
-        "
-        readonly
-      ></van-cell>
-    </div>
+    <Receive :ifElectronic="ifElectronic" :invoiceForm="invoiceForm" :address="address"></Receive>
     <div class="page-part" style="margin-bottom: 60px" v-show="!this.ifElectronic">
       <p>开票金额不足200元，需支付邮费</p>
       <van-field label="支付方式" readonly></van-field>
@@ -230,11 +95,15 @@
   import {Toast} from "vant";
   import {Dialog} from "vant";
   import Isemail from "isemail";
+  import Invoice from "../../../components/make/Invoice";
+  import Receive from "../../../components/make/Receive";
 
   export default {
     name: "singleOrder",
     components: {
-      Header
+      Header,
+      Invoice,
+      Receive
     },
     data() {
       return {
@@ -443,43 +312,17 @@
           this.invoiceForm.companyId = "";
         }
       },
-      //展示更多
-      purchaserMore() {
-        this.isShow = true;
-        this.isHide = false;
+      receiveCategory(val) {
+        this.invoiceForm.category = val;
       },
-      //隐藏
-      purchaserMoreHide() {
-        this.isShow = false;
-        this.isHide = true;
+      receiveProperty(val) {
+        this.invoiceForm.property = val;
       },
       getDefaultAddress() {
         getDefaultAddress().then((res) => {
           if (res.data.code === 1) {
             this.address = res.data.content;
             this.invoiceForm.addressId = this.address.addressId;
-          }
-        });
-      },
-      /** 前往抬头管理页 */
-      gotoCompany() {
-        this.$router.push({
-          path: "/company/",
-          name: "Company",
-          params: {
-            id: this.company ? this.company.companyId : "",
-            from: "make"
-          }
-        });
-      },
-      /** 前往地址管理页 */
-      gotoAddress() {
-        this.$router.push({
-          path: "/address/",
-          name: "Address",
-          params: {
-            id: this.address ? this.address.addressId : "",
-            from: "make"
           }
         });
       },

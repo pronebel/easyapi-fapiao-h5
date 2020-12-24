@@ -127,9 +127,17 @@
           this.childForm.companyId = "";
         }
       },
-      gotoCompany() {
-
-      },
+        /** 前往抬头管理页 */
+        gotoCompany() {
+          this.$router.push({
+            path: "/company/",
+            name: "Company",
+            params: {
+              id: this.childCompany ? this.childCompany.companyId : "",
+              from: "make"
+            }
+          });
+        },
       /** 购买方更多信息 */
       purchaserMore(){
         this.show = true;

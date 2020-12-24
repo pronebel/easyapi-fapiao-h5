@@ -1,5 +1,5 @@
 <template>
-  <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0">
+  <div>
     <Header
       @head-back="goBack()"
       :headerTitle="headerTitle"
@@ -9,23 +9,9 @@
       <div id="loading">
         <van-loading color="#56cbf6" v-show="loadingList"/>
       </div>
-      <p>请选择发票类型</p>
-      <van-row type="flex" justify="space-between" class="twoBox">
-        <van-col span="12" v-show="ifElectronic ==='true'">
-          <div :class="{'blueBox': invoiceForm.property=='电子', 'grayBox': invoiceForm.property!='电子' }"
-               style="margin-right:5px" @click="getEtr">
-            <p style="font-size: 16px; margin-top: -6px">电子发票</p>
-            <p style="font-size: 12px; margin-top: 6px">最快1分钟开具</p>
-          </div>
-        </van-col>
-        <van-col span="12" v-show="this.ifPaper ==='true'">
-          <div :class="{'blueBox': invoiceForm.property=='纸质', 'grayBox': invoiceForm.property!='纸质' }"
-               style="margin-left:5px" @click="getPaper">
-            <p style="font-size: 16px; margin-top: -6px">纸质发票</p>
-            <p style="font-size: 12px; margin-top: 6px">预计一周送达</p>
-          </div>
-        </van-col>
-      </van-row>
+      <Invoice :isShow="isShow" :isHide="isHide" :ifElectronic="ifElectronic" :invoiceForm="invoiceForm"
+               :ifPaper="ifPaper" :company="company"
+               @getcategorydata="receiveCategory" @getpropertydata="receiveProperty"></Invoice>
     </div>
     <div class="page-part invoice-con">
       <p>发票详情</p>
@@ -144,33 +130,7 @@
       ></van-field>
       <van-field label="发票备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
     </div>
-    <div class="page-part" style="margin-bottom: 60px" v-show="this.ifElectronic">
-      <p>接收方式</p>
-      <van-field label="电子邮箱" v-model="invoiceForm.email"></van-field>
-      <van-field label="联系方式" v-model="invoiceForm.mobile"></van-field>
-    </div>
-    <div class="page-part" v-show="!this.ifElectronic">
-      <p>接收方式</p>
-      <van-field
-        right-icon="arrow"
-        label="收件人"
-        readonly
-        @click="gotoAddress"
-        v-model="address.name"
-      ></van-field>
-      <van-field
-        label="联系方式"
-        v-model="address.mobile"
-        readonly
-      ></van-field>
-      <van-cell
-        title="邮寄地址"
-        :value="
-          address.province + address.city + address.district + address.addr
-        "
-        readonly
-      ></van-cell>
-    </div>
+    <Receive :ifElectronic="ifElectronic" :invoiceForm="invoiceForm" :address="address"></Receive>
     <div class="page-part" style="margin-bottom: 60px" v-show="!this.ifElectronic">
       <p>开票金额不足200元，需支付邮费</p>
       <van-field label="支付方式" readonly></van-field>
@@ -198,9 +158,15 @@
   import {Toast} from "vant";
   import {Dialog} from "vant";
   import Isemail from "isemail";
+  import Invoice from "../../../components/make/Invoice";
+  import Receive from "../../../components/make/Receive";
 
   export default {
     name: "singleOrder",
+    components: {
+      Invoice,
+      Receive
+    },
     data() {
       return {
         isHide: true,
@@ -254,10 +220,11 @@
       }
     },
     methods: {
-      //展示更多
-      purchaserMore() {
-        this.isShow = true;
-        this.isHide = false;
+      receiveCategory(val) {
+        this.invoiceForm.category = val;
+      },
+      receiveProperty(val) {
+        this.invoiceForm.property = val;
       },
       selectInvoiceType() {
         localStorage.setItem("type", this.invoiceForm.type);
@@ -272,11 +239,6 @@
           this.invoiceForm.purchaserBankAccount = "";
           this.invoiceForm.companyId = "";
         }
-      },
-      //隐藏
-      purchaserMoreHide() {
-        this.isShow = false;
-        this.isHide = true;
       },
       showDetail(name) {
         this.active = name
@@ -316,136 +278,114 @@
           }
         });
       },
-      /** 前往抬头管理页 */
-      gotoCompany() {
-        this.$router.push({
-          path: "/company/",
-          name: "Company",
-          params: {
-            id: this.company ? this.company.companyId : "",
-            from: "make"
-          }
-        });
-      },
-      /** 前往地址管理页 */
-      gotoAddress() {
-        this.$router.push({
-          path: "/address/",
-          name: "Address",
-          params: {
-            id: this.address ? this.address.addressId : "",
-            from: "make"
-          }
-        });
-      },
-      getShopOrder() {
-        getState(this.outOrderNo).then(res => {
-          if (res.data.code === 1 && res.data.content) {
-            this.$router.replace({path: "/invoice/detail", query: {id: res.data.content[0].invoiceId}});
-          }
-        });
-        queryShopOrder(this.outOrderNo).then(res => {
-          if (res.data.code == 1) {
-            this.outOrder = res.data.content;
-            this.amountOfMoney = res.data.content.price;
-          }
-        });
-      },
-      getCustomer() {
-        getCustomer({taxNumber: this.taxNumber}).then(res => {
-          this.loadingList = false;
-          this.email = res.data.content.email ? res.data.content.email : "";
-          this.contactInformation = res.data.content.mobile ? res.data.content.mobile : "";
-        });
-      },
-      makeInvoice() {
-        if (this.invoiceForm.type === '个人') {
-          if (this.invoiceForm.purchaserName == "") {
-            return Toast("请输入发票抬头");
-          }
+    getShopOrder() {
+      getState(this.outOrderNo).then(res => {
+        if (res.data.code === 1 && res.data.content) {
+          this.$router.replace({ path: "/invoice/detail", query: { id: res.data.content[0].invoiceId } });
         }
-        Dialog.confirm({
-          title: '提示',
-          message: '确认抬头正确并开票吗',
-          showCancelButton: true
-        }).then(action => {
-          if (action === "confirm") {
-            this.showDisabled = false;
-            //验证邮箱
-            if (this.ifNeedEmail === true) {
-              if (this.email === "") {
-                this.showDisabled = true;
-                return Toast("请输入邮箱");
-              } else if (!Isemail.validate(this.email)) {
+      });
+      queryShopOrder(this.outOrderNo).then(res => {
+        if (res.data.code == 1) {
+          this.outOrder = res.data.content;
+          this.amountOfMoney = res.data.content.price;
+        }
+      });
+    },
+    getCustomer() {
+      getCustomer({ taxNumber: this.taxNumber }).then(res => {
+        this.loadingList = false;
+        this.email = res.data.content.email ? res.data.content.email : "";
+        this.contactInformation = res.data.content.mobile ? res.data.content.mobile : "";
+      });
+    },
+    makeInvoice() {
+      if (this.invoiceForm.type === '个人') {
+        if (this.invoiceForm.purchaserName == "") {
+          return Toast("请输入发票抬头");
+        }
+      }
+      Dialog.confirm({
+        title: '提示',
+        message: '确认抬头正确并开票吗',
+        showCancelButton: true
+      }).then(action => {
+        if (action === "confirm") {
+          this.showDisabled = false;
+          //验证邮箱
+          if (this.ifNeedEmail === true) {
+            if (this.email === "") {
+              this.showDisabled = true;
+              return Toast("请输入邮箱");
+            } else if (!Isemail.validate(this.email)) {
+              this.showDisabled = true;
+              return Toast("邮箱格式不正确");
+            }
+          } else {
+            if (this.email) {
+              if (!Isemail.validate(this.email)) {
                 this.showDisabled = true;
                 return Toast("邮箱格式不正确");
               }
-            } else {
-              if (this.email) {
-                if (!Isemail.validate(this.email)) {
-                  this.showDisabled = true;
-                  return Toast("邮箱格式不正确");
-                }
-              }
             }
-            //手机号验证
-            let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-            if (this.ifNeedMobile === true) {
-              if (this.contactInformation === "") {
-                this.showDisabled = true;
-                return Toast("请输入手机号码");
-              } else if (!reg.test(this.contactInformation)) {
+          }
+          //手机号验证
+          let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+          if (this.ifNeedMobile === true) {
+            if (this.contactInformation === "") {
+              this.showDisabled = true;
+              return Toast("请输入手机号码");
+            } else if (!reg.test(this.contactInformation)) {
+              this.showDisabled = true;
+              return Toast("手机格式不正确");
+            }
+          } else {
+            if (this.contactInformation) {
+              if (!reg.test(this.contactInformation)) {
                 this.showDisabled = true;
                 return Toast("手机格式不正确");
               }
-            } else {
-              if (this.contactInformation) {
-                if (!reg.test(this.contactInformation)) {
-                  this.showDisabled = true;
-                  return Toast("手机格式不正确");
-                }
-              }
             }
-            this.invoiceForm.addrMobile = this.contactInformation;
-            this.invoiceForm.email = this.email;
-            this.invoiceForm.type = this.invoiceForm.type;
-            this.invoiceForm.category = "增值税电子普通发票";
-            this.invoiceForm.property = "电子";
-            this.invoiceForm.outOrderNo = this.outOrder.outOrderNo;
-            this.invoiceForm.items = this.outOrder.items;
-            makeInvoice(this.invoiceForm).then(res => {
-              if (res.data.code === 1) {
-                this.$messagebox.alert(res.data.message);
-                this.$router.go(0)
-              }
-            }).catch(error => {
-              this.showDisabled = false;
-              Toast(error.response.data.message);
-              this.showDisabled = true;
-            });
           }
-        });
-      },
-      //获取备注
-      getSpecifications() {
-        getRule().then(res => {
-          this.remarkPlaceholder = res.data.content.remark;
-        });
-      },
-      getInvoicingService() {
-        getShopSupport().then(res => {
-          this.ifNeedMobile = res.data.content.ifNeedMobile;
-          this.ifNeedEmail = res.data.content.ifNeedEmail;
-        });
-      },
-      getEtr() {
-        this.invoiceForm.category = "增值税电子普通发票";
-        this.invoiceForm.property = "电子";
-      },
-      getPaper() {
-        this.invoiceForm.property = "纸质";
-        this.invoiceForm.category = "增值税普通发票";
-      }
+          this.invoiceForm.addrMobile = this.contactInformation;
+          this.invoiceForm.email = this.email;
+          this.invoiceForm.type = this.invoiceForm.type;
+          this.invoiceForm.category = "增值税电子普通发票";
+          this.invoiceForm.property = "电子";
+          this.invoiceForm.outOrderNo = this.outOrder.outOrderNo;
+          this.invoiceForm.items = this.outOrder.items;
+          makeInvoice(this.invoiceForm).then(res => {
+            if (res.data.code === 1) {
+              this.$messagebox.alert(res.data.message);
+              this.$router.go(0)
+            }
+          }).catch(error => {
+            this.showDisabled = false;
+            Toast(error.response.data.message);
+            this.showDisabled = true;
+          });
+        }
+      });
+    },
+    //获取备注
+    getSpecifications() {
+      getRule().then(res => {
+        this.remarkPlaceholder = res.data.content.remark;
+      });
+    },
+    getInvoicingService() {
+      getShopSupport().then(res => {
+        this.ifNeedMobile = res.data.content.ifNeedMobile;
+        this.ifNeedEmail = res.data.content.ifNeedEmail;
+      });
+    },
+    getEtr() {
+      this.invoiceForm.category = "增值税电子普通发票";
+      this.invoiceForm.property = "电子";
+    },
+    getPaper() {
+      this.invoiceForm.property = "纸质";
+      this.invoiceForm.category = "增值税普通发票";
+    }
     },
     watch: {},
     created() {
