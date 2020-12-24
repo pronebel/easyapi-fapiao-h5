@@ -25,14 +25,8 @@
 </script>
 
 <style scoped>
-  body {
-    background: #fff !important;
-  }
 
   .content {
-    margin-top: 10px;
-    background: #fff;
-    background-size: 100%;
     padding: 20px 10px;
   }
 

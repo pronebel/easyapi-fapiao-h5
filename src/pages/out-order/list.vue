@@ -100,7 +100,7 @@
 
 <script>
   import {mapGetters} from "vuex";
-  import Header from "../../components/header.vue";
+  import Header from "../../components/Header.vue";
   import {getOutOrderList} from "../../api/out-order";
   import {getShop} from "../../api/shop";
   import Vue from "vue";

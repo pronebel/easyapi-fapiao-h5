@@ -189,12 +189,12 @@
 </template>
 
 <script>
-  import {getDefaultCompany} from "../../api/company";
-  import {getCustomer} from "../../api/customer";
-  import {queryShopOrder, getState} from "../../api/query";
-  import {getShopSupport} from "../../api/shop";
-  import {getRule} from "../../api/info";
-  import {makeInvoice} from "../../api/make";
+  import {getDefaultCompany} from "../../../api/company";
+  import {getCustomer} from "../../../api/customer";
+  import {queryShopOrder, getState} from "../../../api/query";
+  import {getShopSupport} from "../../../api/shop";
+  import {getRule} from "../../../api/info";
+  import {makeInvoice} from "../../../api/make";
   import {Toast} from "vant";
   import {Dialog} from "vant";
   import Isemail from "isemail";
@@ -479,7 +479,7 @@
 </script>
 
 <style scoped>
-  @import 'make.css';
+  @import '../make.css';
 
   .nav {
     margin-top: 0;

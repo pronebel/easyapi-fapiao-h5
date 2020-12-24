@@ -220,13 +220,13 @@
 </template>
 
 <script>
-  import {getDefaultCompany} from "../../api/company";
-  import {getDefaultAddress} from "../../api/address";
-  import {getCustomer} from "../../api/customer";
-  import {getShopSupport} from "../../api/shop";
-  import {getRule} from "../../api/info";
-  import {mergeMakeInvoice} from "../../api/make";
-  import Header from "../../components/header.vue";
+  import {getDefaultCompany} from "../../../api/company";
+  import {getDefaultAddress} from "../../../api/address";
+  import {getCustomer} from "../../../api/customer";
+  import {getShopSupport} from "../../../api/shop";
+  import {getRule} from "../../../api/info";
+  import {mergeMakeInvoice} from "../../../api/make";
+  import Header from "../../../components/Header.vue";
   import {Toast} from "vant";
   import {Dialog} from "vant";
   import Isemail from "isemail";
@@ -545,7 +545,7 @@
 </script>
 
 <style scoped>
-  @import 'make.css';
+  @import '../make.css';
 
   .twoBox {
     height: 70px;

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-  import Header from "../../components/header.vue";
+  import Header from "../../components/Header.vue";
   import {getInvoice} from "../../api/invoice";
 
   export default {

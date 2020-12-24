@@ -179,13 +179,13 @@
 </template>
 
 <script>
-  import {getDefaultCompany} from "../../api/company";
-  import {getDefaultAddress} from "../../api/address";
-  import {getShopSupport} from "../../api/shop";
-  import {getCustomer} from "../../api/customer";
-  import {getRule} from "../../api/info";
-  import {mergeMakeInvoice} from "../../api/make";
-  import Header from "../../components/header.vue";
+  import {getDefaultCompany} from "../../../api/company";
+  import {getDefaultAddress} from "../../../api/address";
+  import {getShopSupport} from "../../../api/shop";
+  import {getCustomer} from "../../../api/customer";
+  import {getRule} from "../../../api/info";
+  import {mergeMakeInvoice} from "../../../api/make";
+  import Header from "../../../components/Header.vue";
   import {Toast} from "vant";
   import {Dialog} from 'vant';
 
@@ -464,7 +464,7 @@
 </script>
 
 <style scoped>
-  @import "make.css";
+  @import "../make.css";
 
   .van-cell__value {
     min-width: 74%;

@@ -45,8 +45,8 @@
   </div>
 </template>
 <script>
-  import Header from "../../components/header.vue";
-  import {getCompany, createCompany, updateCompany, deleteCompany, getCompanyCodeList} from "../../api/company";
+  import Header from "../../../components/Header.vue";
+  import {getCompany, createCompany, updateCompany, deleteCompany, getCompanyCodeList} from "../../../api/company";
   import {Dialog} from "vant";
   import {Toast} from "vant";
 
@@ -197,5 +197,5 @@
 </script>
 
 <style scoped>
-  @import 'company.css';
+  @import '../company.css';
 </style>

@@ -39,10 +39,10 @@
   </div>
 </template>
 <script>
-  import Header from "../../components/header.vue";
+  import Header from "../../../components/Header.vue";
   import {Dialog} from "vant";
   import {Toast} from "vant";
-  import {getAddress, createAddress, updateAddress, deleteAddress} from "../../api/address";
+  import {getAddress, createAddress, updateAddress, deleteAddress} from "../../../api/address";
   import axios from "axios";
 
   export default {
@@ -174,5 +174,5 @@
 </script>
 
 <style scoped>
-  @import 'address.css';
+  @import '../address.css';
 </style>

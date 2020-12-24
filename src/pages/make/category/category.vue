@@ -144,14 +144,14 @@
 </template>
 
 <script>
-  import {getDefaultAddress} from "../../api/address";
-  import {getDefaultCompany} from "../../api/company";
-  import {getCustomer} from "../../api/customer";
-  import {getQiniuToken, getQiniuKey} from "../../api/qiniu";
-  import {getCustomCategoryList} from "../../api/custom-category";
-  import {getShopSupport} from "../../api/shop";
-  import {getRule} from "../../api/info";
-  import {categoryMakeInvoice} from "../../api/make";
+  import {getDefaultAddress} from "../../../api/address";
+  import {getDefaultCompany} from "../../../api/company";
+  import {getCustomer} from "../../../api/customer";
+  import {getQiniuToken, getQiniuKey} from "../../../api/qiniu";
+  import {getCustomCategoryList} from "../../../api/custom-category";
+  import {getShopSupport} from "../../../api/shop";
+  import {getRule} from "../../../api/info";
+  import {categoryMakeInvoice} from "../../../api/make";
   import {Toast} from "vant";
   import {Dialog} from "vant";
   import axios from "axios";
@@ -460,7 +460,7 @@
 </script>
 
 <style scoped>
-  @import 'make.css';
+  @import '../make.css';
 
   .twoBox {
     height: 70px;

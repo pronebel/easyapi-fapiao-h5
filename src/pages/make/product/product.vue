@@ -178,14 +178,14 @@
 </template>
 
 <script>
-  import {getProductList} from "../../api/product";
-  import {getCustomer} from "../../api/customer";
-  import {getDefaultCompany} from "../../api/company";
-  import {getDefaultAddress} from "../../api/address";
-  import {getShopSupport} from "../../api/shop";
-  import {getRule} from "../../api/info";
-  import {productMakeInvoice} from "../../api/make";
-  import Header from "../../components/header.vue";
+  import {getProductList} from "../../../api/product";
+  import {getCustomer} from "../../../api/customer";
+  import {getDefaultCompany} from "../../../api/company";
+  import {getDefaultAddress} from "../../../api/address";
+  import {getShopSupport} from "../../../api/shop";
+  import {getRule} from "../../../api/info";
+  import {productMakeInvoice} from "../../../api/make";
+  import Header from "../../../components/Header.vue";
   import {Toast} from "vant";
   import {Dialog} from "vant";
   import Isemail from "isemail";
@@ -518,7 +518,7 @@
 </script>
 
 <style scoped>
-  @import 'make.css';
+  @import '../make.css';
 
   .mint-btn div {
     margin: 20px;

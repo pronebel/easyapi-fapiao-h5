@@ -43,8 +43,8 @@
   </div>
 </template>
 <script>
-  import Header from "../../components/header.vue";
-  import {defaultCompany, getCompanyList} from "../../api/company";
+  import Header from "../../../components/Header.vue";
+  import {defaultCompany, getCompanyList} from "../../../api/company";
   import {Toast} from "vant";
 
   export default {
@@ -131,5 +131,5 @@
 </script>
 
 <style scoped>
-  @import 'company.css';
+  @import '../company.css';
 </style>

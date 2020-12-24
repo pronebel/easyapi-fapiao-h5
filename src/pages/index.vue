@@ -89,7 +89,7 @@
       }
     },
     created() {
-      this.getShop()
+      this.getShop();
       localStorage.removeItem("ifProductMake");
       localStorage.removeItem("ifMoneyMake");
       localStorage.removeItem("ifOrderMake");
@@ -102,14 +102,14 @@
       }
     },
     mounted() {
-      let that = this;
+      let _this = this;
       Toast.loading({
         message: '加载中...',
         forbidClick: true,
       });
-      that.getOrderTypeList();
+      _this.getOrderTypeList();
       setTimeout(function () {
-        that.getShopSupport();
+        _this.getShopSupport();
       }, 1000);
     },
   };

@@ -58,8 +58,8 @@
 </template>
 
 <script>
-  import {getInvoice, getOutOrderList} from "../../api/invoice";
-  import Header from "../../components/header.vue";
+  import {getInvoice, getOutOrderList} from "../../../api/invoice";
+  import Header from "../../../components/Header.vue";
   import Clipboard from "clipboard";
 
   export default {

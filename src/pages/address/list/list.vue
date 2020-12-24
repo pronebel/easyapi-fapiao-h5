@@ -40,8 +40,8 @@
 </template>
 
 <script>
-  import Header from "../../components/header.vue";
-  import {getAddressList, defaultAddress} from "../../api/address";
+  import Header from "../../../components/Header.vue";
+  import {getAddressList, defaultAddress} from "../../../api/address";
   import {Toast} from "vant";
 
   export default {
@@ -140,5 +140,5 @@
 </script>
 
 <style scoped>
-  @import 'address.css';
+  @import '../address.css';
 </style>

@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import {getInvoiceList} from "../../api/invoice";
+  import {getInvoiceList} from "../../../api/invoice";
   import moment from 'moment'
 
   export default {
@@ -169,7 +169,7 @@
   }
 
   .invoice-list_item {
-    background: url("../../assets/images/record-bg.png") no-repeat center;
+    background: url("../../../assets/images/record-bg.png") no-repeat center;
     background-size: 100% 100%;
     padding: 15px 24px 20px;
     margin-top: 10px;

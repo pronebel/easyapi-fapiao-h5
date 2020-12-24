@@ -96,7 +96,7 @@
 
 <script>
   import {getProductList} from "../../../api/product";
-  import Header from "../../../components/header.vue";
+  import Header from "../../../components/Header.vue";
   import { Dialog } from "vant";
 
   export default {
