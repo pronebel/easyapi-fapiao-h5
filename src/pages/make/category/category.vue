@@ -4,61 +4,10 @@
       <div id="loading">
         <van-loading v-show="loadingList" type="spinner" color="#56cbf6"/>
       </div>
-      <p>请选择发票类型</p>
-      <van-row type="flex" justify="space-between" class="twoBox">
-        <van-col span="12" v-show="ifElectronic ==='true'">
-          <div :class="{'blueBox': invoiceForm.property=='电子', 'grayBox': invoiceForm.property!='电子' }"
-               style="margin-right:5px"
-               @click="changeElectronic">
-            <p style="font-size: 16px; margin-top: -6px">电子发票</p>
-            <p style="font-size: 12px; margin-top: 6px">最快1分钟开具</p>
-          </div>
-        </van-col>
-        <van-col span="12" v-show="this.ifPaper ==='true'">
-          <div :class="{'blueBox': invoiceForm.property=='纸质', 'grayBox': invoiceForm.property!='纸质' }"
-               style="margin-left:5px" @click="changePaper">
-            <p style="font-size: 16px; margin-top: -6px">纸质发票</p>
-            <p style="font-size: 12px; margin-top: 6px">预计一周送达</p>
-          </div>
-        </van-col>
-      </van-row>
+      <Invoice :isShow="isShow" :isHide="isHide" :ifElectronic="ifElectronic" :invoiceForm="invoiceForm" :ifPaper="ifPaper" :company="company"
+               @getcategorydata="receiveCategory" @getpropertydata="receiveProperty"></Invoice>
     </div>
     <div>
-      <div class="page-part invoice-con">
-        <p>发票详情</p>
-        <form action="" id="formBox" ref="invoiceForm" :model="invoiceForm">
-          <van-cell title="抬头类型" center>
-            <van-radio-group class="van-radio-group_type" v-model="invoiceForm.type" direction="horizontal"
-                             @change="selectInvoiceType">
-              <van-radio name="企业">企业</van-radio>
-              <van-radio name="个人">个人/事业单位</van-radio>
-            </van-radio-group>
-          </van-cell>
-          <van-cell title="发票类型" center v-show="invoiceForm.property == '纸质'">
-            <van-radio-group class="van-radio-group_type" v-model="invoiceForm.category" direction="horizontal"
-            >
-              <van-radio style="margin-bottom: 5px;" name="增值税普通发票">增值税普通发票</van-radio>
-              <van-radio name="增值税专用发票" v-if="invoiceForm.type==='企业'">增值税专用发票</van-radio>
-            </van-radio-group>
-          </van-cell>
-          <van-field label="发票抬头" v-if="invoiceForm.type === '个人'" placeholder="请输入姓名/事业单位"
-                     v-model="invoiceForm.purchaserName"/>
-          <van-field label="发票抬头" readonly v-if="invoiceForm.type === '企业'" @click="gotoCompany"
-                     right-icon="arrow"
-                     placeholder="请选择发票抬头" v-model="company.name"/>
-          <van-field label="税号" value="" readonly v-if="invoiceForm.type === '企业'" v-model="company.taxNumber"/>
-          <van-field label="更多" right-icon="arrow-down" v-if="invoiceForm.type    === '企业'" @click="purchaserMore"
-                     v-show="isHide"
-                     readonly placeholder="地址、电话、开户行等"/>
-          <div v-show="isShow">
-            <van-field v-if="invoiceForm.type === '企业'" @click="purchaserMoreHide" label="地址" value="" readonly
-                       v-model="company.address" right-icon="arrow-up"/>
-            <van-field v-if="invoiceForm.type === '企业'" label="电话" value="" readonly v-model="company.phone"/>
-            <van-field v-if="invoiceForm.type === '企业'" label="开户行" value="" readonly v-model="company.bank"/>
-            <van-field v-if="invoiceForm.type === '企业'" label="银行账号" value="" readonly v-model="company.bankAccount"/>
-          </div>
-        </form>
-      </div>
       <div class="invoice-contents">
         <p>发票内容</p>
         <van-field
@@ -144,20 +93,22 @@
 </template>
 
 <script>
-  import {getDefaultAddress} from "../../../api/address";
-  import {getDefaultCompany} from "../../../api/company";
-  import {getCustomer} from "../../../api/customer";
-  import {getQiniuToken, getQiniuKey} from "../../../api/qiniu";
-  import {getCustomCategoryList} from "../../../api/custom-category";
-  import {getShopSupport} from "../../../api/shop";
-  import {getRule} from "../../../api/info";
-  import {categoryMakeInvoice} from "../../../api/make";
-  import {Toast} from "vant";
-  import {Dialog} from "vant";
+  import { getDefaultAddress } from "../../../api/address";
+  import { getDefaultCompany } from "../../../api/company";
+  import { getCustomer } from "../../../api/customer";
+  import { getQiniuToken, getQiniuKey } from "../../../api/qiniu";
+  import { getCustomCategoryList } from "../../../api/custom-category";
+  import { getShopSupport } from "../../../api/shop";
+  import { getRule } from "../../../api/info";
+  import { categoryMakeInvoice } from "../../../api/make";
+  import { Toast } from "vant";
+  import { Dialog } from "vant";
   import axios from "axios";
+  import Invoice from "../../../components/make/Invoice";
 
   export default {
     name: "MakeCategory",
+    components: { Invoice },
     data() {
       return {
         showCustomCategory: false,
@@ -201,7 +152,7 @@
             fieldName: "附件",
             fieldValue: ""
           }]
-        },
+        }
       };
     },
 
@@ -277,6 +228,7 @@
         getDefaultCompany().then((res) => {
           if (res.data.code === 1) {
             this.company = res.data.content;
+            console.log(this.company)
             this.invoiceForm.purchaserName = this.company.name;
             this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
             this.invoiceForm.purchaserAddress = this.company.address;
@@ -316,7 +268,7 @@
       }
       ,
       makeInvoice() {
-        if (this.invoiceForm.type === '个人') {
+        if (this.invoiceForm.type === "个人") {
           if (this.invoiceForm.purchaserName == "") {
             return Toast("请输入发票抬头");
           } else {
@@ -409,13 +361,11 @@
           Toast(error.response.data.message);
         });
       },
-      changeElectronic() {
-        this.invoiceForm.category = "增值税电子普通发票";
-        this.invoiceForm.property = "电子";
+      receiveCategory(val) {
+        this.invoiceForm.category = val;
       },
-      changePaper() {
-        this.invoiceForm.property = "纸质";
-        this.invoiceForm.category = "增值税普通发票";
+      receiveProperty(val){
+        this.invoiceForm.property = val;
       },
       /** 购买方更多信息 */
       purchaserMore() {
