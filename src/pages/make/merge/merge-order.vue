@@ -25,10 +25,6 @@
       <van-field label="发票备注" v-model="invoiceForm.remark" :placeholder="remarkPlaceholder"></van-field>
     </div>
     <Receive :ifElectronic="ifElectronic" :invoiceForm="invoiceForm" :address="address"></Receive>
-    <div class="page-part" style="margin-bottom: 60px" v-show="!this.ifElectronic">
-      <p>开票金额不足200元，需支付邮费</p>
-      <van-field label="支付方式" readonly></van-field>
-    </div>
     <div class="bottom">
       <van-button
         type="info"
@@ -41,10 +37,7 @@
 </template>
 
 <script>
-  import {getDefaultCompany} from "../../../api/company";
-  import {getDefaultAddress} from "../../../api/address";
   import {getShopSupport} from "../../../api/shop";
-  import {getCustomer} from "../../../api/customer";
   import {getRule} from "../../../api/info";
   import {mergeMakeInvoice} from "../../../api/make";
   import Header from "../../../components/Header.vue";
@@ -52,6 +45,7 @@
   import {Dialog} from 'vant';
   import Invoice from "../../../components/make/Invoice";
   import Receive from "../../../components/make/Receive";
+  import makeMixins from "../mixins/make";
 
   export default {
     name: "MergeOrder",
@@ -60,6 +54,7 @@
       Invoice,
       Receive
     },
+    mixins: [makeMixins],
     data() {
       return {
         headerTitle: "开具电子发票",
@@ -82,7 +77,6 @@
         item: {},
         mergeTax: 0,
         priceSplicing: "",
-        remarkPlaceholder: "",
         invoiceForm: {
           type: "企业",
           category: "增值税电子普通发票",
@@ -115,21 +109,6 @@
       goBack() {
         history.go(-1);
       },
-      selectInvoiceType() {
-        localStorage.setItem("type", this.invoiceForm.type);
-        if (this.invoiceForm.type === "企业") {
-          this.getDefaultCompany();
-          this.getDefaultAddress();
-        } else if (this.invoiceForm.type === "个人") {
-          this.invoiceForm.purchaserName = "";
-          this.invoiceForm.purchaserTaxpayerNumber = "";
-          this.invoiceForm.purchaserAddress = "";
-          this.invoiceForm.purchaserPhone = "";
-          this.invoiceForm.purchaserBank = "";
-          this.invoiceForm.purchaserBankAccount = "";
-          this.invoiceForm.companyId = "";
-        }
-      },
       getOrder() {
         this.orderType = localStorage.getItem("orderType");
         this.invoiceForm.mergeSum = localStorage.getItem("tot");
@@ -141,52 +120,7 @@
           this.invoiceForm.property = "电子";
         }
       },
-      /**
-       * 获取默认公司抬头信息
-       */
-      getDefaultCompany() {
-        getDefaultCompany().then((res) => {
-          if (res.data.code === 0) {
-            this.company = {};
-          } else {
-            this.company = res.data.content;
-            this.invoiceForm.purchaserName = this.company.name;
-            this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
-            this.invoiceForm.purchaserAddress = this.company.address;
-            this.invoiceForm.purchaserPhone = this.company.phone;
-            this.invoiceForm.purchaserBank = this.company.bank;
-            this.invoiceForm.purchaserBankAccount = this.company.bankAccount;
-            this.invoiceForm.companyId = this.company.companyId;
-          }
-        });
-      },
-      /**
-       * 获取默认收票地址信息
-       */
-      getDefaultAddress() {
-        getDefaultAddress().then((res) => {
-          if (res.data.code === 1) {
-            this.address = res.data.content;
-            this.invoiceForm.addressId = this.address.addressId;
-          }
-        });
-      },
-      /**
-       * 获取开票用户信息
-       */
-      getCustomer() {
-        this.loadingList = false;
-        if (localStorage.getItem("invoiceForm")) {
-          this.invoiceForm.email = JSON.parse(localStorage.getItem("invoiceForm")).email;
-          this.invoiceForm.mobile = JSON.parse(localStorage.getItem("invoiceForm")).mobile;
-        }
-        else {
-          getCustomer({}).then((res) => {
-            this.invoiceForm.email = res.data.content.email ? res.data.content.email : "";
-            this.invoiceForm.mobile = res.data.content.mobile ? res.data.content.mobile : "";
-          });
-        }
-      },
+
       /**
        * 提交开票信息
        */
@@ -247,19 +181,7 @@
         });
       },
 
-      /**
-       * 获取发票备注填写说明
-       */
-      getInvoiceRemark() {
-        if (localStorage.getItem("invoiceForm")) {
-          this.invoiceForm.remark = JSON.parse(localStorage.getItem("invoiceForm")).remark;
-        }
-        else {
-          getRule().then((res) => {
-            this.remarkPlaceholder = res.data.content.remark;
-          });
-        }
-      },
+
       getInvoiceSupport() {
         getShopSupport().then((res) => {
           this.ifNeedMobile = res.data.content.ifNeedMobile;
@@ -279,7 +201,6 @@
     created() {
       if (localStorage.getItem("type")) {
         this.invoiceForm.type = localStorage.getItem("type");
-        this.selectInvoiceType();
       }
     },
     activated() {
@@ -291,7 +212,6 @@
     mounted() {
       this.getOrder();
       this.getCustomer();
-      this.getInvoiceRemark();
       this.getInvoiceSupport();
     }
   };

@@ -53,10 +53,6 @@
         </van-cell>
       </div>
       <Receive :ifElectronic="ifElectronic" :invoiceForm="invoiceForm" :address="address"></Receive>
-      <div class="page-part" style="margin-bottom: 60px" v-show="!this.ifElectronic">
-        <p>开票金额不足200元，需支付邮费</p>
-        <van-field label="支付方式" readonly></van-field>
-      </div>
       <div class="bottom">
         <van-button
           type="info"
@@ -70,9 +66,6 @@
 </template>
 
 <script>
-  import { getDefaultAddress } from "../../../api/address";
-  import { getDefaultCompany } from "../../../api/company";
-  import { getCustomer } from "../../../api/customer";
   import { getQiniuToken, getQiniuKey } from "../../../api/qiniu";
   import { getCustomCategoryList } from "../../../api/custom-category";
   import { getShopSupport } from "../../../api/shop";
@@ -83,6 +76,7 @@
   import axios from "axios";
   import Invoice from "../../../components/make/Invoice";
   import Receive from "../../../components/make/Receive";
+  import makeMixins from "../mixins/make";
 
   export default {
     name: "MakeCategory",
@@ -90,6 +84,7 @@
       Invoice,
       Receive
     },
+    mixins: [makeMixins],
     data() {
       return {
         showCustomCategory: false,
@@ -112,7 +107,6 @@
           customCategoryId: null,
           name: ""
         },
-        remarkPlaceholder: "",
         invoiceForm: {
           ifPaper: false,
           category: "增值税电子普通发票",
@@ -165,47 +159,8 @@
           this.invoiceForm.extends[0].fieldValue = "https://qiniu.easyapi.com/" + res.data.key;
         });
       },
-      selectInvoiceType() {
-        localStorage.setItem("type", this.invoiceForm.type);
-        if (this.invoiceForm.type === "企业") {
-          this.getDefaultCompany();
-          this.getDefaultAddress();
-        } else if (this.invoiceForm.type === "个人") {
-          this.invoiceForm.purchaserName = "";
-          this.invoiceForm.purchaserTaxpayerNumber = "";
-          this.invoiceForm.purchaserAddress = "";
-          this.invoiceForm.purchaserPhone = "";
-          this.invoiceForm.purchaserBank = "";
-          this.invoiceForm.purchaserBankAccount = "";
-          this.invoiceForm.companyId = "";
-        }
-      },
       goBack() {
         history.go(-1);
-      },
-
-      getDefaultCompany() {
-        getDefaultCompany().then((res) => {
-          if (res.data.code === 1) {
-            this.company = res.data.content;
-            console.log(this.company);
-            this.invoiceForm.purchaserName = this.company.name;
-            this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
-            this.invoiceForm.purchaserAddress = this.company.address;
-            this.invoiceForm.purchaserPhone = this.company.phone;
-            this.invoiceForm.purchaserBank = this.company.bank;
-            this.invoiceForm.purchaserBankAccount = this.company.bankAccount;
-            this.invoiceForm.companyId = this.company.companyId;
-          }
-        });
-      },
-      getDefaultAddress() {
-        getDefaultAddress().then((res) => {
-          if (res.data.code === 1) {
-            this.address = res.data.content;
-            this.invoiceForm.addressId = this.address.addressId;
-          }
-        });
       },
       getCustomCategories() {
         getCustomCategoryList({}).then(res => {
@@ -218,15 +173,6 @@
           Toast(error.response.data.message);
         });
       },
-      getCustomer() {
-        getCustomer({}).then(res => {
-          (this.loadingList = false), (this.invoiceForm.email = res.data.content.email);
-          this.invoiceForm.addrMobile = res.data.content.mobile;
-        }).catch(error => {
-          Toast(error.response.data.message);
-        });
-      }
-      ,
       makeInvoice() {
         if (this.invoiceForm.type === "个人") {
           if (this.invoiceForm.purchaserName == "") {
@@ -304,15 +250,6 @@
         }).catch(() => {
         });
       },
-      //获取备注
-      getInvoiceRemark() {
-        getRule().then(res => {
-          this.remarkPlaceholder = res.data.content.remark;
-        }).catch(error => {
-          Toast(error.response.data.message);
-        });
-      }
-      ,
       getShopSupport() {
         getShopSupport().then(res => {
           this.ifNeedMobile = res.data.content.ifNeedMobile;
@@ -343,7 +280,6 @@
       }
       if (localStorage.getItem("type")) {
         this.invoiceForm.type = localStorage.getItem("type");
-        this.selectInvoiceType();
       }
     },
     activated() {
@@ -351,8 +287,6 @@
     mounted() {
       this.getToken();
       this.getKey();
-      this.getCustomer();
-      this.getInvoiceRemark();
       this.getShopSupport();
       this.getCustomCategories();
     }

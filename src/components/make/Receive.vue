@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="page-part" style="margin-bottom: 60px" v-show="ifElectronic=='false'?false:true">
+    <div class="page-part" style="margin-bottom: 60px" v-show="ifElectronic">
       <p>接收方式</p>
       <van-field label="电子邮箱" v-model="childForm.email"></van-field>
       <van-field label="联系方式" v-model="childForm.addrMobile"></van-field>
     </div>
-    <div class="page-part" style="margin-bottom: 60px" v-show="!ifElectronic=='false'?false:true">
+    <div class="page-part" style="margin-bottom: 60px" v-if="!ifElectronic">
       <p>接收方式</p>
       <van-field
         right-icon="arrow"
@@ -25,11 +25,16 @@
         readonly
       ></van-cell>
     </div>
+    <div class="page-part" style="margin-bottom: 60px" v-show="!ifElectronic">
+      <p>开票金额不足200元，需支付邮费</p>
+    </div>
   </div>
 </template>
 
 <script>
-  import { getDefaultAddress } from "../../api/address";
+  import {getDefaultAddress} from "../../api/address";
+  import {getCustomer} from "../../api/customer";
+
   export default {
     name: "Receive",
     data() {
@@ -38,21 +43,23 @@
           type: "",
           category: "",
           purchaserName: "",
-          purchaserTaxpayerNumber:"",
-          purchaserAddress:"",
-          purchaserPhone:"",
-          purchaserBank:"",
-          purchaserBankAccount:"",
-          companyId:""
+          purchaserTaxpayerNumber: "",
+          purchaserAddress: "",
+          purchaserPhone: "",
+          purchaserBank: "",
+          purchaserBankAccount: "",
+          companyId: "",
+          addrMobile: "",
+          email: ""
         },
         childAddress: {
           name: "",
           taxNumber: "",
-          address:"",
-          phone:"",
-          bank:"",
-          bankAccount:"",
-          companyId:""
+          address: "",
+          phone: "",
+          bank: "",
+          bankAccount: "",
+          companyId: ""
         }
       };
     },
@@ -72,6 +79,9 @@
           }
         });
       },
+      /**
+       * 获取默认地址
+       */
       getDefaultAddress() {
         getDefaultAddress().then((res) => {
           if (res.data.code === 1) {
@@ -80,10 +90,26 @@
           }
         });
       },
+      /**
+       * 获取开票用户信息
+       */
+      getCustomer() {
+        if (localStorage.getItem("invoiceForm")) {
+          this.childForm.email = JSON.parse(localStorage.getItem("invoiceForm")).email;
+          this.childForm.mobile = JSON.parse(localStorage.getItem("invoiceForm")).mobile;
+        }
+        else {
+          getCustomer({}).then((res) => {
+            this.childForm.email = res.data.content.email ? res.data.content.email : "";
+            this.childForm.mobile = res.data.content.mobile ? res.data.content.mobile : "";
+          });
+        }
+      },
     },
     mounted() {
       this.childForm = this.invoiceForm;
-      this.getDefaultAddress()
+      this.getDefaultAddress();
+      this.getCustomer();
     }
   };
 </script>

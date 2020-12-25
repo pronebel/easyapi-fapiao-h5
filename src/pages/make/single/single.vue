@@ -64,10 +64,6 @@
       ></van-field>
     </div>
     <Receive :ifElectronic="ifElectronic" :invoiceForm="invoiceForm" :address="address"></Receive>
-    <div class="page-part" style="margin-bottom: 60px" v-show="!this.ifElectronic">
-      <p>开票金额不足200元，需支付邮费</p>
-      <van-field label="支付方式" readonly></van-field>
-    </div>
     <div class="bottom">
       <van-button
         type="info"
@@ -85,9 +81,6 @@
 </template>
 
 <script>
-  import {getDefaultCompany} from "../../../api/company";
-  import {getDefaultAddress} from "../../../api/address";
-  import {getCustomer} from "../../../api/customer";
   import {getShopSupport} from "../../../api/shop";
   import {getRule} from "../../../api/info";
   import {mergeMakeInvoice} from "../../../api/make";
@@ -97,6 +90,7 @@
   import Isemail from "isemail";
   import Invoice from "../../../components/make/Invoice";
   import Receive from "../../../components/make/Receive";
+  import makeMixins from "../mixins/make";
 
   export default {
     name: "singleOrder",
@@ -105,6 +99,7 @@
       Invoice,
       Receive
     },
+    mixins: [makeMixins],
     data() {
       return {
         headerTitle: "开具电子发票",
@@ -128,7 +123,6 @@
         item: {},
         mergeTax: 0,
         howMany: "",
-        remarkPlaceholder: "",
         returnUrl: "",
         invoiceForm: {
           type: "企业",
@@ -157,24 +151,6 @@
         this.loadingList = false;
         this.company = item;
       },
-      getDefaultCompany() {
-        getDefaultCompany().then(res => {
-          if (res.data.code === 0) {
-            this.company = [];
-          } else {
-            this.company = res.data.content;
-            if (localStorage.getItem("type") == "企业") {
-              this.invoiceForm.purchaserName = this.company.name;
-              this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
-              this.invoiceForm.address = this.company.address;
-              this.invoiceForm.phone = this.company.phone;
-              this.invoiceForm.purchaserBank = this.company.bank;
-              this.invoiceForm.purchaserBankAccount = this.company.bankAccount;
-              this.invoiceForm.companyId = this.company.companyId;
-            }
-          }
-        });
-      },
       getOutOrder() {
         let outOrderNo = this.outOrderNo;
         this.$ajax.get("/out-orders", {
@@ -194,13 +170,6 @@
           }
           this.outOrder = res.data.content[0];
           this.calculatedAmount();
-        });
-      },
-      getCustomer() {
-        getCustomer({taxNumber: this.taxNumber}).then(res => {
-          this.loadingList = false;
-          this.email = res.data.content.email ? res.data.content.email : "";
-          this.invoiceForm.addrMobile = res.data.content.mobile ? res.data.content.mobile : "";
         });
       },
       goInvoiceSuccess() {
@@ -277,12 +246,6 @@
           this.amountOfMoney = this.outOrder.price.toFixed(2);
         }
       },
-      //获取备注
-      getInvoiceRemark() {
-        getRule().then(res => {
-          this.remarkPlaceholder = res.data.content.remark;
-        });
-      },
       getShopSupport() {
         getShopSupport().then(res => {
           this.ifNeedMobile = res.data.content.ifNeedMobile;
@@ -297,34 +260,11 @@
         this.invoiceForm.property = "纸质";
         this.invoiceForm.category = "增值税普通发票";
       },
-      selectInvoiceType() {
-        localStorage.setItem("type", this.invoiceForm.type);
-        if (this.invoiceForm.type === "企业") {
-          this.getDefaultCompany();
-          this.getDefaultAddress();
-        } else if (this.invoiceForm.type === "个人") {
-          this.invoiceForm.purchaserName = "";
-          this.invoiceForm.purchaserTaxpayerNumber = "";
-          this.invoiceForm.address = "";
-          this.invoiceForm.phone = "";
-          this.invoiceForm.purchaserBank = "";
-          this.invoiceForm.purchaserBankAccount = "";
-          this.invoiceForm.companyId = "";
-        }
-      },
       receiveCategory(val) {
         this.invoiceForm.category = val;
       },
       receiveProperty(val) {
         this.invoiceForm.property = val;
-      },
-      getDefaultAddress() {
-        getDefaultAddress().then((res) => {
-          if (res.data.code === 1) {
-            this.address = res.data.content;
-            this.invoiceForm.addressId = this.address.addressId;
-          }
-        });
       },
       /** 删除商品 */
       deleteProduct(id) {
@@ -370,12 +310,9 @@
       }
     },
     activated() {
-      this.getDefaultCompany();
       this.seletedOrder();
     },
     mounted() {
-      this.getCustomer();
-      this.getInvoiceRemark();
       this.getShopSupport();
       this.getOutOrder();
     },

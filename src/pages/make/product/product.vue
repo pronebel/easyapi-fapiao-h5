@@ -46,7 +46,6 @@
         </van-button
         >
       </div>
-
       <van-cell class="line"/>
       <van-field class="merge-order_price" label="发票金额" v-model="invoiceForm.price" readonly></van-field>
       <van-field label="发票备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
@@ -103,11 +102,7 @@
 
 <script>
   import {getProductList} from "../../../api/product";
-  import {getCustomer} from "../../../api/customer";
-  import {getDefaultCompany} from "../../../api/company";
-  import {getDefaultAddress} from "../../../api/address";
   import {getShopSupport} from "../../../api/shop";
-  import {getRule} from "../../../api/info";
   import {productMakeInvoice} from "../../../api/make";
   import Header from "../../../components/Header.vue";
   import {Toast} from "vant";
@@ -115,7 +110,7 @@
   import Isemail from "isemail";
   import Invoice from "../../../components/make/Invoice";
   import Receive from "../../../components/make/Receive";
-
+  import makeMixins from "../mixins/make";
 
   export default {
     name: "MakeProduct",
@@ -124,6 +119,7 @@
       Invoice,
       Receive
     },
+    mixins: [makeMixins],
     data() {
       return {
         isShow: false,
@@ -137,7 +133,6 @@
         ifNeedEmail: false,//邮箱是否必填
         company: {},//抬头对象
         address: {},//地址对象
-        remarkPlaceholder: "",
         invoiceForm: {
           type: "企业",
           category: "增值税电子普通发票",
@@ -171,39 +166,7 @@
       goBack() {
         history.go(-1);
       },
-      getDefaultCompany() {
-        getDefaultCompany().then(res => {
-          if (res.data.code === 0) {
-            this.company = {};
-          } else {
-            this.company = res.data.content;
-            this.invoiceForm.purchaserName = this.company.name;
-            this.invoiceForm.purchaserTaxpayerNumber = this.company.taxNumber;
-            this.invoiceForm.purchaserAddress = this.company.address;
-            this.invoiceForm.purchaserPhone = this.company.phone;
-            this.invoiceForm.purchaserBank = this.company.bank;
-            this.invoiceForm.purchaserBankAccount = this.company.bankAccount;
-            this.invoiceForm.companyId = this.company.companyId;
-          }
-        });
-      },
-      getDefaultAddress() {
-        getDefaultAddress().then(res => {
-          if (res.data.code === 0) {
-            this.address = {};
-          } else {
-            this.address = res.data.content;
-            this.invoiceForm.addressId = this.address.addressId;
-          }
-        });
-      },
-      getCustomer() {
-        getCustomer({}).then(res => {
-          this.loadingList = false;
-          this.invoiceForm.email = res.data.content.email;
-          this.invoiceForm.addrMobile = res.data.content.mobile;
-        });
-      },
+
       makeInvoice() {
         //验证邮箱
         if (this.ifNeedEmail === true) {
@@ -278,14 +241,7 @@
           this.invoiceForm.price = money.toFixed(2);
         }
       },
-      /** 获取开票备注 */
-      getInvoiceRemark() {
-        getRule().then(res => {
-          this.remarkPlaceholder = res.data.content.remark;
-        }).catch(error => {
-          Toast(error.response.data.message);
-        });
-      },
+
       /** 删除商品 */
       deleteProduct(id) {
         for (let i = 0; i < this.productList.length; i++) {
@@ -365,22 +321,6 @@
           this.invoiceForm.type = "企业";
         }
       },
-      /** 选择发票类型 */
-      selectInvoiceType() {
-        localStorage.setItem("type", this.invoiceForm.type);
-        if (this.invoiceForm.type === "企业") {
-          this.getDefaultCompany();
-          this.getDefaultAddress();
-        } else if (this.invoiceForm.type === "个人") {
-          this.invoiceForm.purchaserName = "";
-          this.invoiceForm.purchaserTaxpayerNumber = "";
-          this.invoiceForm.purchaserAddress = "";
-          this.invoiceForm.purchaserPhone = "";
-          this.invoiceForm.purchaserBank = "";
-          this.invoiceForm.purchaserBankAccount = "";
-          this.invoiceForm.companyId = null;
-        }
-      },
       changeElectronic() {
         this.invoiceForm.category = "增值税电子普通发票";
         this.invoiceForm.property = "电子";
@@ -397,16 +337,14 @@
       this.resetPage();
       if (localStorage.getItem("type")) {
         this.invoiceForm.type = localStorage.getItem("type");
-        this.selectInvoiceType()
       }
     },
     activated() {
     },
     mounted() {
       this.calcAmount();
-      this.getCustomer();
-      this.getInvoiceRemark();
       this.getShopSupport();
+      this.loadingList = false;
     },
     computed: {
       show() {

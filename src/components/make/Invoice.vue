@@ -47,11 +47,12 @@
                    v-show="hide"
                    readonly placeholder="地址、电话、开户行等"/>
         <div v-show="show">
-        <van-field v-if="invoiceForm.type === '企业'" @click="purchaserMoreHide" label="地址" value="" readonly
-        v-model="childCompany.address" right-icon="arrow-up"/>
-        <van-field v-if="invoiceForm.type === '企业'" label="电话" value="" readonly v-model="childCompany.phone"/>
-        <van-field v-if="invoiceForm.type === '企业'" label="开户行" value="" readonly v-model="childCompany.bank"/>
-        <van-field v-if="invoiceForm.type === '企业'" label="银行账号" value="" readonly v-model="childCompany.bankAccount"/>
+          <van-field v-if="invoiceForm.type === '企业'" @click="purchaserMoreHide" label="地址" value="" readonly
+                     v-model="childCompany.address" right-icon="arrow-up"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="电话" value="" readonly v-model="childCompany.phone"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="开户行" value="" readonly v-model="childCompany.bank"/>
+          <van-field v-if="invoiceForm.type === '企业'" label="银行账号" value="" readonly
+                     v-model="childCompany.bankAccount"/>
         </div>
       </form>
     </div>
@@ -59,8 +60,9 @@
 </template>
 
 <script>
-  import { getDefaultCompany } from "../../api/company";
-  import { getDefaultAddress } from "../../api/address";
+  import {getDefaultCompany} from "../../api/company";
+  import {getDefaultAddress} from "../../api/address";
+
   export default {
     name: "Invoice",
     props: [
@@ -73,9 +75,9 @@
     ],
     data() {
       return {
-        address:"",
-        show:this.isShow,
-        hide:this.isHide,
+        address: "",
+        show: this.isShow,
+        hide: this.isHide,
         childInvoiceForm: {
           category: "",
           property: ""
@@ -84,21 +86,21 @@
           type: "",
           category: "",
           purchaserName: "",
-          purchaserTaxpayerNumber:"",
-          purchaserAddress:"",
-          purchaserPhone:"",
-          purchaserBank:"",
-          purchaserBankAccount:"",
-          companyId:""
+          purchaserTaxpayerNumber: "",
+          purchaserAddress: "",
+          purchaserPhone: "",
+          purchaserBank: "",
+          purchaserBankAccount: "",
+          companyId: ""
         },
         childCompany: {
           name: "",
           taxNumber: "",
-          address:"",
-          phone:"",
-          bank:"",
-          bankAccount:"",
-          companyId:""
+          address: "",
+          phone: "",
+          bank: "",
+          bankAccount: "",
+          companyId: ""
         }
       };
     },
@@ -127,24 +129,24 @@
           this.childForm.companyId = "";
         }
       },
-        /** 前往抬头管理页 */
-        gotoCompany() {
-          this.$router.push({
-            path: "/company/",
-            name: "Company",
-            params: {
-              id: this.childCompany ? this.childCompany.companyId : "",
-              from: "make"
-            }
-          });
-        },
+      /** 前往抬头管理页 */
+      gotoCompany() {
+        this.$router.push({
+          path: "/company/",
+          name: "Company",
+          params: {
+            id: this.childCompany ? this.childCompany.companyId : "",
+            from: "make"
+          }
+        });
+      },
       /** 购买方更多信息 */
-      purchaserMore(){
+      purchaserMore() {
         this.show = true;
         this.hide = false;
       },
       /** 隐藏购买方更多信息 */
-      purchaserMoreHide(){
+      purchaserMoreHide() {
         this.show = false;
         this.hide = true;
       },
