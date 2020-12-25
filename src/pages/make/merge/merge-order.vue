@@ -37,8 +37,6 @@
 </template>
 
 <script>
-  import {getShopSupport} from "../../../api/shop";
-  import {getRule} from "../../../api/info";
   import {mergeMakeInvoice} from "../../../api/make";
   import Header from "../../../components/Header.vue";
   import {Toast} from "vant";
@@ -100,12 +98,6 @@
       }
     },
     methods: {
-      receiveCategory(val) {
-        this.invoiceForm.category = val;
-      },
-      receiveProperty(val) {
-        this.invoiceForm.property = val;
-      },
       goBack() {
         history.go(-1);
       },
@@ -180,14 +172,6 @@
         }).catch(() => {
         });
       },
-
-
-      getInvoiceSupport() {
-        getShopSupport().then((res) => {
-          this.ifNeedMobile = res.data.content.ifNeedMobile;
-          this.ifNeedEmail = res.data.content.ifNeedEmail;
-        });
-      },
       changeElectronic() {
         this.invoiceForm.category = "增值税电子普通发票";
         this.invoiceForm.property = "电子";
@@ -211,8 +195,6 @@
     },
     mounted() {
       this.getOrder();
-      this.getCustomer();
-      this.getInvoiceSupport();
     }
   };
 </script>

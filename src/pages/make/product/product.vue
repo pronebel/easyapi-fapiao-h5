@@ -102,7 +102,6 @@
 
 <script>
   import {getProductList} from "../../../api/product";
-  import {getShopSupport} from "../../../api/shop";
   import {productMakeInvoice} from "../../../api/make";
   import Header from "../../../components/Header.vue";
   import {Toast} from "vant";
@@ -157,16 +156,9 @@
     },
 
     methods: {
-      receiveCategory(val) {
-        this.invoiceForm.category = val;
-      },
-      receiveProperty(val) {
-        this.invoiceForm.property = val;
-      },
       goBack() {
         history.go(-1);
       },
-
       makeInvoice() {
         //验证邮箱
         if (this.ifNeedEmail === true) {
@@ -255,15 +247,6 @@
         this.calcAmount();
       },
       /** */
-      getShopSupport() {
-        getShopSupport().then(res => {
-          this.ifNeedMobile = res.data.content.ifNeedMobile;
-          this.ifNeedEmail = res.data.content.ifNeedEmail;
-        }).catch(error => {
-          Toast(error.response.data.message);
-        });
-      },
-      /** */
       getProductList(params) {
         getProductList(params).then(res => {
           this.productListAll = res.data.content;
@@ -343,7 +326,6 @@
     },
     mounted() {
       this.calcAmount();
-      this.getShopSupport();
       this.loadingList = false;
     },
     computed: {

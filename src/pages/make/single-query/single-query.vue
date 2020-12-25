@@ -49,7 +49,6 @@
 
 <script>
   import {queryShopOrder, getState} from "../../../api/query";
-  import {getShopSupport} from "../../../api/shop";
   import {getRule} from "../../../api/info";
   import {makeInvoice} from "../../../api/make";
   import {Toast} from "vant";
@@ -118,12 +117,6 @@
       }
     },
     methods: {
-      receiveCategory(val) {
-        this.invoiceForm.category = val;
-      },
-      receiveProperty(val) {
-        this.invoiceForm.property = val;
-      },
       showDetail(name) {
         this.active = name
       },
@@ -217,12 +210,6 @@
           this.remarkPlaceholder = res.data.content.remark;
         });
       },
-      getInvoicingService() {
-        getShopSupport().then(res => {
-          this.ifNeedMobile = res.data.content.ifNeedMobile;
-          this.ifNeedEmail = res.data.content.ifNeedEmail;
-        });
-      },
       getEtr() {
         this.invoiceForm.category = "增值税电子普通发票";
         this.invoiceForm.property = "电子";
@@ -255,7 +242,6 @@
     },
     mounted() {
       this.getSpecifications();
-      this.getInvoicingService();
       this.getShopOrder()
     }
   };

@@ -68,8 +68,6 @@
 <script>
   import { getQiniuToken, getQiniuKey } from "../../../api/qiniu";
   import { getCustomCategoryList } from "../../../api/custom-category";
-  import { getShopSupport } from "../../../api/shop";
-  import { getRule } from "../../../api/info";
   import { categoryMakeInvoice } from "../../../api/make";
   import { Toast } from "vant";
   import { Dialog } from "vant";
@@ -250,20 +248,6 @@
         }).catch(() => {
         });
       },
-      getShopSupport() {
-        getShopSupport().then(res => {
-          this.ifNeedMobile = res.data.content.ifNeedMobile;
-          this.ifNeedEmail = res.data.content.ifNeedEmail;
-        }).catch(error => {
-          Toast(error.response.data.message);
-        });
-      },
-      receiveCategory(val) {
-        this.invoiceForm.category = val;
-      },
-      receiveProperty(val) {
-        this.invoiceForm.property = val;
-      },
       onConfirm(value) {
         this.customCategory.customCategoryId = value.customCategoryId;
         this.customCategory.name = value.name;
@@ -286,8 +270,7 @@
     },
     mounted() {
       this.getToken();
-      this.getKey();
-      this.getShopSupport();
+      this.getKey()
       this.getCustomCategories();
     }
   };

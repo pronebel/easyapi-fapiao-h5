@@ -3,6 +3,7 @@
  */
 
 import {getRule} from "../../../api/info";
+import { getShopSupport } from "../../../api/shop";
 import {Toast} from "vant";
 
 export default {
@@ -11,7 +12,13 @@ export default {
 
   data() {
     return {
-      remarkPlaceholder: ""
+      remarkPlaceholder: "",
+      ifNeedMobile:"",
+      ifNeedEmail:"",
+      invoiceForm:{
+        category:"",
+        property:""
+      }
     };
   },
   watch: {},
@@ -20,6 +27,7 @@ export default {
   },
   async mounted() {
     this.getInvoiceRemark();
+    this.getShopSupport()
   },
   methods: {
     /**
@@ -34,6 +42,20 @@ export default {
           this.remarkPlaceholder = res.data.content.remark;
         });
       }
+    },
+    getShopSupport() {
+      getShopSupport().then(res => {
+        this.ifNeedMobile = res.data.content.ifNeedMobile;
+        this.ifNeedEmail = res.data.content.ifNeedEmail;
+      }).catch(error => {
+        Toast(error.response.data.message);
+      });
+    },
+    receiveCategory(val) {
+      this.invoiceForm.category = val;
+    },
+    receiveProperty(val) {
+      this.invoiceForm.property = val;
     },
   },
 };

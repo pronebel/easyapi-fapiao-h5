@@ -81,8 +81,6 @@
 </template>
 
 <script>
-  import {getShopSupport} from "../../../api/shop";
-  import {getRule} from "../../../api/info";
   import {mergeMakeInvoice} from "../../../api/make";
   import Header from "../../../components/Header.vue";
   import {Toast} from "vant";
@@ -246,12 +244,6 @@
           this.amountOfMoney = this.outOrder.price.toFixed(2);
         }
       },
-      getShopSupport() {
-        getShopSupport().then(res => {
-          this.ifNeedMobile = res.data.content.ifNeedMobile;
-          this.ifNeedEmail = res.data.content.ifNeedEmail;
-        });
-      },
       getEtr() {
         this.invoiceForm.category = "增值税电子普通发票";
         this.invoiceForm.property = "电子";
@@ -259,12 +251,6 @@
       getPaper() {
         this.invoiceForm.property = "纸质";
         this.invoiceForm.category = "增值税普通发票";
-      },
-      receiveCategory(val) {
-        this.invoiceForm.category = val;
-      },
-      receiveProperty(val) {
-        this.invoiceForm.property = val;
       },
       /** 删除商品 */
       deleteProduct(id) {
@@ -313,7 +299,6 @@
       this.seletedOrder();
     },
     mounted() {
-      this.getShopSupport();
       this.getOutOrder();
     },
     computed: {
