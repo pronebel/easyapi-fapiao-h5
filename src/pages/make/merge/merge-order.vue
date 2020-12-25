@@ -19,7 +19,7 @@
       <van-field
         class="merge-order_price"
         label="发票金额"
-        v-model="invoiceForm.mergeSum"
+        v-model="invoiceForm.price"
         readonly
       ></van-field>
       <van-field label="发票备注" v-model="invoiceForm.remark" :placeholder="remarkPlaceholder"></van-field>
@@ -56,25 +56,15 @@
     data() {
       return {
         headerTitle: "开具电子发票",
-        showPaper: "",
-        showElectronic: "",
+        loadingList: true,
         ifElectronic: localStorage.getItem("ifElectronic"),
         ifPaper: localStorage.getItem("ifPaper"),
         isShow: false,
         isHide: true,
-        loadingList: true,
-        amountOfMoney: 0,
-        selected: "1",
-        ifNeedMobile: "",
-        ifNeedEmail: "",
         orderType: "",
         company: {},
         address: {},
         outOrderIds: "",
-        sum: 0,
-        item: {},
-        mergeTax: 0,
-        priceSplicing: "",
         invoiceForm: {
           type: "企业",
           category: "增值税电子普通发票",
@@ -88,7 +78,7 @@
           addrMobile: "",
           email: "",
           remark: "",
-          mergeSum: ""
+          price: ""
         },
       };
     },
@@ -103,7 +93,7 @@
       },
       getOrder() {
         this.orderType = localStorage.getItem("orderType");
-        this.invoiceForm.mergeSum = localStorage.getItem("tot");
+        this.invoiceForm.price = localStorage.getItem("tot");
         this.seletedOutOrderList = JSON.parse(localStorage.getItem("seleted"));
         for (let i = 0; i < this.seletedOutOrderList.length; i++) {
           this.outOrderIds += this.seletedOutOrderList[i].outOrderId + ",";
@@ -126,37 +116,7 @@
           title: '提示',
           message: '确认抬头和金额正确并申请开票吗？',
         }).then(() => {
-          //验证邮箱
-          let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-          if (this.ifNeedEmail === true) {
-            if (this.invoiceForm.email === "") {
-              return Toast("请输入邮箱");
-            } else if (!regEmail.test(this.invoiceForm.email)) {
-              return Toast("邮箱格式不正确");
-            }
-          } else {
-            if (this.invoiceForm.email) {
-              if (!regEmail.test(this.invoiceForm.email)) {
-                return Toast("邮箱格式不正确");
-              }
-            }
-          }
-          //手机号验证
-          let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-          if (this.ifNeedMobile === true) {
-            if (this.invoiceForm.mobile === "") {
-              return Toast("请输入手机号码");
-            } else if (!reg.test(this.invoiceForm.mobile)) {
-              return Toast("手机格式不正确");
-            }
-          } else {
-            if (this.invoiceForm.mobile) {
-              if (!reg.test(this.invoiceForm.mobile)) {
-                this.showDisabled = true;
-                return Toast("手机格式不正确");
-              }
-            }
-          }
+          this.checkEmailMobile();
           Toast.loading({
             message: '开票中...',
             forbidClick: true,

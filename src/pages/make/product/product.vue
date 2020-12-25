@@ -106,7 +106,6 @@
   import Header from "../../../components/Header.vue";
   import {Toast} from "vant";
   import {Dialog} from "vant";
-  import Isemail from "isemail";
   import Invoice from "../../../components/make/Invoice";
   import Receive from "../../../components/make/Receive";
   import makeMixins from "../mixins/make";
@@ -121,16 +120,14 @@
     mixins: [makeMixins],
     data() {
       return {
+        loadingList: true,
         isShow: false,
         isHide: true,
-        loadingList: true,
         ifElectronic: localStorage.getItem("ifElectronic"),
         ifPaper: localStorage.getItem("ifPaper"),
         showPopup: false,
         productList: "",//商品列表
-        ifNeedMobile: false,//手机号码是否必填
-        ifNeedEmail: false,//邮箱是否必填
-        company: {},//抬头对象
+        company: {},//公司抬头
         address: {},//地址对象
         invoiceForm: {
           type: "企业",
@@ -160,35 +157,7 @@
         history.go(-1);
       },
       makeInvoice() {
-        //验证邮箱
-        if (this.ifNeedEmail === true) {
-          if (this.invoiceForm.email === "") {
-            return Toast("请输入邮箱");
-          } else if (!Isemail.validate(this.invoiceForm.email)) {
-            return Toast("邮箱格式不正确");
-          }
-        } else {
-          if (this.invoiceForm.email) {
-            if (!Isemail.validate(this.invoiceForm.email)) {
-              return Toast("邮箱格式不正确");
-            }
-          }
-        }
-        //手机号验证
-        let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-        if (this.ifNeedMobile === true) {
-          if (this.invoiceForm.addrMobile === "") {
-            return Toast("请输入手机号码");
-          } else if (!reg.test(this.invoiceForm.addrMobile)) {
-            return Toast("手机格式不正确");
-          }
-        } else {
-          if (this.invoiceForm.addrMobile) {
-            if (!reg.test(this.invoiceForm.addrMobile)) {
-              return Toast("手机格式不正确");
-            }
-          }
-        }
+        this.checkEmailMobile();
         if (this.invoiceForm.type === '个人') {
           if (this.invoiceForm.purchaserName == "") {
             return Toast("请输入发票抬头");
@@ -246,13 +215,13 @@
         this.invoiceForm.price = 0;
         this.calcAmount();
       },
-      /** */
+      /** 获取商品服务列表 */
       getProductList(params) {
         getProductList(params).then(res => {
           this.productListAll = res.data.content;
         });
       },
-      /** */
+      /** 追加商品服务 */
       appendProduct() {
         let obj = {};
         for (let i = 0; i < this.productListAll.length; i++) {
@@ -268,24 +237,24 @@
             let oldList = JSON.parse(localStorage.getItem("productList")) || [];
             oldList.push(obj);
             localStorage.setItem("productList", JSON.stringify(oldList));
+            this.productList = JSON.parse(localStorage.getItem("productList"));
           }
         }
-        this.resetPage();
         this.calcAmount();
         this.showPopup = false;
       },
-      /** */
+      /** 显示选择商品弹框 */
       showProductSearchPopup() {
         this.productPrice = 0;
         this.showPopup = true;
         this.productKeyword = "";
         this.getProductList();
       },
-      /** */
+      /** 搜索商品 */
       onProductSearch() {
         this.getProductList({name: this.productKeyword});
       },
-      /** */
+      /** 计算追加商品总价 */
       calcTotalPrice() {
         let total = 0;
         if (this.productListAll !== null) {
@@ -295,29 +264,11 @@
           this.productPrice = total;
         }
       },
-      /** */
-      resetPage() {
-        this.productList = JSON.parse(localStorage.getItem("productList"));
-        if (localStorage.getItem("type")) {
-          this.invoiceForm.type = localStorage.getItem("type");
-        } else {
-          this.invoiceForm.type = "企业";
-        }
-      },
-      changeElectronic() {
-        this.invoiceForm.category = "增值税电子普通发票";
-        this.invoiceForm.property = "电子";
-      },
-      changePaper() {
-        this.invoiceForm.property = "纸质";
-        this.invoiceForm.category = "增值税普通发票";
-      }
     },
     mounted() {
       this.getProductList();
     },
     created() {
-      this.resetPage();
       if (localStorage.getItem("type")) {
         this.invoiceForm.type = localStorage.getItem("type");
       }
@@ -326,6 +277,7 @@
     },
     mounted() {
       this.calcAmount();
+      this.productList = JSON.parse(localStorage.getItem("productList"));
       this.loadingList = false;
     },
     computed: {
@@ -373,31 +325,4 @@
     padding: 1px;
   }
 
-  .twoBox {
-    height: 70px;
-    /* border: 2px solid blue; */
-    text-align: center;
-    background: #fff;
-    padding: 20px 10px
-  }
-
-  .blueBox {
-    box-sizing: border-box;
-    padding: 17px 0;
-    font-size: 15px;
-    height: 70px;
-    border: 1px solid #1989fa;
-    color: #1989fa;
-    border-radius: 4px;
-  }
-
-  .grayBox {
-    box-sizing: border-box;
-    padding: 17px 0;
-    font-size: 15px;
-    height: 70px;
-    border: 1px solid #999;
-    color: #999;
-    border-radius: 4px;
-  }
 </style>

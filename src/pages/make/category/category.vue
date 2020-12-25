@@ -85,28 +85,24 @@
     mixins: [makeMixins],
     data() {
       return {
+        loadingList: true,
         showCustomCategory: false,
         keyboardShow: false,
-        loadingList: true,
         ifElectronic: localStorage.getItem("ifElectronic"),
         ifPaper: localStorage.getItem("ifPaper"),
         isShow: false,
         isHide: true,
         qnKey: "",
         qnToken: "",
-        ifNeedMobile: false,
-        ifNeedEmail: false,
         company: {},
         address: {},
-        //自定义分类列表
-        customCategoryList: [],
+        customCategoryList: [],//自定义分类列表
         //选中的自定义分类
         customCategory: {
           customCategoryId: null,
           name: ""
         },
         invoiceForm: {
-          ifPaper: false,
           category: "增值税电子普通发票",
           property: localStorage.getItem("ifElectronic") === "true" ? "电子" : "纸质",
           type: "个人",
@@ -172,6 +168,7 @@
         });
       },
       makeInvoice() {
+        this.checkEmailMobile();
         if (this.invoiceForm.type === "个人") {
           if (this.invoiceForm.purchaserName == "") {
             return Toast("请输入发票抬头");
@@ -193,37 +190,6 @@
         }
         if (this.invoiceForm.extends[0].fieldValue === "") {
           return Toast("附件一栏请上传付款记录凭证");
-        }
-        //验证邮箱
-        let regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-
-        if (this.ifNeedEmail === true) {
-          if (this.invoiceForm.email === "") {
-            return Toast("请输入邮箱");
-          } else if (!regEmail.test(this.invoiceForm.email)) {
-            return Toast("邮箱格式不正确");
-          }
-        } else {
-          if (this.invoiceForm.email) {
-            if (!regEmail.test(this.invoiceForm.email)) {
-              return Toast("邮箱格式不正确");
-            }
-          }
-        }
-        //手机号验证
-        let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-        if (this.ifNeedMobile === true) {
-          if (this.invoiceForm.addrMobile === "") {
-            return Toast("请输入手机号码");
-          } else if (!reg.test(this.invoiceForm.addrMobile)) {
-            return Toast("手机格式不正确");
-          }
-        } else {
-          if (this.invoiceForm.addrMobile) {
-            if (!reg.test(this.invoiceForm.addrMobile)) {
-              return Toast("手机格式不正确");
-            }
-          }
         }
         Dialog.confirm({
           title: "提示",
@@ -278,33 +244,6 @@
 
 <style scoped>
   @import '../make.css';
-
-  .twoBox {
-    height: 70px;
-    text-align: center;
-    background: #fff;
-    padding: 20px 10px
-  }
-
-  .blueBox {
-    box-sizing: border-box;
-    padding: 17px 0;
-    font-size: 15px;
-    height: 70px;
-    border: 1px solid #1989fa;
-    color: #1989fa;
-    border-radius: 4px;
-  }
-
-  .grayBox {
-    box-sizing: border-box;
-    padding: 17px 0;
-    font-size: 15px;
-    height: 70px;
-    border: 1px solid #999;
-    color: #999;
-    border-radius: 4px;
-  }
 
   .page-part .van-cell__title {
     width: 6.2em;

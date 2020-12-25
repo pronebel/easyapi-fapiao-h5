@@ -28,7 +28,7 @@
       <van-field
         class="merge-order_price"
         label="发票金额"
-        v-model="invoiceForm.mergeSum"
+        v-model="invoiceForm.price"
         readonly
       ></van-field>
       <van-field label="发票备注" :placeholder="remarkPlaceholder" v-model="invoiceForm.remark"></van-field>
@@ -39,21 +39,17 @@
         type="info"
         class="submit"
         @click="makeInvoice"
-        v-if="showDisabled"
       >提交
       </van-button>
-      <van-button type="info" class="submit" v-else>开票中</van-button>
     </div>
   </div>
 </template>
 
 <script>
   import {queryShopOrder, getState} from "../../../api/query";
-  import {getRule} from "../../../api/info";
   import {makeInvoice} from "../../../api/make";
   import {Toast} from "vant";
   import {Dialog} from "vant";
-  import Isemail from "isemail";
   import Invoice from "../../../components/make/Invoice";
   import Receive from "../../../components/make/Receive";
   import makeMixins from "../mixins/make";
@@ -67,6 +63,7 @@
     mixins: [makeMixins],
     data() {
       return {
+        headerTitle: "开具电子发票",
         isHide: true,
         isShow: false,
         ifElectronic: localStorage.getItem("ifElectronic"),
@@ -81,19 +78,10 @@
           }
         ],
         loadingList: true,
-        amountOfMoney: 0,
         outOrder: "",
         outOrderNo: "",//商户外部订单号
         address: {},
         company: {},
-        showDisabled: true,
-        selected: "1",
-        headerTitle: "开具电子发票",
-        contactInformation: "",
-        ifNeedMobile: "",
-        ifNeedEmail: "",
-        sum: 0,
-        item: {},
         invoiceForm: {
           type: "企业",
           category: "增值税电子普通发票",
@@ -107,7 +95,7 @@
           addrMobile: "",
           email: "",
           remark: "",
-          mergeSum: ""
+          price: ""
         },
       };
     },
@@ -132,7 +120,7 @@
         queryShopOrder(this.outOrderNo).then(res => {
           if (res.data.code == 1) {
             this.outOrder = res.data.content;
-            this.amountOfMoney = res.data.content.price;
+            this.invoiceForm.price = res.data.content.price;
           }
         });
       },
@@ -148,76 +136,22 @@
           showCancelButton: true
         }).then(action => {
           if (action === "confirm") {
-            this.showDisabled = false;
-            //验证邮箱
-            if (this.ifNeedEmail === true) {
-              if (this.email === "") {
-                this.showDisabled = true;
-                return Toast("请输入邮箱");
-              } else if (!Isemail.validate(this.email)) {
-                this.showDisabled = true;
-                return Toast("邮箱格式不正确");
-              }
-            } else {
-              if (this.email) {
-                if (!Isemail.validate(this.email)) {
-                  this.showDisabled = true;
-                  return Toast("邮箱格式不正确");
-                }
-              }
-            }
-            //手机号验证
-            let reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-            if (this.ifNeedMobile === true) {
-              if (this.contactInformation === "") {
-                this.showDisabled = true;
-                return Toast("请输入手机号码");
-              } else if (!reg.test(this.contactInformation)) {
-                this.showDisabled = true;
-                return Toast("手机格式不正确");
-              }
-            } else {
-              if (this.contactInformation) {
-                if (!reg.test(this.contactInformation)) {
-                  this.showDisabled = true;
-                  return Toast("手机格式不正确");
-                }
-              }
-            }
-            this.invoiceForm.addrMobile = this.contactInformation;
-            this.invoiceForm.email = this.email;
-            this.invoiceForm.type = this.invoiceForm.type;
+            this.checkEmailMobile();
             this.invoiceForm.category = "增值税电子普通发票";
             this.invoiceForm.property = "电子";
             this.invoiceForm.outOrderNo = this.outOrder.outOrderNo;
             this.invoiceForm.items = this.outOrder.items;
             makeInvoice(this.invoiceForm).then(res => {
               if (res.data.code === 1) {
-                this.$messagebox.alert(res.data.message);
+                Toast(res.data.message);
                 this.$router.go(0)
               }
             }).catch(error => {
-              this.showDisabled = false;
               Toast(error.response.data.message);
-              this.showDisabled = true;
             });
           }
         });
       },
-      //获取备注
-      getSpecifications() {
-        getRule().then(res => {
-          this.remarkPlaceholder = res.data.content.remark;
-        });
-      },
-      getEtr() {
-        this.invoiceForm.category = "增值税电子普通发票";
-        this.invoiceForm.property = "电子";
-      },
-      getPaper() {
-        this.invoiceForm.property = "纸质";
-        this.invoiceForm.category = "增值税普通发票";
-      }
     },
     watch: {},
     created() {
@@ -241,7 +175,6 @@
     activated() {
     },
     mounted() {
-      this.getSpecifications();
       this.getShopOrder()
     }
   };

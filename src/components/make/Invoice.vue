@@ -2,9 +2,9 @@
   <div>
     <div class="nav" style="margin-top: 10px;">
       <p>请选择发票类型</p>
-      <van-row type="flex" justify="space-between" class="twoBox">
+      <van-row type="flex" justify="space-between" class="invoice-type">
         <van-col span="12" v-show="ifElectronic ==='true'">
-          <div :class="{'blueBox': invoiceForm.property=='电子', 'grayBox': invoiceForm.property!='电子' }"
+          <div :class="{'invoice-type_blue_box': invoiceForm.property=='电子', 'invoice-type_gray_box': invoiceForm.property!='电子' }"
                style="margin-right:5px"
                @click="changeElectronic">
             <p style="font-size: 16px; margin-top: -6px">电子发票</p>
@@ -12,7 +12,7 @@
           </div>
         </van-col>
         <van-col span="12" v-show="this.ifPaper ==='true'">
-          <div :class="{'blueBox': invoiceForm.property=='纸质', 'grayBox': invoiceForm.property!='纸质' }"
+          <div :class="{'invoice-type_blue_box': invoiceForm.property=='纸质', 'invoice-type_gray_box': invoiceForm.property!='纸质' }"
                style="margin-left:5px" @click="changePaper">
             <p style="font-size: 16px; margin-top: -6px">纸质发票</p>
             <p style="font-size: 12px; margin-top: 6px">预计一周送达</p>
@@ -181,14 +181,14 @@
 </script>
 
 <style scoped>
-  .twoBox {
+  .invoice-type {
     height: 70px;
     text-align: center;
     background: #fff;
     padding: 20px 10px
   }
 
-  .blueBox {
+  .invoice-type_blue_box {
     box-sizing: border-box;
     padding: 17px 0;
     font-size: 15px;
@@ -198,7 +198,7 @@
     border-radius: 4px;
   }
 
-  .grayBox {
+  .invoice-type_gray_box {
     box-sizing: border-box;
     padding: 17px 0;
     font-size: 15px;

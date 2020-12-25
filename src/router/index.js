@@ -19,12 +19,6 @@ export default new Router({
       meta: {title: "开票规则", keepAlive: false}
     },
     {
-      path: "/product",
-      name: "Product",
-      component: resolve => require(["../pages/make/modules/product.vue"], resolve),
-      meta: {title: "选择商品", keepAlive: false}
-    },
-    {
       path: "/company/",
       name: "Company",
       component: resolve => require(["../pages/company/list/list.vue"], resolve),
